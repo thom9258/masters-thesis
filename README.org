@@ -1,0 +1,11 @@
+* masters-thesis
+
+Thomas Alexgaard Jensen (tjens18 - tjens18@student.sdu.dk)
+
+** Introduction
+
+Master Thesis on Prosthetics.
+
+** Overview
+
+dir *ros-packages* contains dated backups of the ros package th_hand.
