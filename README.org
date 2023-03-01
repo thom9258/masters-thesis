@@ -9,3 +9,12 @@ Master Thesis on Prosthetics.
 ** Overview
 
 dir *ros-packages* contains dated backups of the ros package th_hand.
+
+** Ros Dependencies
+
+[[https://control.ros.org/master/doc/getting_started/getting_started.html][Getting started with ROS2 Control package & install guide]]
+- ros-foxy-ros2-control
+- ros-foxy-ros2-controllers 
+- ros-foxy-gazebo-ros2-control
+
+
