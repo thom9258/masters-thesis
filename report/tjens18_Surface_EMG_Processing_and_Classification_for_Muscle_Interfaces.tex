@@ -1,0 +1,86 @@
+
+% 2400 signs per page setup:
+\documentclass[a4paper, 12pt]{article}
+
+\usepackage{geometry}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{graphicx}
+% images alongside text
+\usepackage{wrapfig} 
+\usepackage{hyperref}
+\usepackage[parfill]{parskip}
+% blank pages
+\usepackage{afterpage} 
+% http://ctan.org/pkg/{fancyhdr,graphicx,lastpage}
+\usepackage{fancyhdr,graphicx,lastpage}
+% get the degree symbol
+\usepackage{gensymb} 
+% subfigures inside of normal figures
+\usepackage{subcaption} 
+
+% Define margins for page setup
+\newgeometry{vmargin={30mm}, hmargin={30mm}, tmargin={30mm}, bmargin={30mm}}
+
+\graphicspath{ {./src/} }
+
+% Clear header/footer in favor of the custom header/footer setup
+\fancypagestyle{plain}{
+  \fancyhf{}                                       
+  \fancyhead[L]{Surface-EMG Processing & Classification for Muscle Interfaces}
+  \fancyhead[R]{University of Southeren Denmark}
+  \fancyfoot[L]{Thomas Alexgaard Jensen (tjens18)}
+  \fancyfoot[R]{\thepage\  / \pageref{LastPage}}
+}
+% Set page style to plain.
+\pagestyle{plain} 
+
+% Define Title Page information
+\title{Surface-EMG Processing & Classification for Muscle Interfaces}
+\author{
+\\University of Southeren Denmark
+\\
+\\Supervisors: 
+\\Poramate Manoonpong (poma@mmmi.sdu.dk)
+\\Xiaofeng Xiong (xizi@mmmi.sdu.dk)
+}
+
+\date{Date: }
+
+% norm symbols for math
+\newcommand{\norm}[1]{\lvert #1 \rvert}
+
+% Explanation setup, used for specific words explanation
+\newcommand{\explanation}[2]{
+\textit{#1: }{#2.}
+}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\include{content/abstract.tex}
+\include{content/acknowlegdements.tex}
+\include{content/terminology.tex}
+
+\tableofcontents
+\newpage
+
+%TODO: Add figures to table
+%\tableoffigures
+%\newpage
+
+\include{content/introduction.tex}
+\include{content/problem_specification.tex}
+\include{content/literature_review.tex}
+\include{content/methodology.tex}
+\include{content/test_results.tex}
+\include{content/discussion.tex}
+\include{content/conclusion.tex}
+
+% TODO: Refrences
+
+\include{content/appendices.tex}
+
+\end{document}
