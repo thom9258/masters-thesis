@@ -1,4 +1,3 @@
-
 % 2400 signs per page setup:
 \documentclass[a4paper, 12pt]{article}
 
@@ -6,6 +5,8 @@
 \usepackage{amsmath}
 \usepackage{color}
 \usepackage{graphicx}
+\usepackage{array}
+
 % images alongside text
 \usepackage{wrapfig} 
 \usepackage{hyperref}
@@ -18,25 +19,31 @@
 \usepackage{gensymb} 
 % subfigures inside of normal figures
 \usepackage{subcaption} 
+% Glossary / Abbrevations list
+\usepackage{glossaries}
+\makeglossaries
+% Include other files into document
+\usepackage{subfiles}
 
 % Define margins for page setup
 \newgeometry{vmargin={30mm}, hmargin={30mm}, tmargin={30mm}, bmargin={30mm}}
 
 \graphicspath{ {./src/} }
 
+
 % Clear header/footer in favor of the custom header/footer setup
 \fancypagestyle{plain}{
   \fancyhf{}                                       
-  \fancyhead[L]{Surface-EMG Processing & Classification for Muscle Interfaces}
-  \fancyhead[R]{University of Southeren Denmark}
-  \fancyfoot[L]{Thomas Alexgaard Jensen (tjens18)}
+  \fancyhead[L]{Surface-EMG Processing \& Classification for Muscle Interfaces}
+  \fancyhead[R]{}
+  \fancyfoot[L]{Thomas Alexgaard Jensen (tjens18) \\ University of Southeren Denmark}
   \fancyfoot[R]{\thepage\  / \pageref{LastPage}}
 }
 % Set page style to plain.
 \pagestyle{plain} 
 
 % Define Title Page information
-\title{Surface-EMG Processing & Classification for Muscle Interfaces}
+\title{Surface-EMG Processing \& Classification for Muscle Interfaces}
 \author{
 \\University of Southeren Denmark
 \\
@@ -55,32 +62,42 @@
 \textit{#1: }{#2.}
 }
 
+
 \begin{document}
 
 \maketitle
 \newpage
 
-\include{content/abstract.tex}
-\include{content/acknowlegdements.tex}
-\include{content/terminology.tex}
+\subfile{content/abstract.tex}
+\newpage
+
+\subfile{content/acknowlegdements.tex}
+\newpage
+
+\subfile{content/glossary.tex}
+\newpage
 
 \tableofcontents
 \newpage
 
-%TODO: Add figures to table
-%\tableoffigures
-%\newpage
 
-\include{content/introduction.tex}
-\include{content/problem_specification.tex}
-\include{content/literature_review.tex}
-\include{content/methodology.tex}
-\include{content/test_results.tex}
-\include{content/discussion.tex}
-\include{content/conclusion.tex}
+\subfile{content/introduction.tex}
+\newpage
+\subfile{content/problem_specification.tex}
+\newpage
+\subfile{content/literature_review.tex}
+\newpage
+%\subfile{content/methodology.tex}
+%\subfile{content/test\_results.tex}
+%\subfile{content/discussion.tex}
+%\subfile{content/conclusion.tex}
+
+
+\listoffigures
+\listoftables
+\newpage
 
 % TODO: Refrences
-
-\include{content/appendices.tex}
+%\include{content/appendices.tex}
 
 \end{document}
