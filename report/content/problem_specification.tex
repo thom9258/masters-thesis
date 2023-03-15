@@ -6,8 +6,15 @@
 \section{Problem Specification}
 
 There is a large need for new technology that improves the effectiveness and ergonomics of human hand prosthetics.
+
 Current state-of-the-art products on the market exhibits a severe reduction of controllable Degree of Freedom (Dof) compared to their biological counterparts.
+These products often rely on simple, grasp control based on 2 or more \gls{sEMG} interfaces, to classify ``open/close'' signals for the control scheme.
+The prosthetics user is then manually required to change grip control-scheme, creating very crude control dynamics that is very different from biological hand-control.
+A in-debth explanation of ``open/close'' control can be seen in section \ref{???}
+%TODO: This sounds weird, integrate a simple controller therory here, and why it is so crude, then refrence it in state-of-the-art
+%TODO: Create refrence
 This is a great pitfall in the field of Research and Creation of prosthetics, as unsatisfactory function of prosthetics lead to amputees, that exhibit a great deal of stress douring the rehabilitation process.
+
 %TODO: Refrence for this!
 This can cause the patient to repel the rehabilitation process and the prosthetic all-together.
 The repelling of the prostetic increase in the cases of the most severe cases of amputation, where the largest amount of control muscles are lost.
@@ -15,7 +22,25 @@ These amputations are often located further up the limbs, where the loss of mobi
 The amount of muscles leftover from amputation also dicates the type of prosthetic a patient is able to recieve.
 %TODO: Refrence for this!
 Patients of lower-arm amputation has less control over their prosthetic than patients of hand amputation, due to the loss of the muscles in the lower-arm.
+The loss of control increases as the amputation severity increases, and this is a problem in prosthetics design because it is impossible to create a standardized controller that suits most patient's needs.
 
+State-of-the-art commercial prosthetics further decrease the controllable DoF in order to increase robustness of the control experience, this is further elaborated upon in \ref{sec:stateoftheart}.
+%TODO: Create refrence for state-of-the-art
+
+\subsection{Motivation}
+
+The main goal of this thesis is to provide a meaningful contribution to the world of prosthetics design and control.
+In order to confine the workload done in this thesis, a set of development goals has been made:
+
+\begin{enumerate}
+\item Create a software-based, biology-inspired, anatomically realistic simulation of a humanoid lower-arm/hand that is able to imitate the movements of the humanoid limb.
+\item Make the prosthetics simulation controllable from a widely-used robotics-software.
+\item Design a sEMG muscle pre-prossesing pipeline for a prosthetics controller. 
+\item Design a state-of-the-art prosthetics controller based on AI, to control a simulated prosthetics device.
+\item Create a custom dataset to train AI based controllers for prosthetics.
+\item Test and Validate the created prosthetics controller against state-of-the-art methods.
+\end{enumerate}
+%TODO: This needs
 
 
 \end{document}

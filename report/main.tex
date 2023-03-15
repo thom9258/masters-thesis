@@ -21,7 +21,6 @@
 \usepackage{subcaption} 
 % Glossary / Abbrevations list
 \usepackage{glossaries}
-\makeglossaries
 % Include other files into document
 \usepackage{subfiles}
 
@@ -62,10 +61,12 @@
 \textit{#1: }{#2.}
 }
 
+\makeglossaries
 
 \begin{document}
 
 \maketitle
+%TODO: Picture of setup real hand + sim, in some cool pose
 \newpage
 
 \subfile{content/abstract.tex}
@@ -80,24 +81,30 @@
 \tableofcontents
 \newpage
 
-
 \subfile{content/introduction.tex}
 \newpage
 \subfile{content/problem_specification.tex}
 \newpage
 \subfile{content/literature_review.tex}
 \newpage
-%\subfile{content/methodology.tex}
-%\subfile{content/test\_results.tex}
-%\subfile{content/discussion.tex}
-%\subfile{content/conclusion.tex}
+\subfile{content/methodology.tex}
+\newpage
+\subfile{content/test_results.tex}
+\newpage
+\subfile{content/discussion.tex}
+\newpage
+\subfile{content/conclusion.tex}
+\newpage
 
 
 \listoffigures
 \listoftables
 \newpage
 
+\section{Refrences}
 % TODO: Refrences
 %\include{content/appendices.tex}
+
+%TODO: Integrate bibtex and create refrences
 
 \end{document}

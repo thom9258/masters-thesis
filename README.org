@@ -10,11 +10,6 @@ Master Thesis on Prosthetics.
 
 dir *ros-packages* contains dated backups of the ros package th_hand.
 
-** Ros Dependencies
+dir *report* is the report that needs to be handed in at the end of the thesis.
 
-[[https://control.ros.org/master/doc/getting_started/getting_started.html][Getting started with ROS2 Control package & install guide]]
-- ros-foxy-ros2-control
-- ros-foxy-ros2-controllers 
-- ros-foxy-gazebo-ros2-control
-
-
+dir *network* the network im working on.
