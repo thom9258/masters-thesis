@@ -4,15 +4,53 @@
 
 \begin{document}
 \section{Methodology}
-Hello, here is some text without a meaning...
 
 \subsection{Design}
+
+In order to design a state-of-the-art simulated prosthetic hand, a number of anatomical design choises needs to be considered.
+This thesis tries to create the most anatomically-correct hand simulation available, this will hopefully have a number of positive effects on prosthetics research.
+By having access to an advanced simulation, it would in turn be able to test and visualize more advanced movement controllers that can facilitate more DoF than current commercial prosthetics. 
+By creating an anatomically correct prosthetic hand simulation, it is hoped that prosthetics users can have more advanced rehabilitation, and learn to have more natual control of their prosthetics. This would create a more natual usage experience, and decrease the percentage of users that reject the usage of their prosthetic alltogether.
+
+A set of requirements The simulated anatomically correct hand should be determined in order to create a state-of-the-art prosthetics simulation.
+
+The simulated prosthetic should:
+
+\begin{enumerate}
+\item Facilitate the same DoF as an anatomically correct hand.
+\item Have porpotions that closely resemble that of an anatomically correct hand.
+\item Be simulated and be controllable in a commonly used robotics software to increase accesability for researchers.
+\end{enumerate}
+
+
+\subsubsection{Brief of used Software}
+
 \subsubsection{Anatomy}
+
+the hand is an anatomically-complex appendage designed to facilitate a large amount of control in different usage scenarios.
+The hand consists of 27 bones, 14 of these are called phalnages, and make up the 4 fingers and the thumb. These bones, alongside a complex set of ??? muscles facilitates 24 DoF (Not counting Translation of the entire hand).
+The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand.
+the 3 finger bones are called the proximal phalange, middle phalange and distal phalange.
+the joints between the phalanges are able to do \gls{flexion/extension} movement, while the base of the finger is further able to do \gls{abduction/adduction} movement.
+%TODO: How many muscles in the hand / forearm?
+
+%TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
+%TODO: Bones of the hand: https://www.bidneedham.org/departments/orthopaedics/hand-program/anatomy-hand-and-wrist
+
 \subsubsection{Simulated Hand Articulation design}
+
+In order to translate the biology and anatomy of a real hand into an robotics simulation, we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{???}.
+
+%TODO: IMAGE HERE OF HAND OR XRAY
+
+The porpotions of the refrence is used to denote the bone lengths for the model. The bones are simply created as cylinders on Coppeliasim.
+
 \subsubsection{Sensor Locations etc.}
 
 \subsection{Dataset Creation}
-\subsubsection{Brief of used Software}
+
+% Mention gazebo and copelliasim problems
+
 \subsubsection{Trial/motion overview}
 
 \subsection{Implementation}
