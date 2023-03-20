@@ -24,32 +24,80 @@ The simulated prosthetic should:
 
 
 \subsubsection{Brief of used Software}
+\label{sec:software}
 
 \subsubsection{Anatomy}
+\label{sec:anatomy}
 
-the hand is an anatomically-complex appendage designed to facilitate a large amount of control in different usage scenarios.
+The hand is an anatomically-complex appendage designed to facilitate a large amount of control in different usage scenarios.
 The hand consists of 27 bones, 14 of these are called phalnages, and make up the 4 fingers and the thumb. These bones, alongside a complex set of ??? muscles facilitates 24 DoF (Not counting Translation of the entire hand).
-The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand.
-the 3 finger bones are called the proximal phalange, middle phalange and distal phalange.
-the joints between the phalanges are able to do \gls{flexion/extension} movement, while the base of the finger is further able to do \gls{abduction/adduction} movement.
 %TODO: How many muscles in the hand / forearm?
+
+The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand.
+The 3 finger bones are called the proximal phalange, middle phalange and distal phalange.
+The joints between the phalanges are able to do \gls{flexion/extension} movement, while the base of the finger is further able to do \gls{abduction/adduction} movement.
 
 %TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
 %TODO: Bones of the hand: https://www.bidneedham.org/departments/orthopaedics/hand-program/anatomy-hand-and-wrist
 
 \subsubsection{Simulated Hand Articulation design}
 
-In order to translate the biology and anatomy of a real hand into an robotics simulation, we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{???}.
+In order to translate the biology and anatomy of a real hand into an robotics simulation, we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.
 
 %TODO: IMAGE HERE OF HAND OR XRAY
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{Example figure text}
+\label{fig:handref}
+\end{center}
+\end{figure}
 
-The porpotions of the refrence is used to denote the bone lengths for the model. The bones are simply created as cylinders on Coppeliasim.
 
-\subsubsection{Sensor Locations etc.}
+The porpotions of the refrence is used to denote the bone lengths for the model.
+The model is implemented in Coppeliasim \ref{???}, The model is created in a hierachy, the bones are created with cylinders and the joints are created using 1 DoF Revolute joints.
+% Ref coppeliasim
+As specified in section \ref{sec:anatomy}, some joints of the human hand facilitates 2 DoF of rotation.
+This is needed in order for the wrist and finger base joints to be able to do \gls{abduction/adduction}.
+To simulate this, two 1 DoF revolute joints were placed in series, thus allowing 2 DoF.
+
+
+
 
 \subsection{Dataset Creation}
 
-% Mention gazebo and copelliasim problems
+In order to train a simulated hand prosthetic, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
+The recording of the dataset is done using the software explained in section \ref{sec:software}, namely XXXX \& YYYY.
+%TODO: Get exact names of software.
+
+\subsubsection{Motion Capture Glove}
+
+In order to get precise recordings of the motion of the hand and fingers, using the software XXXX, flourecent 3D markers were placed on a glove.
+The pattern of the marker positions were carefully closen in order to calculate the angles of the individual finger bones.
+The precise positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:glove}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{Example figure text}
+\label{fig:glove}
+\end{center}
+\end{figure}
+
+\subsubsection{Sensor Locations etc.}
+
+The muscle recording sensors are located along the muscles of the forearm, the exact positions can be seen in figure \ref{fig:musclesensors}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{Example figure text}
+\label{fig:musclesensors}
+\end{center}
+\end{figure}
+
+
+
 
 \subsubsection{Trial/motion overview}
 
