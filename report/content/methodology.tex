@@ -26,6 +26,9 @@ The simulated prosthetic should:
 \subsubsection{Brief of used Software}
 \label{sec:software}
 
+Coppeliasim see \cite{coppeliasim}.
+%TODO: only for test
+
 \subsubsection{Anatomy}
 \label{sec:anatomy}
 
@@ -67,12 +70,12 @@ To simulate this, two 1 DoF revolute joints were placed in series, thus allowing
 \subsection{Dataset Creation}
 
 In order to train a simulated hand prosthetic, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
-The recording of the dataset is done using the software explained in section \ref{sec:software}, namely XXXX \& YYYY.
-%TODO: Get exact names of software.
+The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
+%TODO: Present more formally and mention company names.
 
 \subsubsection{Motion Capture Glove}
 
-In order to get precise recordings of the motion of the hand and fingers, using the software XXXX, flourecent 3D markers were placed on a glove.
+In order to get precise recordings of the motion of the hand and fingers, using Motive \cite{motive}, flourecent 3D markers were placed on a glove.
 The pattern of the marker positions were carefully closen in order to calculate the angles of the individual finger bones.
 The precise positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:glove}.
 
@@ -95,9 +98,6 @@ The muscle recording sensors are located along the muscles of the forearm, the e
 \label{fig:musclesensors}
 \end{center}
 \end{figure}
-
-
-
 
 \subsubsection{Trial/motion overview}
 

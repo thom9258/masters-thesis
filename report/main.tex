@@ -11,26 +11,38 @@
 \usepackage{wrapfig} 
 \usepackage{hyperref}
 \usepackage[parfill]{parskip}
+
 % blank pages
 \usepackage{afterpage} 
-% http://ctan.org/pkg/{fancyhdr,graphicx,lastpage}
+
+% #http://ctan.org/pkg/{fancyhdr,graphicx,lastpage}
 \usepackage{fancyhdr,graphicx,lastpage}
+
 % get the degree symbol
 \usepackage{gensymb} 
+
 % subfigures inside of normal figures
 \usepackage{subcaption} 
+
 % Glossary / Abbrevations list
 \usepackage{glossaries}
+
 % Include other files into document
 \usepackage{subfiles}
+
+% Bibliography and refrence manager with Biber
+\usepackage[backend=biber, % compile with biber (pdflatex %; biber %; pdflatex %; pdflatex %)
+            sorting=none %  none means sort by appearance
+            ]{biblatex}
+\addbibresource{./sources.bib} % take bibliography resources from this file
 
 % Define margins for page setup
 \newgeometry{vmargin={30mm}, hmargin={30mm}, tmargin={30mm}, bmargin={30mm}}
 
+% Shortcut path for graphics
 \graphicspath{ {./src/} }
 
-
-% Clear header/footer in favor of the custom header/footer setup
+% Header/Footer setup:
 \fancypagestyle{plain}{
   \fancyhf{}                                       
   \fancyhead[L]{Surface-EMG Processing \& Classification for Muscle Interfaces}
@@ -38,6 +50,7 @@
   \fancyfoot[L]{Thomas Alexgaard Jensen (tjens18) \\ University of Southeren Denmark}
   \fancyfoot[R]{\thepage\  / \pageref{LastPage}}
 }
+
 % Set page style to plain.
 \pagestyle{plain} 
 
@@ -50,7 +63,6 @@
 \\Poramate Manoonpong (poma@mmmi.sdu.dk)
 \\Xiaofeng Xiong (xizi@mmmi.sdu.dk)
 }
-
 \date{Date: }
 
 % norm symbols for math
@@ -66,6 +78,11 @@
 \begin{document}
 
 \maketitle
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\end{center}
+\end{figure}
 %TODO: Picture of setup real hand + sim, in some cool pose
 \newpage
 
@@ -96,15 +113,14 @@
 \subfile{content/conclusion.tex}
 \newpage
 
-
+%TODO: Make Figures/tables a indexable countable section
+\section{List of Figures \& Tables}
 \listoffigures
 \listoftables
 \newpage
 
 \section{Refrences}
-% TODO: Refrences
-%\include{content/appendices.tex}
-
-%TODO: Integrate bibtex and create refrences
+\printbibliography
+%TODO: Make Refrences a indexable countable section
 
 \end{document}
