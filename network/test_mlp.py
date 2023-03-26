@@ -2,64 +2,14 @@ import random
 import torch
 import numpy as np
 
-from KIN_MUS_parse import KMSession, kin_mus_parse
+from KIN_MUS_parse import KMSession, KIN_MUS_dataset_parse, KMSessionsAutoPrepare, KMconcat
 from th_ai import th_csv, th_dataset, th_dataloaderCreate, th_datasetSlice
 from th_ai import th_quickPlot, th_datasetPredict, th_mlp
 from th_ai import th_regressionModel, th_tinymlp, th_m5
 
 
-def sessionSlice(session):
-    inputLen = 10
-    outputLen = 1
-    inputs = []
-    gts = []
-    maxlen = len(session.time)
-
-    # Slice up session into prediction sets
-    for i in range(maxlen - inputLen):
-
-        # Extract inputs for an accociated prediction
-        inp = []
-        for j in range(inputLen):
-            ofs = i + j
-            inp.append(session.muscles[ofs])
-            # print(f"I-offset = {ofs}, for point {j} ")
-        inputs.append(np.array(inp).flatten())
-
-        # Extract outputs for an accociated prediction
-        gt = []
-        for j in range(outputLen):
-            ofs = i + j + inputLen
-            gt.append(session.angles[ofs])
-            # print(f"O-offset = {ofs}, for point {j} ")
-        gts.append(np.array(gt).flatten())
-
-    return inputs, gts
-
-
-def concat(a, b):
-    out = []
-    for v in a:
-        out.append(v)
-    for v in b:
-        out.append(v)
-    return out
-
-
-def distribution_create(sessions):
-    inputs, gts = [], []
-
-    # i, g = sessionSlice(sessions[0])
-    # inputs.append(i)
-    # gts.append(g)
-    for s in sessions:
-        i, g = sessionSlice(s)
-        inputs = concat(inputs, i)
-        gts = concat(gts, g)
-        # inputs.append(i)
-        # gts.append(g)
-
-    return inputs, gts
+def subsetFromIndices(arr, indices):
+    return [arr[i] for i in indices]
 
 
 def main():
@@ -68,32 +18,57 @@ def main():
     path = "datasets/KIN_MUS_UJI.mat"
     save_model_after_training = True
     use_existing_model = False
-    inpsize = 10*7
-    outsize = 1*18
-    maxepocs = 20
-    batchSize = 16
+    maxepocs = 100
+    batchSize = 8
+    inputLen = 16
+    gtLen = 1
+    n_muscles = 7
+    max_angles = 18
+    # Create a mask of angles
+    angle_indices = [5]
+    # angle_indices = [0, 1, 2]
+    assert len(angle_indices) < max_angles
+    n_angles = len(angle_indices)
+    network_inputLen = inputLen * n_muscles
+    network_outputLen = gtLen * n_angles
 
-    network = th_mlp()
-    network.create(inputSize=inpsize,
-                   outputSize=outsize,
-                   hiddenLayerSize=100,
-                   hiddenLayerCount=2,
-                   useBatchNorm=False)
+    print(f"{n_muscles} muscles -> {n_angles} angles")
+    print(f"Angle indices: {angle_indices}")
 
-    network = th_tinymlp(inpsize, outsize)
+    network = th_tinymlp(network_inputLen, network_outputLen)
 
     loss_function = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(network.parameters(), lr=1e-4)
-    #optimizer = None
-    #sched = torch.optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
+    # optimizer = None
+    # sched = torch.optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
     sched = None
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"device={device}")
 
-    sessions = kin_mus_parse(path)
-    inputs, gts = distribution_create(sessions[0:50])
+    sessions = KIN_MUS_dataset_parse(path)
+    # inputs, gts = KMSessionsAutoPrepare(sessions[:10], inputLen, gtLen)
+    sessions = sessions[:10]
+    inputs, gts = [], []
+    for s in sessions:
+        # Extract session data
+        i, g = s.slice(inputLen, gtLen)
+        inputs = KMconcat(inputs, i)
+        gts = KMconcat(gts, g)
+
+    # Cut off unwanted angles from gtlen
+    cut_gts = []
+    for g in gts:
+        cut_gts.append(subsetFromIndices(g, angle_indices))
+    gts = cut_gts
+    print(f"keeps angles {angle_indices}")
+
+    print(f"input len = {len(inputs[0])}")
+    print(f"gt len={len(gts[0])}")
+
     dataset = th_dataset(inputs, gts)
+    print("="*80)
+
     train_dataloader = torch.utils.data.DataLoader(dataset,
                                                    batch_size=batchSize,
                                                    shuffle=True)
@@ -102,7 +77,6 @@ def main():
                                                         shuffle=True)
 
     model = th_regressionModel()
-
     if not use_existing_model:
         # Define network parameters
         model.setup(network, optimizer, loss_function, scheduler=sched)
@@ -118,7 +92,7 @@ def main():
 
         th_quickPlot([model.train_MSEs, model.validation_MSEs],
                      ["train", "valid"],
-                     axis_labels=["batch", "MSE"])
+                     axis_labels=["Batch", "MSE"])
     else:
         model.load(model_name)
 

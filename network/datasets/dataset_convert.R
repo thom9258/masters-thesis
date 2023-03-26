@@ -1,0 +1,6 @@
+#install.packages("R.matlab")
+library(R.matlab)
+# library(csv)
+data <- readMat("./KIN_MUS_UJI.mat")
+#write.csv('./myFile.txt', data)
+#dlmwrite('myFile.txt', data, 'delimiter','\t','newline','pc')
