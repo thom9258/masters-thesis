@@ -54,7 +54,8 @@ class th_mlp(nn.Module):
         self.is_ok = False
 
     def create(self, inputSize, outputSize, hiddenLayerSize=50,
-               hiddenLayerCount=1, useBatchNorm=False):
+               hiddenLayerCount=1, useBatchNorm=False,
+               batchNorm=nn.BatchNorm1d, activationFn=nn.ReLU()):
 
         # Input Layer
         self.network.append(nn.Flatten())
@@ -62,16 +63,16 @@ class th_mlp(nn.Module):
 
         # Hidden Layer(s)
         for i in range(0, hiddenLayerCount):
-            self.network.append(nn.ReLU())
+            self.network.append(activationFn)
             self.network.append(nn.Linear(hiddenLayerSize, hiddenLayerSize))
             if useBatchNorm:
-                self.network.append(nn.BatchNorm1d(hiddenLayerSize))
+                self.network.append(batchNorm(hiddenLayerSize))
 
         # Output Layer
-        self.network.append(nn.ReLU())
+        self.network.append(activationFn)
         self.network.append(nn.Linear(hiddenLayerSize, outputSize))
         if useBatchNorm:
-            self.network.append(nn.BatchNorm1d(outputSize))
+            self.network.append(batchNorm(outputSize))
         self.is_ok = True
 
     def forward(self, x):
@@ -90,11 +91,11 @@ class th_m5(nn.Module):
     def name(self):
         return "th_m5"
 
-    def __init__(self, n_input, n_output, n_channel):
+    def __init__(self):
         super().__init__()
-        self.network = nn.Sequential()
-        self.network.append(nn.Conv1d(n_input, n_channel, kernel_size=4))
-        self.network.append(nn.Linear(n_channel, n_output))
+
+    def createFromSequential(self, sequential):
+        self.network = sequential
 
     def forward(self, x):
         return self.network(x)
@@ -106,8 +107,102 @@ class th_m5(nn.Module):
         print(f"Parameter Count = {self.parameterCount()}")
         print(self.network)
 
-
 class th_regressionModel:
+    """
+    th_AI - Trainer module.
+    """
+
+    def __init__(self):
+        self.slnametype = ".pyclass"
+
+    def setup(self, model, optimizer, loss_function, scheduler=None):
+        self.model = model
+        self.scheduler = scheduler
+        self.optimizer = optimizer
+        self.loss_function = loss_function
+
+        self.train_losses, self.train_MSEs = [], []
+        self.validation_losses, self.validation_MSEs = [], []
+        self.best_validation_MSE = sys.maxsize
+        self.best_validation_MSE_epoch = 0
+
+    def save(self, filename):
+        fname = filename+self.slnametype
+        with open(filename, 'wb') as handle:
+            pickle.dump(self.__dict__, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print(f"Saved model as [{fname}]")
+
+    def load(self, filename):
+        fname = filename+self.slnametype
+        with open(fname, 'rb') as handle:
+            self.__dict__ = pickle.load(handle)
+        print(f"Loaded model from [{fname}]")
+
+    def predict(self, inp):
+        if type(inp) is list:
+            inp = torch.FloatTensor(inp)
+        return list(self.model(inp).detach().numpy())
+
+    def epoch(self, data_loader, is_training):
+        losses, squared_errors = [], []
+        # Iterate over the DataLoader for training data
+        for i, (inputs, targets) in enumerate(data_loader, 0):
+            inputs, targets = inputs.float(), targets.float()
+            # Perform forward pass
+            outputs = self.model(inputs)
+            # Compute loss
+            loss = self.loss_function(outputs, targets)
+            losses.append(loss.item())
+
+            if is_training:
+                # Zero the gradients
+                self.optimizer.zero_grad()
+                # Perform backward pass
+                loss.backward()
+                # Perform optimization
+                self.optimizer.step()
+                # Use a Learning Rate scheduler if provided
+                if self.scheduler is not None:
+                    self.scheduler.step(losses[-1])
+
+            # ========================
+            # Bookkeeping for graphs:
+            squared_errors.append(
+                ((outputs - targets)*(outputs - targets)).sum().data)
+
+        return squared_errors, losses
+
+    def train(self, loader_train, loader_valid, max_epochs, early_stopping=0):
+        if early_stopping <= 0:
+            early_stopping = max_epochs+1
+
+        t = tqdm(range(max_epochs))
+        for epoch_count in t:
+            # Test Set epoch
+            sqrd_errors, losses = self.epoch(loader_train, is_training=True)
+            self.train_losses.append(np.mean(losses))
+            self.train_MSEs.append(np.mean(sqrd_errors))
+
+            # Validation Set epoch
+            sqrd_errors, losses = self.epoch(loader_valid, is_training=False)
+            self.validation_losses.append(np.mean(losses))
+            self.validation_MSEs.append(np.mean(sqrd_errors))
+
+            desc = "train/test MSE: {:.2f}/{:.2f}".format(
+                self.train_MSEs[-1],
+                self.validation_MSEs[-1])
+            t.set_description(desc)
+
+            if self.validation_MSEs[-1] < self.best_validation_MSE:
+                self.best_validation_MSE = self.validation_MSEs[-1]
+                self.best_validation_MSE_epoch = epoch_count
+
+            if epoch_count > self.best_validation_MSE_epoch + early_stopping:
+                break
+# th_regressionModel
+
+
+class OLD_th_regressionModel:
     """
     th_AI - Trainer module.
     """
@@ -195,7 +290,7 @@ class th_regressionModel:
 
             if epoch_count > self.best_validation_MSE_epoch + early_stopping:
                 break
-# th_Regressiontrainer
+# th_regressionModel
 
 
 class th_csv:
@@ -299,15 +394,30 @@ class th_dataset(torch.utils.data.Dataset):
 
         # for d, g in zip(data, gts):
         #     print(f"d/g len = {len(d)}/{len(g)}")
-
-        self.data = torch.FloatTensor(data)
-        self.gts = torch.FloatTensor(gts)
+        self.data = torch.FloatTensor(np.array(data))
+        self.gts = torch.FloatTensor(np.array(gts))
 
     def __len__(self):
         return len(self.data)
 
     def __getitem__(self, idx):
         return self.data[idx], self.gts[idx]
+
+    def len(self):
+        return len(self.data)
+
+    def input_dims(self):
+        return [len(self.data[0]), len(self.data[0][0])]
+
+    def gt_dims(self):
+        return [len(self.gts[0]), len(self.gts[0][0])]
+        # return self.gts[0].shape()
+
+    def split(self, percent):
+        trainsize = int(self.len()*percent)
+        valsize = int(self.len() - trainsize)
+        train_set, val_set = torch.utils.data.random_split(self, [trainsize, valsize])
+        return train_set, val_set
 # th_dataset
 
 
