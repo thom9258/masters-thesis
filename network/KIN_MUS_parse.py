@@ -97,6 +97,26 @@ def KMSessionsAutoPrepare(KMsessions, inputLen, gtLen):
     return inputs, gts
 
 
+def KMSession2InputsGts(session, inputLen, gtLen, verbose=False):
+    inputs, gts = [], []
+    # Extract session data
+    i, g = session.slice_sequence_into_InputsGts(inputLen, gtLen)
+
+    if verbose:
+        i0 = i[0]
+        g0 = g[0]
+        print("Input:")
+        print(f"type {type(i0)}, dims [{len(i0)}, {len(i0[0])}]")
+        print(i0)
+        print("Ground truth:")
+        print(f"type {type(g0)}, dims [{len(g0)}, {len(g0[0])}]")
+        print(g0)
+        verbose = False
+    inputs = KMconcat(inputs, i)
+    gts = KMconcat(gts, g)
+    return inputs, gts
+
+
 def KMSessions2InputsGts(sessions, n_sessions, inputLen, gtLen):
     example = 0
     if n_sessions < len(sessions) and n_sessions > 0:

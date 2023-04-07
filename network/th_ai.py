@@ -28,6 +28,7 @@ class th_tinymlp(nn.Module):
     def __init__(self, inp, outp):
         super().__init__()
         self.network = nn.Sequential(
+            nn.Flatten(),
             nn.Linear(inp, 64),
             nn.ReLU(),
             nn.Linear(64, 32),
@@ -86,32 +87,7 @@ class th_mlp(nn.Module):
         print(self.network)
 # class th_mlp
 
-
-class th_m5(nn.Module):
-    def name(self):
-        return "th_m5"
-
-    def __init__(self):
-        super().__init__()
-
-    def createFromSequential(self, sequential):
-        self.network = sequential
-
-    def forward(self, x):
-        return self.network(x)
-
-    def parameterCount(self):
-        return np.sum(p.numel() for p in self.network.parameters() if p.requires_grad)
-
-    def printnn(self):
-        print(f"Parameter Count = {self.parameterCount()}")
-        print(self.network)
-
 class th_regressionModel:
-    """
-    th_AI - Trainer module.
-    """
-
     def __init__(self):
         self.slnametype = ".pyclass"
 
@@ -169,7 +145,6 @@ class th_regressionModel:
             # Bookkeeping for graphs:
             squared_errors.append(
                 ((outputs - targets)*(outputs - targets)).sum().data)
-
         return squared_errors, losses
 
     def train(self, loader_train, loader_valid, max_epochs, early_stopping=0):
@@ -391,9 +366,6 @@ class th_dataset(torch.utils.data.Dataset):
         print(f"inplen/gtslen = {len(data)}/{len(gts)}")
         assert len(data) != 0 or len(gts) != 0
         assert len(data) == len(gts)
-
-        # for d, g in zip(data, gts):
-        #     print(f"d/g len = {len(d)}/{len(g)}")
         self.data = torch.FloatTensor(np.array(data))
         self.gts = torch.FloatTensor(np.array(gts))
 
@@ -411,7 +383,6 @@ class th_dataset(torch.utils.data.Dataset):
 
     def gt_dims(self):
         return [len(self.gts[0]), len(self.gts[0][0])]
-        # return self.gts[0].shape()
 
     def split(self, percent):
         trainsize = int(self.len()*percent)

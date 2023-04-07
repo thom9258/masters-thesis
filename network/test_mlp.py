@@ -2,41 +2,41 @@ import random
 import torch
 import numpy as np
 
-from KIN_MUS_parse import KMSession, KIN_MUS_dataset_parse, KMSessionsAutoPrepare, KMSubsetDataset
+from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSessions2InputsGts, KMSession2InputsGts
 from th_ai import th_csv, th_dataset, th_dataloaderCreate, th_datasetSlice
 from th_ai import th_quickPlot, th_datasetPredict, th_mlp
-from th_ai import th_regressionModel, th_tinymlp, th_m5
+from th_ai import th_regressionModel, th_tinymlp
 
 
 def main():
     # Tuneable parameters
-    model_name = "model.pyclass"
+    model_name = "CNNmodel.pyclass"
     path = "datasets/KIN_MUS_UJI.mat"
-    n_sessions = 100
     save_model_after_training = True
     use_existing_model = False
     maxepocs = 100
-    batchSize = 8
-    inputLen = 16
+    batchSize = 16
+    inputLen = 10
     gtLen = 1
-    n_muscles = 7
-    max_angles = 18
-    # Create a mask of angles
-    angle_indices = [5]
-    # angle_indices = [0, 1, 2]
-    assert len(angle_indices) < max_angles
-    n_angles = len(angle_indices)
+    n_sessions_in_trainer = 10
+
+    sessions = KIN_MUS_sessions_get(path)
+    inputs, gts = KMSessions2InputsGts(sessions, n_sessions_in_trainer, inputLen, gtLen)
+
+    print(f"INPUTS size = {inputs[0].shape}")
+    print(f"GTS size    = {gts[0].shape}")
+
+    dataset = th_dataset(inputs, gts)
+
+    # NON-Tuneable parameters below
+    n_muscles = dataset.input_dims()[1]
+    n_angles = dataset.gt_dims()[1]
+    print(f"muscles: {n_muscles} muscles with sample length of {inputLen}")
+    print(f"angles:  {n_angles} angles with sample length of {gtLen}")
     network_inputLen = inputLen * n_muscles
     network_outputLen = gtLen * n_angles
 
-    print(f"Network Inp/Outp = {network_inputLen} / {network_outputLen}")
-    print(f"Using the first {n_sessions} sessions for training")
-    print(f"{n_muscles} muscles -> {n_angles} angles")
-    print(f"Angle indices: {angle_indices}")
-
-    dataset = KMSubsetDataset(path, inputLen, gtLen, angle_indices, n_sessions=n_sessions)
     train_set, val_set = dataset.split(0.8)
-
     train_dataloader = torch.utils.data.DataLoader(train_set,
                                                    batch_size=batchSize,
                                                    shuffle=True)
@@ -47,8 +47,8 @@ def main():
     network = th_mlp()
     network.create(inputSize=network_inputLen,
                    outputSize=network_outputLen,
-                   hiddenLayerSize=2*64,
-                   hiddenLayerCount=8,
+                   hiddenLayerSize=128,
+                   hiddenLayerCount=4,
                    useBatchNorm=False,
                    )
 
@@ -71,12 +71,41 @@ def main():
             model.save(model_name)
 
         print(f"Best MSE: {model.best_validation_MSE}")
-
         th_quickPlot([model.train_MSEs, model.validation_MSEs],
                      ["train", "valid"],
                      axis_labels=["Epoch", "MSE"])
     else:
         model.load(model_name)
+
+    print("="*80)
+    print("="*80)
+    print("="*80)
+
+    inputs, gts = KMSession2InputsGts(sessions[0], inputLen, gtLen)
+
+    def datasetPredict(s_inputs, s_gts, trainer):
+        gts = []
+        preds = []
+
+        angle = 1
+        # Predict a regression line for given spliced distribution
+        trainer.model.eval()
+        for si, sg in zip(s_inputs, s_gts):
+            gts.append(sg[0][angle])
+            # Generate a prediction using trained model
+            si = torch.FloatTensor(np.array([si]))
+            res = trainer.predict(si)[0][angle]
+            preds.append(res)
+        return preds, gts
+
+    gts, preds = datasetPredict(inputs, gts, model)
+
+    # Plot ground truth distribution and its predicted counterpart
+    th_quickPlot([gts, preds],
+                 ["GT", "Prediction"],
+                 axis_labels=["GT Angle", "Predicted Angle"])
+
+
 
 
 if __name__ == "__main__":

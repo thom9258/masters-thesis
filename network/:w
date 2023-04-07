@@ -1,0 +1,128 @@
+import random
+import sys
+import torch
+from tqdm import tqdm
+from torch import nn
+from torch.nn import functional as F
+import numpy as np
+import matplotlib.pyplot as plt
+
+from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSession2InputsGts
+from th_ai import th_csv, th_dataset, th_dataloaderCreate, th_datasetSlice
+from th_ai import th_quickPlot, th_datasetPredict, th_mlp
+
+
+
+class RNN(nn.Module):
+    def __init__(self, inputlen, outputlen, hlsize, hlcount,
+                 batch_first=True, verbose=False):
+        super(RNN, self).__init__()
+        self.rnn = nn.RNN(
+            input_size=inputlen,
+            hidden_size=hlsize,
+            num_layers=hlcount,
+            # Place batch size as first dimension
+            # [batch, time_step, input_size]
+            batch_first=True,
+        )
+        self.out = nn.Linear(hlsize, outputlen)
+        self.verbose = verbose
+
+    def forward(self, x, h_state):
+        # x [batch, time_step, input_size]
+        # h_state [n_layers, batch, hidden_size]
+        # r_out [batch, time_step, hidden_size]
+
+        if self.verbose:
+            print(self.rnn)
+
+        r_out, h_state = self.rnn(x, h_state)
+
+        outs = []    # save all predictions
+        for time_step in range(r_out.size(1)):    # calculate output for each time step
+            outs.append(self.out(r_out[:, time_step, :]))
+
+        self.verbose = False
+        return torch.stack(outs, dim=1), h_state
+
+
+
+def main():
+    # Tuneable parameters
+    path = "datasets/KIN_MUS_UJI.mat"
+    maxepocs = 100
+    # batchSize = 8
+    inputLen = 1
+    gtLen = 1
+    n_sessions_in_trainer = 10
+
+    # NON-Tuneable parameters below
+    sessions = KIN_MUS_sessions_get(path)
+
+    trainsession = sessions[1]
+    t_input_muscles, t_gt_angles = KMSession2InputsGts(trainsession,
+                                                       inputLen,
+                                                       gtLen,
+                                                       verbose=True)
+
+    t_dataset = th_dataset(t_input_muscles, t_gt_angles)
+    n_muscles = dataset.input_dims()[1]
+    n_angles = dataset.gt_dims()[1]
+    print(f"muscles: {n_muscles} muscles with sample length of {inputLen}")
+    print(f"angles:  {n_angles} angles with sample length of {gtLen}")
+
+    network = RNN(inputlen=n_muscles, outputlen=n_angles,
+                  hlsize=32, hlcount=2,
+                  batch_first=True, verbose=True)
+
+    loss_function = torch.nn.MSELoss()
+    optimizer = torch.optim.Adam(network.parameters(), lr=1e-4)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"device={device}")
+
+    # ==========================================================
+    # Train the RNN on our session
+    # ==========================================================
+
+    TIME_STEP = 10
+    h_state = None      # for initial hidden state
+
+    plt.figure(1, figsize=(12, 5))
+    plt.ion()           # continuously plot
+
+    for step in range(100):
+        for 
+        start, end = step * np.pi, (step+1)*np.pi   # time range
+
+        # use sin predicts cos
+        # float32 for converting torch FloatTensor
+        steps = np.linspace(start, end, TIME_STEP, dtype=np.float32, endpoint=False)
+        x_np = np.sin(steps)
+        y_np = np.cos(steps)
+        # shape (batch, time_step, input_size)
+        x = torch.from_numpy(x_np[np.newaxis, :, np.newaxis])
+        y = torch.from_numpy(y_np[np.newaxis, :, np.newaxis])
+
+        prediction, h_state = network(x, h_state)
+        # !! next step is important !!
+        h_state = h_state.data        # repack the hidden state, break the connection from last iteration
+
+        loss = loss_function(prediction, y)         # calculate loss
+        optimizer.zero_grad()                   # clear gradients for this training step
+        loss.backward()                         # backpropagation, compute gradients
+        optimizer.step()                        # apply gradients
+
+        # plotting
+        plt.plot(steps, y_np.flatten(), 'r-')
+        plt.plot(steps, prediction.data.numpy().flatten(), 'b-')
+        plt.draw()
+        plt.pause(0.05)
+
+    plt.ioff()
+    plt.show()
+
+    print("Trained the model!")
+
+
+if __name__ == "__main__":
+    main()
