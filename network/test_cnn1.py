@@ -207,8 +207,7 @@ def main():
     def datasetPredict(s_inputs, s_gts, trainer):
         gts = []
         preds = []
-
-        print(f"Given length = {len(s_inputs)}")
+        # print(f"Given length = {len(s_inputs)}")
         # Predict a regression line for given spliced distribution
         trainer.model.eval()
         for si, sg in zip(s_inputs, s_gts):

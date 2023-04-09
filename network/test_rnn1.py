@@ -33,14 +33,23 @@ class RNN(nn.Module):
         # h_state [n_layers, batch, hidden_size]
         # r_out [batch, time_step, hidden_size]
 
+        x = torch.FloatTensor(x)
         if self.verbose:
             print(self.rnn)
+            #print(f"Input = {x}")
+            print(f"Input Dims = {x.shape}")
+        x = x.unsqueeze(0)
+        if self.verbose:
+            print(f"Unsqueezed = {x.shape}")
 
         r_out, h_state = self.rnn(x, h_state)
+        print(f"r_out: {r_out}")
 
         outs = []    # save all predictions
         for time_step in range(r_out.size(1)):    # calculate output for each time step
+            print(f"Time step: {time_step}")
             outs.append(self.out(r_out[:, time_step, :]))
+            # outs.append(self.out(r_out[:, time_step]))
 
         self.verbose = False
         return torch.stack(outs, dim=1), h_state
@@ -50,10 +59,12 @@ class RNN(nn.Module):
 def main():
     # https://github.com/MorvanZhou/PyTorch-Tutorial/blob/master/tutorial-contents/403_RNN_regressor.py#L44
     # https://towardsdatascience.com/building-rnn-lstm-and-gru-for-time-series-using-pytorch-a46e5b094e7b
+    # https://www.analyticsvidhya.com/blog/2021/07/understanding-rnn-step-by-step-with-pytorch/
 
     # Tuneable parameters
     path = "datasets/KIN_MUS_UJI.mat"
     train_count = 100
+    batchSize=8
     inputLen = 1
     gtLen = 1
     angle_to_keep = 3
@@ -89,6 +100,16 @@ def main():
         return t_cut_input_muscles, t_cut_gt_angles
 
     t_input_muscles, t_gt_angles = rnndata_prepare(t_input_muscles, t_gt_angles, verbose=True)
+    dataset = th_dataset(t_input_muscles, t_gt_angles)
+    train_set, val_set = dataset.split(0.8)
+    train_dataloader = torch.utils.data.DataLoader(train_set,
+                                                   batch_size=batchSize,
+                                                   shuffle=False)
+    validation_dataloader = torch.utils.data.DataLoader(val_set,
+                                                        batch_size=batchSize,
+                                                        shuffle=False)
+
+
     # print("="*50)
     # print("Processed session to expected format.")
 
@@ -120,7 +141,9 @@ def main():
     plt.ion()           # continuously plot
 
     steps = 0
-    for x, y in zip(t_input_muscles, t_gt_angles):
+    # for x, y in zip(t_input_muscles, t_gt_angles):
+    for x, y in train_dataloader:
+        x, y = x.float(), y.float()
 
         prediction, h_state = network(x, h_state)
         # !! next step is important !!
@@ -140,8 +163,6 @@ def main():
 
     plt.ioff()
     plt.show()
-
-    print("Trained the model!")
 
 
 if __name__ == "__main__":
