@@ -43,16 +43,15 @@ class RNN(nn.Module):
             print(f"Unsqueezed = {x.shape}")
 
         r_out, h_state = self.rnn(x, h_state)
-        print(f"r_out: {r_out}")
 
         outs = []    # save all predictions
         for time_step in range(r_out.size(1)):    # calculate output for each time step
-            print(f"Time step: {time_step}")
-            outs.append(self.out(r_out[:, time_step, :]))
+            outs.append(self.out(r_out[:, time_step, :][0]))
             # outs.append(self.out(r_out[:, time_step]))
 
         self.verbose = False
-        return torch.stack(outs, dim=1), h_state
+        outs = torch.stack(outs, dim=1)[0]
+        return outs, h_state
 
 
 
@@ -64,10 +63,10 @@ def main():
     # Tuneable parameters
     path = "datasets/KIN_MUS_UJI.mat"
     train_count = 100
-    batchSize=8
+    batchSize = 8
     inputLen = 1
     gtLen = 1
-    angle_to_keep = 3
+    angle_to_keep = 8
 
     # NON-Tuneable parameters below
     sessions = KIN_MUS_sessions_get(path)
@@ -87,15 +86,13 @@ def main():
             na = a[0]
             t_cut_input_muscles.append(na)
             if vbi:
-                print(f"type={type(na)} -> {na}")
-                #print(f"type={type(na)}, len={na.size()} -> {na}")
+                # print(f"type={type(na)} -> {na}")
                 vbi = False
         for a in gt:
             na = np.array(a[0][angle_to_keep])
             t_cut_gt_angles.append(na)
             if vbg:
-                print(f"type={type(na)} -> {na}")
-                #print(f"type={type(na)}, len={na.size()} -> {na}")
+                # print(f"type={type(na)} -> {na}")
                 vbg = False
         return t_cut_input_muscles, t_cut_gt_angles
 
@@ -110,9 +107,6 @@ def main():
                                                         shuffle=False)
 
 
-    # print("="*50)
-    # print("Processed session to expected format.")
-
     n_muscles = t_input_muscles[0].size
     n_angles = t_gt_angles[0].size
     print(f"muscles: {n_muscles} muscles with sample length of {inputLen}")
@@ -123,47 +117,54 @@ def main():
                   batch_first=True, verbose=True)
 
     loss_function = torch.nn.MSELoss()
-    optimizer = torch.optim.Adam(network.parameters(), lr=1e-4)
+    # optimizer = torch.optim.Adam(network.parameters(), lr=1e-4)
+    optimizer = torch.optim.Adam(network.parameters(), lr=1e-3)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"device={device}")
 
     # ==========================================================
     # Train the RNN on our session
     # ==========================================================
-
-    print("="*50)
-    print("Starting network training!")
-
     TIME_STEP = 10
-    h_state = None      # for initial hidden state
-
-    plt.figure(1, figsize=(12, 5))
-    plt.ion()           # continuously plot
-
-    steps = 0
-    # for x, y in zip(t_input_muscles, t_gt_angles):
+    # for initial hidden state
+    h_state = None      
+    predictions = []
+    gts = []
     for x, y in train_dataloader:
         x, y = x.float(), y.float()
-
         prediction, h_state = network(x, h_state)
+        print(f"GT: {y}")
+        print(f"Predicted: {prediction}")
         # !! next step is important !!
-        h_state = h_state.data        # repack the hidden state, break the connection from last iteration
+        # repack the hidden state, break the connection from last iteration
+        h_state = h_state.data
 
         loss = loss_function(prediction, y)         # calculate loss
         optimizer.zero_grad()                   # clear gradients for this training step
         loss.backward()                         # backpropagation, compute gradients
         optimizer.step()                        # apply gradients
+        # print("="*50)
+        # print(f"GT: (shape={y.numpy().shape}) {y.numpy()}")
+        # print(f"Predicted: (shape={prediction.detach().numpy().shape}) {prediction.detach().numpy()}")
+        # print("="*50)
+        for g,p in zip(y.numpy(), prediction.detach().numpy().flatten()):
+            predictions.append(p)
+            gts.append(g)
 
-        # plotting
-        plt.plot(steps, y, 'r-')
-        plt.plot(steps, prediction.data.numpy().flatten(), 'b-')
-        plt.draw()
-        plt.pause(0.05)
-        steps += 1
+    print(f"gts   = {gts}")
+    print(f"preds = {predictions}")
+            
+    # Plot ground truth distribution and its predicted counterpart
+    th_quickPlot([gts, predictions, t_gt_angles],
+                 [f"Processed GT angle ({angle_to_keep})",
+                  "Prediction",
+                  "Input GT angle ({angle_to_keep})"],
+                 axis_labels=["Timestep", "Angle [Degrees]"])
 
-    plt.ioff()
-    plt.show()
-
+    # th_quickPlot([gts],
+    #              [f"GT (Angle={angle_to_keep})"],
+    #              axis_labels=["Timestep", "Angle [Degrees]"])
+    
 
 if __name__ == "__main__":
     main()
