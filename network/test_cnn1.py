@@ -153,6 +153,7 @@ def main():
     inputLen = 10
     gtLen = 1
     n_sessions_in_trainer = 1
+    angle = 12
 
     sessions = KIN_MUS_sessions_get(path)
     inputs, gts = KMSessions2InputsGts(sessions, n_sessions_in_trainer, inputLen, gtLen)
@@ -201,8 +202,6 @@ def main():
     print("="*80)
 
     inputs, gts = KMSessions2InputsGts([sessions[0]], 1, inputLen, gtLen)
-
-    angle = 12
 
     def datasetPredict(s_inputs, s_gts, trainer):
         gts = []
