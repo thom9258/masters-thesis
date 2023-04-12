@@ -18,4 +18,82 @@ Popular methods of processing EMG signals will be researched, and elaborated upo
 %TODO: Can i do something like this?
 
 
+\subsection{Introduction to Literature}
+%TODO: Maybe this text fits better elsewhere?
+
+Human Machine Interfaces (HMI), are control systems that enables humans to interact and control a mechanical or robotic system.
+%Prosthetics have been developed to aid human behaviour 
+%TODO: Somehow say that prosthetics are found en ancient egypt etc.
+As explained in the paper \cite{Tech2015}, researchers and prostecisists have been developing mechanical prosthetics for many years.
+One example of such devices would be the ankle-foot-orthoses, a support device strapped to the angle, used to relieably adjust the pressure applied by the body while walking, to help impared individuals with walking in a more natural way.
+\cite{Tech2015} proposes that EMG signal based control research are a ongoing topic in rehabilitation and prosthetics.
+Generally, EMG is an experiment-based method of evaluating and recording electrical signals from muscles.
+Specifically, EMG signals eminate from the exiciability of muscle fibers through neural control, causing action potentials that cause depolarization and repolarization of the muscle membrane.
+These polaziration changes can be detected using EMG sensors, either through non-invasive or invasive techniques.
+Invasive EMG signal recording requires the use of a penetrating needle electrode to be placed in the muscle tissue, this method reduces the signal-to-noise ratio (SNR) but can be a cause of discomfort and infection.
+As an alternative, non invasive EMG sensors, placed at the surface of the skin are called sEMG sensors, they provide much less discomfort and propose no risk of infection to the amputee, at the cost of having an increased SNR. 
+\cite{Tech2015} explains that the muscle fiber membrane has a resting potential of $-90$ to $-90 mV$ when resting. The paper also explains that the amplitude of sEMG signals have a voltage range from $0$ to $10 mV$, and a frequency range from $10$ to $500 Hz$.
+
+\subsection{Noise in EMG signals}
+
+The paper \cite{Tech2015} poposes different noise types that contaminates EMG signals, these noises are defined as electrical signals that are not part of the decired EMG signal.
+%TODO: maybe find the paper that Tech2015 refers to and insert it here for variety its number [8]
+The different noise types found in EMG signals are
+\begin{itemize}
+\item Inherent Noise in Electronics Equipment,
+\item Ambient Noise,
+\item Motion Artifacts,
+\item Inherent Signal Instability,
+\item Electrocardiographic (ECG) Artifacts,
+\item \& Cross Talking.
+\end{itemize}
+
+%TODO: Adjust the texts for noise signals to be coherent to be coherent
+%These noise types are all
+\textbf{Noise in Electronics Equipment} exists in all electronic devices, this noise has been proved to be reduced by using electrodes made of silver.
+%TODO: ref on this!
+\textbf{Motion Artifacts} affects EMG signals when the skin and electrodes move in relation to the movement of the underlying muscle.
+This can cause artifacts due to inconsistent displacement.
+%the length of the muscle decreases when muscles are activated. Muscle, skin and electrodes also move in relation to each other. 
+\textbf{Inherent Signal Instability}
+The amplitude of EMG signals are quasi-random. Frequency components less than 20 Hz are unstable and affected by firing rate of the motor units. This range is considered unwanted noise. Muscles change based on their active motor units, therefore the EMG signal changes too.
+\textbf{ECG Artifacts (Electrocardiographic)}
+Electrical activity of the human heart is a huge interference component of EMG signals recorded from the Shoulder Girdle (Shoulder muscle groups).
+this is called ECG Artifacts.
+this contaminated EMG signals, especially "trunk EMG"
+It is very hard to remove ECG artifacts from EMG signals, due to their relative charactaristics in the frequency spectrum!
+% TODO trunk muscles EMG
+\textbf{Cross Talk} Undecired EMG signals from muscle groups not commonly monitored. i guess its a form of EMG leak from undecired muscles.
+
+
+
+%People with lower-leg amputation able to recive mechanical prosthetics. The need to introduce robotic prosthetics in this area  Due to the  limited mechanical movement and control of the human ankle/foot, p
+%TODO: Somehow incorporate this? if you do, ref on this!
+
+
+\subsection{Alternatives to sEMG sensors}
+% Explain Brain based systems, nerve based systems, and sEMG systems
+
+
+
+
+\subsection{General Overview of Different Dreas of sEMG Processing}
+
+% refer to Tech2015
+% refer to Batzinaulis2018
+
+\subsubsection{General Processing choises for muscle data}
+% Jarque2019
+
+\subsection{Regression or Classification}
+
+% Processing methods for both Regression and Classification, get some comparable data to look at.
+
+\subsection{State of the Art Methods}
+
+% here i want to list a set of state of the art methods and their goals, as a appetizer to what
+% i want to do..
+
+%TODO: Check out all the papers on your phone and see if they can be used.
+
 \end{document}
