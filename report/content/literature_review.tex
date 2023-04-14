@@ -24,6 +24,7 @@ Popular methods of processing EMG signals will be researched, and elaborated upo
 Human Machine Interfaces (HMI), are control systems that enables humans to interact and control a mechanical or robotic system.
 %Prosthetics have been developed to aid human behaviour 
 %TODO: Somehow say that prosthetics are found en ancient egypt etc.
+%TODO: Make proper citation!
 As explained in the paper \cite{Tech2015}, researchers and prostecisists have been developing mechanical prosthetics for many years.
 One example of such devices would be the ankle-foot-orthoses, a support device strapped to the angle, used to relieably adjust the pressure applied by the body while walking, to help impared individuals with walking in a more natural way.
 \cite{Tech2015} proposes that EMG signal based control research are a ongoing topic in rehabilitation and prosthetics.
@@ -55,27 +56,75 @@ The different noise types found in EMG signals are
 \textbf{Motion Artifacts} affects EMG signals when the skin and electrodes move in relation to the movement of the underlying muscle.
 This can cause artifacts due to inconsistent displacement.
 %the length of the muscle decreases when muscles are activated. Muscle, skin and electrodes also move in relation to each other. 
-\textbf{Inherent Signal Instability}
-The amplitude of EMG signals are quasi-random. Frequency components less than 20 Hz are unstable and affected by firing rate of the motor units. This range is considered unwanted noise. Muscles change based on their active motor units, therefore the EMG signal changes too.
-\textbf{ECG Artifacts (Electrocardiographic)}
-Electrical activity of the human heart is a huge interference component of EMG signals recorded from the Shoulder Girdle (Shoulder muscle groups).
-this is called ECG Artifacts.
-this contaminated EMG signals, especially "trunk EMG"
+\textbf{Inherent Signal Instability}, The amplitude of EMG signals are quasi-random. Frequency components less than 20 Hz are unstable and affected by firing rate of the motor units. This range is considered unwanted noise. Muscles change based on their active motor units, therefore the EMG signal changes too.
+\textbf{ECG Artifacts} is the electrical activity of the human heart is a huge interference component of EMG signals recorded from the Shoulder Girdle (Shoulder muscle groups).
+%this is called ECG Artifacts.
+%this contaminated EMG signals, especially "trunk EMG"
 It is very hard to remove ECG artifacts from EMG signals, due to their relative charactaristics in the frequency spectrum!
 % TODO trunk muscles EMG
-\textbf{Cross Talk} Undecired EMG signals from muscle groups not commonly monitored. i guess its a form of EMG leak from undecired muscles.
-
-
+\textbf{Cross Talk} is undecired EMG signals from muscle groups not commonly monitored. i guess its a form of EMG leak from undecired muscles.
 
 %People with lower-leg amputation able to recive mechanical prosthetics. The need to introduce robotic prosthetics in this area  Due to the  limited mechanical movement and control of the human ankle/foot, p
 %TODO: Somehow incorporate this? if you do, ref on this!
 
+%Use-Case for 
+\subsection{sEMG Sensors for Prosthetics}
+
+The usage of sEMG sensors propose a lot of obstacles because of noise, but that does not stop sEMG sensors from being part of the state-of-the-art research in prosthetics.
+In the paper \cite{KeunTaeKim2021} proposes that the usage of sEMG sensors are of great importance in upper-limb classification for prosthetics devices.
+The paper uses sEMG sensors to classify reaching-to-grasping tasks using  a Convolutional Neural Network (CNN) after pre-processing the signal with Principal Component Analysis (PCA) to reduce noise.
+The processing combination method of PCA-CNN proved to show higher accuracy than Machine Learning methods, such as Support Vector Machine (SVM) with an accuracy of $70.1 \pm 9.8\%$ based on 9 subjects.
+%TODO: When i get results, precent it like a median + - percentage variation for my subjects! makes it sound statistical and cool..
+The paper proposes that the sEMG sensors are placed on the upper-body in combination with the upper-arm for grasping intention classification, specifically, the muscles \textit{Pectoralis}, \textit{Trapezius}, \textit{Latissimus Dorsi} \& the \textit{Biceps/Triceps}, see section \ref{sec:muscleplacements} for placements.
+%TODO: We need a section with all the muscles i intend to classify!
+In \cite{KeunTaeKim2021}, the \textit{Southhampton Hand Assessment Procedures (SHAP)} \cite{shap} was used to create a dataset.
+SHAP is designed for the assessment of musculoskeletal and neurological conditions, and can be used to test the effectiveness of prosthetics.
+%TODO: This is formulated wierdly..
+%TODO: explain that you USE the KeunTaeKim2021 Network as a baseline for one of your own networks!
+
+Another paper that proposes the usage of sEMG sensors for prosthetics is \cite{Zhaolong2021}.
+The paper
+The paper proposes the usage of different sEMG devices, two of those are the wearable product ``Myo Armband'', \cite{myo} a discontinued sEMG product consisting of 8 sensors that can be placed below the elow joint, and the ``Delsys Trigno'' \cite{trigno}, a set of individual sEMG sensors that can be worn and record most muscle groups.
+\cite{Zhaolong2021} proposes the pre-processing of the sEMG data using a Notch filter of 50Hz.
+Furthermore, the target angles obtained as ground truth targets were reduced in dimensions through PCA, thus having the 6 dominant PC's be the targets.
+Then, using an ``Inverse PCA algorithm'', they compute the final control output for the prosthetic.
+In order to process the sEMG data, \cite{Zhaolong2021} proposes the use of a time window of $200ms$, with feature extraction for root mean square (RMS) \& zero crossing (ZC).
+%TODO: If i use this myself, i need to write the equations from this paper!
+The extracted features were used as input to a nonlinear autoregressive exogeneous (NARX) network, a fully-connected multilayer-perceptron (MLP) network combined with a recurrent neural network (RNN). 
+% once the report is done, check up on abbrevations etc and make sure things are abbrevated once and then used!
+% TODO: Maybe give a link for further explanation?
+%TODO: Zhaolong2021 -> their results are so good i need to try their method!
+
+\subsection{Adaptive Grasping Methods}
+%\subsection{Adaptive grasping methods of sEMG based prosthetics}
+%\subsection{Adaptiveness of sEMG based prosthetics}
+%TODO: Maybe section names should relate more directly to the explained papers?
+Most state-of-the-art methodologies consist of using sEMG data to predict grasp type classification or joint angle regression.
+The paper \cite{Yuki2023} proposes that this method becomes a burden for the HMI user, as the severity of the amputation increases and the loss of muscle recording arears become greater.
+\cite{Yuki2023} takes inspiration from evolutionary robotics, and propses the use of evolutionary computation to predict stable grasping methods based on touch sensor input.
+This is done by having a mapping between the touch sensor input of the fingers and the motorcontrol of the joints.
+\cite{Yuki2023} uses a simulation to train a RNN network, this RNN takes sEMG sensor data, Touch sensor data, distance to the object \& object height into account.
+It is possible to compute distance to / height of object because grasping and training is done entirely in simulation, using a simulated target object, but that the method used would be realiseable for prosthetics. 
+The paper concludes that alongside sEMG sensors, touch sensors could be used to appropiate joint motion could be predicted using contact states between hand and object.
+
+The paper \cite{YanchaoWang2022} proposes a passive solution to adaptiveness when grasping.
+Their method uses an underactuated, compliant linkage mechanism, where the joint rotation of the finger joints can be driven by a single motor.
+This allows the fingers to not rely on touch sensors, as the method in \cite{Yuki2023} does.
+\cite{YanchaoWang2022} proposes the use of a sliding window with a size of $250ms$.
+The window is then processed using feature extraction of integral myoelectric value (iEMG), RMS. mean absolute value (MAV) \& ZC with a threshhold to eliminate low signal fluctuation from noise.
+The extracted features are used for linear discriminanr analysis (LDA) to classify grasping intent. 
+The paper proposes that LDA showed the highest accuracy out of different Machine Learning methods.
+%TODO: Is last sentence vague?
+
+
+
+
+
+\subsection{sEMG Classification}
+%TODO: Come back to Tech2015 and go over some classification stuff.
 
 \subsection{Alternatives to sEMG sensors}
 % Explain Brain based systems, nerve based systems, and sEMG systems
-
-
-
 
 \subsection{General Overview of Different Dreas of sEMG Processing}
 
