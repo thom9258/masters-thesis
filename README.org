@@ -6,11 +6,12 @@ Written at the university: University of Southeren Denmark.
 
 ** Student
 
-Thomas Alexgaard Jensen (tjens18 - tjens18@student.sdu.dk)
+Thomas Alexgaard Jensen (tjens18@student.sdu.dk)
 
 ** Supervisors
 
 Poramate Manoonpong (poma@mmmi.sdu.dk)
+
 Xiaofeng Xiong (xizi@mmmi.sdu.dk)
 
 ** Overview
