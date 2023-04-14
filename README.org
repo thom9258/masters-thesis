@@ -1,12 +1,21 @@
-* masters-thesis
+* Surface-EMG Processing & Classification for Muscle Interfaces
+
+An Advanced Robotics Engeneering student's Master's Thesis.
+
+Written at the university: University of Southeren Denmark.
+
+** Student
 
 Thomas Alexgaard Jensen (tjens18 - tjens18@student.sdu.dk)
 
-** Introduction
+** Supervisors
 
-Master Thesis on Prosthetics.
+Poramate Manoonpong (poma@mmmi.sdu.dk)
+Xiaofeng Xiong (xizi@mmmi.sdu.dk)
 
 ** Overview
+
+see LICENSE for license.
 
 dir *ros-packages* contains dated backups of the ros package th_hand.
 
