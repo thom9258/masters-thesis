@@ -18,8 +18,10 @@ Xiaofeng Xiong (xizi@mmmi.sdu.dk)
 
 See LICENSE for license.
 
-*ros-packages* contains dated backups of the ros package th_hand.
+*report* is the resulting report.
 
-*report* is the report that needs to be handed in at the end of the thesis.
+*network* the networks developed and experimented with.
 
-*network* the network im working on.
+*Coppeliasim* contains developed prosthetic simulation.
+
+*ros-packages* contains dated backups of the ros packages.
