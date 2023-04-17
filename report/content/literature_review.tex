@@ -111,34 +111,45 @@ The paper \cite{YanchaoWang2022} proposes a passive solution to adaptiveness whe
 Their method uses an underactuated, compliant linkage mechanism, where the joint rotation of the finger joints can be driven by a single motor.
 This allows the fingers to not rely on touch sensors, as the method in \cite{Yuki2023} does.
 \cite{YanchaoWang2022} proposes the use of a sliding window with a size of $250ms$.
-The window is then processed using feature extraction of integral myoelectric value (iEMG), RMS. mean absolute value (MAV) \& ZC with a threshhold to eliminate low signal fluctuation from noise.
+The window is then processed using feature extraction of integral myoelectric value (iEMG), RMS, mean absolute value (MAV) \& ZC with a threshhold to eliminate low signal fluctuation from noise.
 The extracted features are used for linear discriminanr analysis (LDA) to classify grasping intent. 
 The paper proposes that LDA showed the highest accuracy out of different Machine Learning methods.
 %TODO: Is last sentence vague?
 
+\subsection{Grasping Intention from the Upper-arm}
+
+Another way of reducing the usage of lower-arm muscles when designing hand prosthetics would be to predict the intent of the user's actions based on upper-arm grasp prediction.
+%TODO: This sounds weird
+The focuso of the paper \cite{Batzianoulis2018} on recording and classification of upper-arm.
+The paper proposes a learning approach that decodes grasping intention during the reaching motion for upper-limb prosthetics.
+For pre-processing, a $30$-$350Hz$ band-pass filter is used on 12 muscles, 7 located in the upper-arm and 5 located in the lower-arm.
+These muscles are passed through a buttersworth filter with cut-off at $20Hz$.
+Furthermore, the elbow joint angle was measured using a goniometer.
+\cite{Batzianoulis2018} proposes that a sliding window of $150ms$ should be used, and they use no dimensionality reduction method such as PCA.
+The paper tests 2 different machine-learning methods, that utilize feature extraction of the average activation, waveform length and the number of slope changes for each window.
+%TODO: Seems kinde weird..
+Additionally, the paper tests an echo state network (ESN) using the given window of data with no feature extraction.
 
 
-
-
-\subsection{sEMG Classification}
+%\subsection{sEMG Classification}
 %TODO: Come back to Tech2015 and go over some classification stuff.
 
-\subsection{Alternatives to sEMG sensors}
+%\subsection{Alternatives to sEMG sensors}
 % Explain Brain based systems, nerve based systems, and sEMG systems
 
-\subsection{General Overview of Different Dreas of sEMG Processing}
+%\subsection{General Overview of Different Dreas of sEMG Processing}
 
 % refer to Tech2015
 % refer to Batzinaulis2018
 
-\subsubsection{General Processing choises for muscle data}
+%\subsubsection{General Processing choises for muscle data}
 % Jarque2019
 
-\subsection{Regression or Classification}
+%\subsection{Regression or Classification}
 
 % Processing methods for both Regression and Classification, get some comparable data to look at.
 
-\subsection{State of the Art Methods}
+%\subsection{State of the Art Methods}
 
 % here i want to list a set of state of the art methods and their goals, as a appetizer to what
 % i want to do..
