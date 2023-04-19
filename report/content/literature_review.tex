@@ -90,7 +90,7 @@ Furthermore, the target angles obtained as ground truth targets were reduced in 
 Then, using an ``Inverse PCA algorithm'', they compute the final control output for the prosthetic.
 In order to process the sEMG data, \cite{Zhaolong2021} proposes the use of a time window of $200ms$, with feature extraction for root mean square (RMS) \& zero crossing (ZC).
 %TODO: If i use this myself, i need to write the equations from this paper!
-The extracted features were used as input to a nonlinear autoregressive exogeneous (NARX) network, a fully-connected multilayer-perceptron (MLP) network combined with a recurrent neural network (RNN). 
+The extracted features were used as input to a nonlinear autoregressive exogeneous (NARX) network, that consists of a fully-connected multilayer-perceptron (MLP) network combined with a recurrent neural network (RNN). 
 % once the report is done, check up on abbrevations etc and make sure things are abbrevated once and then used!
 % TODO: Maybe give a link for further explanation?
 %TODO: Zhaolong2021 -> their results are so good i need to try their method!
@@ -126,34 +126,50 @@ For pre-processing, a $30$-$350Hz$ band-pass filter is used on 12 muscles, 7 loc
 These muscles are passed through a buttersworth filter with cut-off at $20Hz$.
 Furthermore, the elbow joint angle was measured using a goniometer.
 \cite{Batzianoulis2018} proposes that a sliding window of $150ms$ should be used, and they use no dimensionality reduction method such as PCA.
-The paper tests 2 different machine-learning methods, that utilize feature extraction of the average activation, waveform length and the number of slope changes for each window.
+The paper tests 2 different machine-learning methods, LDA and Support Vector Machine (SVM), that utilize feature extraction of the average activation, waveform length and the number of slope changes for each window.
 %TODO: Seems kinde weird..
 Additionally, the paper tests an echo state network (ESN) using the given window of data with no feature extraction.
 
+\subsection{Alternatives to sEMG-based prosthetics}
 
+%Another area of
+Research of prosthetics control interfaces expand into a multitude of areas.
+The paper \cite{fnins2016} proposes the use of a brain-computer-interface (BCI) as an alternative to HMI.
+BCI is a type of technology that uses brain activity and the brain's neural information to control machine interfaces such as computers, assistive technology \& prosthetics.
+BCI's have great benefit in areas where access to muscolatory information such as sEMG is impossible due to loss of muscles in the target recording area, or due to paralyzation where it becomes impossible for the patient to activate the targeted muscle groups.
+One dominant method of acheiving a BCI interface is electroencephalography (EEG).
+The purpose of \cite{fnins2016} is to detect individual finger control using EEG sensors. 
+EEG functions similarly to EMG but with the focus on recording brain activity instead of muscle activity.
+The methods of pre-processing, feature extraction and classification of the lower-arm activity in the paper \cite{fnins2016} are similar to the methods proposed by EMG-based papers.
+%Thus indicating that ... methods are similar and we can maybe utilize more data as input if we had enough recording methods? i dont know
+
+
+% Subsections i could use
 %\subsection{sEMG Classification}
-%TODO: Come back to Tech2015 and go over some classification stuff.
-
 %\subsection{Alternatives to sEMG sensors}
-% Explain Brain based systems, nerve based systems, and sEMG systems
-
 %\subsection{General Overview of Different Dreas of sEMG Processing}
-
-% refer to Tech2015
-% refer to Batzinaulis2018
-
 %\subsubsection{General Processing choises for muscle data}
-% Jarque2019
-
 %\subsection{Regression or Classification}
-
-% Processing methods for both Regression and Classification, get some comparable data to look at.
-
 %\subsection{State of the Art Methods}
 
-% here i want to list a set of state of the art methods and their goals, as a appetizer to what
-% i want to do..
-
 %TODO: Check out all the papers on your phone and see if they can be used.
+
+\section{Summary of Literature}
+
+The state-of-the-art literature spans different methods of creating human machine interfaces.
+The main areas of creating interfaces are Muscle-/neuron-based recording and brain-based recording.
+Due to the large amount of cross-talk noise from brain-based sensoring, it is apparent that to increase overall controlability and robustness of a prosthetics device, the prosthetic is required to use EMG based sensoring for its contro.
+%TODO: This statement is not concluding or explained
+By reviewing the state-of-the-art literature in sEMG-based hand prosthetics, it is apparent that if a Machine-Learning \& Neural Network (except RNN), are to be used, we need to use a sliding window technique with a size of $150ms$ to $250ms$.
+It can be noticed that all methods use a pre-processing filter step on the raw EMG data, but that the choise of filter varies greatly.
+Amongst the most used filters are Buttersworth \& lowpass filters with diffent frequency responces.
+3 different methods of classification/regression of sEMG data are used: \textbf{Machine Learning}, \textbf{Window-Based Neural Networks}, \textbf{Recurrent Neural Networks}.
+%TODO: Brief of these?
+algorithms such as LDA, SVM \& ...
+%TODO: get more ML methods?
+As an alternative to ML, most literature proposes the use of \textbf{Neural Networks}, on the sliding window.
+Alternatively, methods not using a sliding window are recurrent networks, such as the echo state network or the NARX network.
+These Recurrent methods would also be applicable due to the continorous nature of the data.
+
 
 \end{document}
