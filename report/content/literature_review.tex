@@ -140,8 +140,20 @@ BCI's have great benefit in areas where access to muscolatory information such a
 One dominant method of acheiving a BCI interface is electroencephalography (EEG).
 The purpose of \cite{fnins2016} is to detect individual finger control using EEG sensors. 
 EEG functions similarly to EMG but with the focus on recording brain activity instead of muscle activity.
-The methods of pre-processing, feature extraction and classification of the lower-arm activity in the paper \cite{fnins2016} are similar to the methods proposed by EMG-based papers.
+%The methods of pre-processing, feature extraction and classification of the lower-arm activity in the paper \cite{fnins2016} are similar to the methods proposed by EMG-based papers.
+%TODO: We need some kind of example of eeg processing so we can confirm its similar to emg
+EEG is a non-invasive, portable and low-cost sensoring type, that provides a high temporal resolusion in comparison to other methods that detects brain activity, according to the paper \cite{quraishi2018}.
 %Thus indicating that ... methods are similar and we can maybe utilize more data as input if we had enough recording methods? i dont know
+\cite{quraishi2018} explains the great need for assisted rehabilitation devices and prosthetics, and that the need will increase in the future.
+Brain Computer Interfaces using EEG sensors needs to be further researched to increase overall performance of the system.
+\cite{quraishi2018} proposes that that the most used method of controlling a prosthesis or a rehabilitation device using EEG is to pre-process/filter the recorded data before segmenting it using a sliding window.
+Using the windows, feature extraction in both time \& frequency domains are used as input to a feature reduction algorithm.
+These features are then subject to a classification network in order to transform the EEG data into motorcontrol for the BCI.
+It can be noted that the EEG sensor contains artifacts from other parts of the brain, such as eye movement, cardiac activity or contraction of the scalp muscles. 
+%Overall effectiveness of EEG classification is highly dependent on how much time the subjects use
+Overall performance of using EEG for prosthetics control is low compared to more conventional methods such as EMG \cite{quraishi2018} .
+Furthermore, the setup for EEG recording is more complicated than EMG.
+
 
 
 % Subsections i could use
