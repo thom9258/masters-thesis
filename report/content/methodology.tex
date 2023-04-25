@@ -5,7 +5,77 @@
 \begin{document}
 \section{Methodology}
 
-\subsection{Design of a Prosthetic Hand}
+\subsection{Dataset Creation}
+
+In order to train a simulated hand prosthetic, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
+The paper \cite{KeunTaeKim2021} proposes the SHAP procedure \cite{shap} as its main method of dataset creation.
+An alternative would be the Sollerman test \cite{sollerman} as both procedures are used in assessing the function and moveability of the human hand.
+By analyzing the most important gripping motions in both tests, it should be possible to denote a suitable set of grips that the dataset should contain.
+The sollerman grip types are ranked based on their usage percentage in activities of daily living.
+The most used grip types according to sollerman are the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}, see \cite{sollerman} for further details.
+SHAP also proposes a set of grip types that are used in day-to-day tasks, these are \textit{Spherical grip}, \textit{Tripod pinch}, \textit{Power grip} \& \textit{Lateral pinch}.
+
+In order to create a dataset mimics the movements of day-to-day tasks, the most important grips from \cite{sollerman} \& \cite{shap} has been chosen.
+The grip types that needs to be part of the dataset and their usage descriptions can be seen in table \ref{tab:grips}.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{ |l|l| } 
+ \hline
+ Grip Type & Finger Usage Description \\ 
+ \hline
+ Pulp pinch & Between thumb, index and middle finger \\ 
+ Lateral pinch & Between thumb \& side of index finger \\ 
+ Five-Finger pinch & Between thumb, and all four fingers \\ 
+ Power grip & Between thumb, and all four fingers with contact to palm \\ 
+ \hline
+\end{tabular}
+\caption{The most used hand grips in day-to-day tasks based on \cite{sollerman} \& \cite{shap}.}
+\label{tab:grips}
+\end{center}
+\end{table}
+
+The chosen grips are chosen as a basis for the creation of a dataset. creating 
+
+
+\subsubsection{Existing datasets}
+
+In addition to creating a specific dataset for this thesis, it would be intresting to compare with an existing state-of-the-art dataset.
+The paper \cite{jarque2019} proposes the use of their dataset \cite{kinmusdataset}.
+
+
+%The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
+%TODO: Present more formally and mention company names.
+
+\subsubsection{Motion Capture Glove}
+
+In order to get precise recordings of the motion of the hand and fingers, using Motive \cite{motive}, flourecent 3D markers were placed on a glove.
+The pattern of the marker positions were carefully closen in order to calculate the angles of the individual finger bones.
+The precise positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:glove}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{Example figure text}
+\label{fig:glove}
+\end{center}
+\end{figure}
+
+\subsubsection{Sensor Locations etc.}
+
+The muscle recording sensors are located along the muscles of the forearm, the exact positions can be seen in figure \ref{fig:musclesensors}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{Example figure text}
+\label{fig:musclesensors}
+\end{center}
+\end{figure}
+
+\subsubsection{Trial/motion overview}
+
+\subsection{Design of a Simulated Prosthetic Hand}
 
 In order to design a state-of-the-art simulated prosthetic hand, a number of anatomical design choises needs to be considered.
 This thesis tries to create the most anatomically-correct hand simulation available, this will hopefully have a number of positive effects on prosthetics research.
@@ -66,44 +136,13 @@ As specified in section \ref{sec:anatomy}, some joints of the human hand facilit
 This is needed in order for the wrist and finger base joints to be able to do \gls{abduction/adduction}.
 To simulate this, two 1 DoF revolute joints were placed in series, thus allowing 2 DoF.
 
-
-
-
-\subsection{Dataset Creation}
-
-In order to train a simulated hand prosthetic, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
-The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
-%TODO: Present more formally and mention company names.
-
-\subsubsection{Motion Capture Glove}
-
-In order to get precise recordings of the motion of the hand and fingers, using Motive \cite{motive}, flourecent 3D markers were placed on a glove.
-The pattern of the marker positions were carefully closen in order to calculate the angles of the individual finger bones.
-The precise positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:glove}.
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{Example figure text}
-\label{fig:glove}
-\end{center}
-\end{figure}
-
-\subsubsection{Sensor Locations etc.}
-
-The muscle recording sensors are located along the muscles of the forearm, the exact positions can be seen in figure \ref{fig:musclesensors}.
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{Example figure text}
-\label{fig:musclesensors}
-\end{center}
-\end{figure}
-
-\subsubsection{Trial/motion overview}
-
 \subsection{Implementation}
+
+Based on the literature review in Section \label{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motorcontrol for a prosthetic.
+
+
+
+
 \subsubsection{Data Pre-Processing}
 \subsubsection{Network Design}
 \subsubsection{Software Hand Design}
