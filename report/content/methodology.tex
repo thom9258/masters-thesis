@@ -5,6 +5,47 @@
 \begin{document}
 \section{Methodology}
 
+\subsection{Anatomy}
+\label{sec:anatomy}
+
+The hand is an anatomically-complex appendage designed to facilitate a large amount of control in different usage scenarios.
+The hand consists of 27 bones, 14 of these are called phalnages, and make up the 4 fingers and the thumb.
+These bones, alongside a complex set of $\sim30$ muscles are able to perform $24$ Degree-of-Freedom (DoF) of rotational motion.
+The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand.
+The 3 finger bones are called the proximal phalange, middle phalange and distal phalange.
+The joints between the phalanges have 1 DoF and are able to do \gls{flexion/extension} movement, while the base of the finger have 2 DoF and are able to do \gls{flexion/extension} \& \gls{abduction/adduction} movement.
+The anatomical muscle and joint structure of the hand/forearm can be seen in the figure \ref{fig:anatomy}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{A rendering of the anatomical muscle and joint strucutre of the lower-arm. The complexity of the muscles controlling the hand can be seen. Source \cite{???}}
+\label{fig:anatomy}
+\end{center}
+\end{figure}
+
+\subsection{Brief of used Software}
+\label{sec:software}
+
+In order to design a simulated prosthetic device that facilitates the requirements stated in section \ref{sec:prost_sim}, an effective simulation software needs to be chosen.
+The software needs to be controllable from an external source, such as ROS, and because of this, software like Gazebo \cite{gazebo} or CoppeliaSim \cite{coppeliasim} is ideal.
+Both simulation softwares allow for the creation of advanced dynamic-body simulations.
+CoppeliaSim \cite{coppeliasim} was chosen due to its intuitive development workflow.
+
+In order to record the joint movements of the hand, while simultaneously record the sEMG activity of the body, products that support hardware-synchonization needs to be used.
+Products designed to capture sEMG data are widely spread.
+As mentioned in the paper \cite{Zhaolong2021}, the Myo armband \cite{myo} or the Delsys Trigno package \cite{emgworks} could be used.
+The Delsys Trigno \cite{emgworks} facilitates a hardware-synchonization recording mode out of the box, while the myo armband \cite{myo} does not.
+Because of availability, and synchronization capabilities it is ideal to use the Delsys Trigno as the sEMG recording device.
+
+Lastly, a product designed to capture the joint movements of the hand needs to be chosen.
+A simple solution to hand tracking would be to use a software like MediaPipe \cite{mediapipe}, a python based landmark tracker that can track the joint angles of the hand using Machine Learning from a video feed.
+An alternative is mentioned in the paper \cite{Zhaolong2021}, where a glove containing flex sensors could be used.
+This approach would provide relieable joint angle data without relying on a camera setup.
+Lastly, a capture glove could be fitted with 3D markers, detectable from a high-accuracy and high-framerate system such as the Motive motion capture setup \cite{optitrack} created by OptiTrack.
+It was chosen to use the Motive setup due to availablility and the additional benefit of having a hardware-synchnonization feature, that can be combined with the Delsys Trigno \cite{emgworks} setup.
+
+
 \subsection{Dataset Creation}
 
 In order to train a simulated hand prosthetic, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
@@ -70,6 +111,46 @@ The muscle recording sensors are located along the muscles of the forearm, the e
 
 %\subsubsection{Trial/motion overview}
 
+\subsubsection{Motion Capture Glove}
+
+The motive capture system created by OptiTrack is a set of 8 high-quality cameras mounted to cover a target capture area.
+%TODO: how many cameras were there?
+The capture system detects flouresent 3D markers in the given capture area, with the purpose of triangulating the markers and effectively calculate 3D poses for the markers in the scene down to an effective accuracy of $\pm 0.2mm$ \cite{motive}.
+In order to get precise recordings of the motion of the hand and fingers, flourecent 3D markers were placed on a glove.
+The pattern of the marker positions were closen in order to calculate the angles of the individual finger bones.
+The markers are used in sets of 3, this allows for the calculation of the triangle angles in 3D space.
+The positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:glove}.
+An example of flexion with the capture glove can be seen in figure \ref{fig:glove_flex}.
+
+
+\begin{center}
+\begin{figure}[h]
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{The positions of 3D markers on the capture glove, designed to be detectable using the  Motive Capture software \cite{motive}.}
+\label{fig:glove}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}[h]
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{Flexion of the index finger and its transformation of the 3D markers on the capture glove.}
+\label{fig:glove_flex}
+\end{figure}
+\end{center}
+
+\textbf{Problems with Design of the Capture Glove and its Software}
+
+During testing several problems with the capture glove design became apparent.
+The Motive sofware used to generate the 3D poses of the markers uses an optimization algorithm that effectively tries to determine if the markers seen in 1 camera is the same as the markers in the other cameras.
+This optimization technique is prone to specular reflection in the scene caused by shiny surfaces redirecting light in the target area.
+Furthermore, the optimization algorithm seemed during recording to be optimizing 3D markers adjacent to each other into the same 3D pose.
+This problem occoured when the markers at the finger tips of the glove came in contact with each other causing data to be lost.
+On top of aggressive optimization, the markers also had a tendency to dissapear if less than 3 cameras were able to detect it, causing problems with the resulting continurity of the 3D poses. 
+
+%TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
+%TODO: Bones of the hand: https://www.bidneedham.org/departments/orthopaedics/hand-program/anatomy-hand-and-wrist
+
 \subsection{Design of a Simulated Prosthetic Hand}
 \label{sec:prost_sim}
 
@@ -88,64 +169,10 @@ The simulated prosthetic should:
 \item Be simulated and be controllable in a commonly used robotics software to increase accesability for researchers.
 \end{enumerate}
 
-
-\subsubsection{Brief of used Software}
-\label{sec:software}
-
-In order to design a simulated prosthetic device that facilitates the requirements stated in section \ref{sec:prost_sim}, an effective simulation software needs to be chosen.
-The software needs to be controllable from an external source, such as ROS, and because of this, software like Gazebo \cite{gazebo} or CoppeliaSim \cite{coppeliasim} is ideal.
-Both simulation softwares allow for the creation of advanced dynamic-body simulations.
-CoppeliaSim \cite{coppeliasim} was chosen due to its intuitive development workflow.
-
-In order to record the joint movements of the hand, while simultaneously record the sEMG activity of the body, products that support hardware-synchonization needs to be used.
-Products designed to capture sEMG data are widely spread.
-As mentioned in the paper \cite{Zhaolong2021}, the Myo armband \cite{myo} or the Delsys Trigno package \cite{emgworks} could be used.
-The Delsys Trigno \cite{emgworks} facilitates a hardware-synchonization recording mode out of the box, while the myo armband \cite{myo} does not.
-Because of availability, and synchronization capabilities it is ideal to use the Delsys Trigno as the sEMG recording device.
-
-Lastly, a product designed to capture the joint movements of the hand needs to be chosen.
-A simple solution to hand tracking would be to use a software like MediaPipe \cite{mediapipe}, a python based landmark tracker that can track the joint angles of the hand using Machine Learning from a video feed.
-An alternative is mentioned in the paper \cite{Zhaolong2021}, where a glove containing flex sensors could be used.
-This approach would provide relieable joint angle data without relying on a camera setup.
-Lastly, a capture glove could be fitted with 3D markers, detectable from a high-accuracy and high-framerate system such as the Motive motion capture setup \cite{motive}.
-It was chosen to use the Motive setup due to availablility and the additional benefit of having a hardware-synchnonization feature, that can be combined with the Delsys Trigno \cite{emgworks} setup.
-
-\subsubsection{Motion Capture Glove}
-
-%TODO: Needs to be refrased to match earlier section!
-In order to get precise recordings of the motion of the hand and fingers, using Motive \cite{motive}, flourecent 3D markers were placed on a glove.
-The pattern of the marker positions were carefully closen in order to calculate the angles of the individual finger bones.
-The precise positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:glove}.
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{Example figure text}
-\label{fig:glove}
-\end{center}
-\end{figure}
-
-
-
-\subsubsection{Anatomy}
-\label{sec:anatomy}
-
-The hand is an anatomically-complex appendage designed to facilitate a large amount of control in different usage scenarios.
-The hand consists of 27 bones, 14 of these are called phalnages, and make up the 4 fingers and the thumb. These bones, alongside a complex set of ??? muscles facilitates 24 DoF (Not counting Translation of the entire hand).
-%TODO: How many muscles in the hand / forearm?
-
-The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand.
-The 3 finger bones are called the proximal phalange, middle phalange and distal phalange.
-The joints between the phalanges are able to do \gls{flexion/extension} movement, while the base of the finger is further able to do \gls{abduction/adduction} movement.
-
-%TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
-%TODO: Bones of the hand: https://www.bidneedham.org/departments/orthopaedics/hand-program/anatomy-hand-and-wrist
-
 \subsubsection{Simulated Hand Articulation design}
 
 %TODO: see Yuki2023 (page 11) for how to properly show the dimensions of my hand!
-
-In order to translate the biology and anatomy of a real hand into an robotics simulation, we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.
+In order to translate the biology and anatomy of a real hand explained in \ref{sec:anatomy} into an robotics simulation, we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.
 
 %TODO: IMAGE HERE OF HAND OR XRAY
 \begin{figure}[h]
@@ -156,7 +183,6 @@ In order to translate the biology and anatomy of a real hand into an robotics si
 \end{center}
 \end{figure}
 
-
 The porpotions of the refrence is used to denote the bone lengths for the model.
 The model is implemented in Coppeliasim \ref{???}, The model is created in a hierachy, the bones are created with cylinders and the joints are created using 1 DoF Revolute joints.
 % Ref coppeliasim
@@ -164,15 +190,14 @@ As specified in section \ref{sec:anatomy}, some joints of the human hand facilit
 This is needed in order for the wrist and finger base joints to be able to do \gls{abduction/adduction}.
 To simulate this, two 1 DoF revolute joints were placed in series, thus allowing 2 DoF.
 
-\subsection{Implementation}
+
+
+\section{Implementation}
 
 Based on the literature review in Section \label{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motorcontrol for a prosthetic.
 
-
-
-
-\subsubsection{Data Pre-Processing}
-\subsubsection{Network Design}
-\subsubsection{Software Hand Design}
+\subsection{Data Pre-Processing}
+\subsection{Network Design}
+\subsection{Software Hand Design}
 
 \end{document}
