@@ -5,11 +5,8 @@
 \begin{document}
 \section{Tests \& Results}
 
-
-\subsection{Useability of the Simulated Prosthetic Hand}
-
-
-\subsection{1. (Machine Learning Algorithm)}
+\subsection{1. (Machine Learning Algorithms)}
+%TODO: Determine what algorithms i want here
 
 \subsubsection{Types of Features for extraction}
 \textbf{Method}\\
@@ -46,6 +43,47 @@
 \textbf{Results}\\
 
 
+\subsection{Useability of the Simulated Prosthetic Hand}
+
+Existing prosthetic hand simulations are not possible to get access to, as explained in section \ref{sec:hand_alternatives}, they are either unavailable through deprecation or pay-to-acces by buying a real prosthetic.
+Due to non-availability of prosthetic hand simulations, it was chosen that through this thesis, a open source prosthetic hand needed to be created for testing of the algorithms developed as part of this project.
+The prosthetic hand created for this thesis can be seen in section \ref{sec:prost_sim}.
+The prosthetic was designed to be as anatomically similar as a real hand as possible.
+This was done in order to accurately simulate the movement of a real hand.
+%TODO: Is this intro good?
+
+\subsubsection{Anatomical Assessment and Maneuverability}
+
+The useability and moveability of the simulated prosthetic hand needs to be assessed.
+
+\textbf{Method}\\
+As an initial test, it is reasonable to test if the hand is able to acheive the end poses of the grip types from section \ref{sec:dataset} table \ref{tab:grips}. 
+
+\textbf{Test \& Results}\\
+
+The hand was manually posed into all 4 grip types, and visually compared, as can be seen in figure  \ref{fig:hand_pose_test}.
+
+%TODO: Needs to be a figure of figures!
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{Example figure text}
+\label{fig:hand_pose_test}
+\end{center}
+\end{figure}
+
+Based on a visual comparison of figure \ref{fig:hand_pose_test}, it can be concluded that the prosthetic hand is able to be posed similarly to the real-life refrence.
+It can be seen how the prosthetic is porpotionally correct and thus also allows for accurate posing when posed manually.
+
+\subsubsection{Posing based on Network Output}
+
+As a result of testing different network types and their applicability for creating suitable motorcontrol output for a prosthetic hand, it would be ideal to test the network output on the prosthetic simulation.
+For full video see appendix ??.
+%TODO: Insert appendix here
+
+\textbf{Method}\\
+
+\textbf{Test \& Results}\\
 
 
 
