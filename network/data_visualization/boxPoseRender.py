@@ -133,6 +133,6 @@ if __name__ == "__main__":
     print("TEST:")
     bpr = boxPoseRender(fps = -1)
     # path = "./tjens18_test_movement01_xyz_marker_track.csv"
-    #path = "../datasets/grasp_dataset/tjens18_index_30s_1.csv"
+    # path = "../datasets/grasp_dataset/tjens18_index_30s_1.csv"
     path = "../datasets/grasp_dataset/tjens18grasptest2_15s.csv"
     bpr.run(path)

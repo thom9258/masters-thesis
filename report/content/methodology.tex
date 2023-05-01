@@ -3,7 +3,7 @@
 
 
 \begin{document}
-\section{Methodology}
+\section{Methodology \& Implementation}
 
 \subsection{Anatomy}
 \label{sec:anatomy}
@@ -192,12 +192,18 @@ This is needed in order for the wrist and finger base joints to be able to do \g
 To simulate this, two 1 DoF revolute joints were placed in series, thus allowing 2 DoF.
 
 
-
-\section{Implementation}
+% \section{Implementation}
 
 Based on the literature review in Section \label{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motorcontrol for a prosthetic.
 
-\subsection{Data Pre-Processing}
+\subsection{sEMG Data Processing}
+
+Raw sEMG data contains a lot of unwanted noise as explained in section \ref{sec:noise}.
+Some of the noise can be can be removed through signal processing using filters.
+State-of-the-Art papers use a lot of different methods to reduce noise in sEMG data.
+The paper \cite{multdof} proposes the use of a $50Hz$ Notch filter, while papers \cite{graspintent} \& \cite{ashirbad2022} respectively chooses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$ band-pass Buttersworth filter.
+Due to me many different filtering types used in state-of-the-art, it was determined that the use of a filter depends on the specific sEMG data, and that the best filter for this thesis is to be determined through testing.
+
 \subsection{Network Design}
 \subsection{Software Hand Design}
 
