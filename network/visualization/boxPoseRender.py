@@ -107,31 +107,57 @@ class boxPoseRender():
         box_size = 0.1
         time_scale = 40000
 
-        timer = 0
-        real_time = 0
-        recording_time = 0
+        frame_timer = 0
         frame = 0
         index_textsize = 18
+        is_paused = False
+        frameskip = 100
+        playback_speed = 1
 
         while not rl.window_should_close():
             # Manage Time
-            timer = timer + raylib.GetFrameTime()
-            real_time = real_time + raylib.GetFrameTime()
+            if not is_paused:
+                frame_timer = frame_timer + raylib.GetFrameTime()
+
+            # Pause/Resume on Space 
+            if rl.is_key_pressed(rl.KeyboardKey.KEY_SPACE):
+                if is_paused:
+                    is_paused = False
+                else:
+                    is_paused = True
+
+            # Go back in time
+            if rl.is_key_pressed(rl.KeyboardKey.KEY_LEFT):
+                frame -= frameskip
+                if frame < 0:
+                    frame = 0
+            # Go forward in time
+            if rl.is_key_pressed(rl.KeyboardKey.KEY_RIGHT):
+                frame += frameskip
+
+            # Increase speed factor
+            if rl.is_key_pressed(rl.KeyboardKey.KEY_DOWN):
+                playback_speed -= 0.5
+                if playback_speed < 0:
+                    playback_speed = 0
+            # Decrease speed factor
+            if rl.is_key_pressed(rl.KeyboardKey.KEY_UP):
+                playback_speed += 0.5
+
+            # Reset on Key R
+            if rl.is_key_pressed(rl.KeyboardKey.KEY_R):
+                frame = 0
+                frame_timer = 0
+
+            # Update current frame
             # TODO: This is not correct on frame-locked screens, you need to
             #       Explicitly calculate what frame number we are on, based on 
             #       real time, not just be dumb and count like this.
-            if timer > (float(self.mp.framerate) / time_scale):
+            if frame_timer * playback_speed > (float(self.mp.framerate) / time_scale):
                 frame = frame + 1
-                timer = 0
+                frame_timer = 0
             if frame > int(self.mp.framecount)-1:
                 frame = 0
-                real_time = 0
-
-            # Reset on Key R
-            if rl.is_key_down(rl.KeyboardKey.KEY_R):
-                frame = 0
-                real_time = 0
-                timer = 0
 
             rl.begin_drawing()
             rl.clear_background(rl.WHITE)
@@ -159,18 +185,17 @@ class boxPoseRender():
             hsh = self.window_h / 2.0
             for i, p in zip(projection_idxs, projections):
                 if p.w > 0:
-                    u = int( hsw+p.x*(hsw)-10 )
-                    v = int( hsh-p.y*(hsh)+10 )
-                    # print(f"{i}) uv = {u}, {v}")
-                    rl.draw_text(f"{i}", u, v, index_textsize, rl.BLACK)
+                    u = int(hsw+(p.x*hsw))
+                    v = int(hsh-(p.y*hsh))
+                    rl.draw_text(f"{i}", u-10, v+10, index_textsize, rl.BLACK)
                     
 
             rl.draw_text(self.mp.getHeaderString(), 2, 2, 20, rl.BLACK)
             camtext = f"camPos: [{cam.cam.position.x:.3f} {cam.cam.position.y:.3f} {cam.cam.position.z:.3f}]"
-            rl.draw_text(f"Frame: {frame}", 2, self.window_h - 88, 20, rl.BLACK)
-            rl.draw_text(f"Real Time: {real_time:.2f} s", 2, self.window_h - 66, 20, rl.BLACK)
-            recording_time = float(self.mp.frametimes[frame-1])
-            rl.draw_text(f"Recording Time: {recording_time:.2f} s", 2, self.window_h - 44, 20, rl.BLACK)
+            rl.draw_text(f"Playback Speed: {playback_speed}x", 2, self.window_h - 88, 20, rl.BLACK)
+            rl.draw_text(f"Frame: {frame}", 2, self.window_h - 66, 20, rl.BLACK)
+            timestamp = float(self.mp.frametimes[frame-1])
+            rl.draw_text(f"Timestamp: {timestamp:.2f} s", 2, self.window_h - 44, 20, rl.BLACK)
             rl.draw_text(camtext, 2, self.window_h - 22, 20, rl.BLACK)
             rl.end_drawing()
 
