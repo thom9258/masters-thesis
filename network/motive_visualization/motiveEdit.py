@@ -50,7 +50,7 @@ class motiveEditor():
     def removeMarker(self, n):
             print(f"Removing marker {n} ({self.markercount()-1} left)")
             mofs = 2 + n*3
-            print(f"removing csv index = {mofs}->{mofs+3}")
+            # print(f"removing csv index = {mofs}->{mofs+3}")
             for i in range(5, len(self.datarows)):
                 del self.datarows[i][mofs:mofs+3]
             
@@ -59,11 +59,10 @@ class motiveEditor():
             print(f"Combining marker {rowA} with {rowB}")
             aofs = 2 + rowA*3
             bofs = 2 + rowB*3
-            print(f"moving csv index {bofs}->{bofs+3} to {aofs}->{aofs+3}")
+            # print(f"moving csv index {bofs}->{bofs+3} to {aofs}->{aofs+3}")
             for i in range(6, len(self.datarows)):
                 if self.datarows[i][bofs:bofs+3] != ["", "", ""]:
                     self.datarows[i][aofs:aofs+3] = self.datarows[i][bofs:bofs+3]
-                    #print(f"found row ({i}) to add!")
             self.removeMarker(rowB)
 # motiveEditor
 

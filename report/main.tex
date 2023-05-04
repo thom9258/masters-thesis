@@ -30,6 +30,14 @@
 % Include other files into document
 \usepackage{subfiles}
 
+% Appendices
+\usepackage{tocloft}
+\newlistof{appendices}{apc}{\listappendicesname}
+\newcommand{\listappendicesname}{Appendices}
+\newcommand{\appendices}[1]{\addcontentsline{apc}{appendices}{#1}}
+%\newcommand{\newappendix}[1]{\section*{#1}\appendices{#1}}
+\newcommand{\newappendix}[1]{\appendices{#1}}
+
 % Bibliography and refrence manager with Biber
 \usepackage[backend=biber, % compile with biber (pdflatex %; biber %; pdflatex %; pdflatex %)
             sorting=none %  none means sort by appearance
@@ -120,8 +128,40 @@
 \listoftables
 \newpage
 
-%\section{Refrences}
 \printbibliography
 %TODO: Make Refrences a indexable countable section
+
+\newpage
+
+%TODO: This is not a proper way of having appendices. fix it?
+%TODO: Sort into correct order!
+\listofappendices  % This call Creates a large appendix header
+\appendix % This call gets nice A, B, C indexing to appendixes
+
+%\addtocontents{toc}{\cftpagenumbersoff{section}}
+
+See the attached Appendix zip for the appendix files. 
+Alternatively, see \url{github???} for online refrence.
+
+\section{Prosthetic Hand Simulation in CoppeliaSim}
+\label{appendix:handsim}
+
+\section{Hand Simulation Poses}
+\label{appendix:handsim_poses}
+
+\section{ROS2 Controller for the Prosthetic Hand}
+\label{appendix:roscontrol}
+
+\section{Modification \& Replaying Scripts for Motive CSV Files}
+\label{appendix:motiveformatting}
+
+\section{Motion-Capture \& sEMG Dataset}
+\label{appendix:dataset}
+
+\section{Pre-Processing Filter Graphs}
+\label{appendix:preprocessing}
+
+\section{Network Creation/Training/Testing Code}
+\label{appendix:networks}
 
 \end{document}

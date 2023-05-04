@@ -170,12 +170,12 @@ class boxPoseRender():
 
             # Increase speed factor
             if rl.is_key_pressed(rl.KeyboardKey.KEY_DOWN):
-                playback_speed -= 0.5
+                playback_speed -= 0.25
                 if playback_speed < 0:
                     playback_speed = 0
             # Decrease speed factor
             if rl.is_key_pressed(rl.KeyboardKey.KEY_UP):
-                playback_speed += 0.5
+                playback_speed += 0.25
 
             # Reset on Key Z
             if rl.is_key_pressed(rl.KeyboardKey.KEY_Z):
@@ -197,7 +197,7 @@ class boxPoseRender():
                 frame = frame + 1
                 frame_timer = 0
             if frame > int(self.mp.framecount)-1:
-                frame = 0
+                frame = int(self.mp.framecount)-1
 
             rl.begin_drawing()
             rl.clear_background(rl.WHITE)
@@ -239,8 +239,8 @@ class boxPoseRender():
             Z \t\t Jump to frame 0
             LEFT \t\t jump 100 frames forward
             RIGHT \t\t jump 100 frames backward
-            UP \t\t Speed up by 0.5x
-            DOWN \t\t Speed down by 0.5x
+            UP \t\t Speed up by 0.25x
+            DOWN \t\t Speed down by 0.25x
             """
             if is_showing_help:
                 rl.draw_text(helptext, 2, 200, 20, rl.BLACK)
