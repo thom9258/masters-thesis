@@ -109,12 +109,12 @@ The chosen muscles to record with sEMG sensors can be seen in table \ref{tab:mus
 \hline
 Muscle & Main Functionality \\ 
 \hline
-(A)  \textit{Flexor Digitorum Superficialis} & Flex of the 4 fingers \\
-(B)  \textit{Extensor Digitorum} & Extension of the fingers \\
-(C)  \textit{Extensor Carpi Radialis Longus} & Wrist exstension \& hand abduction \\
-(D)  \textit{Triceps Brachii (long head)} & Extension of the arm \\
-(E)  \textit{Biceps Brachii} & Flexion of the arm \\
-(F)  \textit{Pectoralis Major / Frontal Deltoid} & Movement of the Arm \\
+(A) \textit{Flexor Digitorum Superficialis} & Flex of the 4 fingers \\
+(B) \textit{Extensor Digitorum} & Extension of the fingers \\
+(C) \textit{Extensor Carpi Radialis Longus} & Wrist exstension \& hand abduction \\
+(D) \textit{Triceps Brachii (long head)} & Extension of the arm \\
+(E) \textit{Biceps Brachii} & Flexion of the arm \\
+(F) \textit{Pectoralis Major / Frontal Deltoid} & Movement of the Arm \\
 \hline
 \end{tabular}
 \caption{The muscles targeted with the 6 available sEMG sensors, as recommended by the papers  \cite{jarque2019} \& \cite{Batzianoulis2018}.
@@ -129,11 +129,14 @@ The muscles in table \ref{tab:muscletargets} are numbered, and the locations of 
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{Example figure text}
+\includegraphics[width=0.8\textwidth]{muscletargets.png}
+\caption{Muscle diagram, containing the target sEMG locations. The numbering corresponds to the muscle names in table \ref{tab:muscletargets}. The left image shows the muscles on the rear of the arm, while the right shows the muscles on the front of the arm.}
 \label{fig:musclesensors}
 \end{center}
 \end{figure}
+%TODO: Image is not final, might require adjustments..
+
+It was chosen to split the amount of sensors evenly along the lower-arm and the rest of the body in order to asses how important the different muscles are in prediction of the hand.
 
 \subsubsection{Motion Capture Glove}
 
@@ -172,7 +175,7 @@ The Motive Motion Capture software \cite{motive} had a lot of difficulty with fi
 The  Motive sofware used to generate the 3D poses is designed to detect 3D markers in the scene.
 Once the markers are found in the individual cameras, they are subject to an optimization algorithm that effectively tries to determine if the markers seen in 1 camera is the same as the markers in the other cameras.
 The first problem that occoured was specular reflection in the scene caused by shiny surfaces redirecting light in the target area.
-This creates \testit{phantom} markers that can be seen in only a small set of frames.
+This creates \textit{phantom} markers that can be seen in only a small set of frames.
 Another problem with the capture setup is the optimization algorithm.
 During recording of the dataset, it became apparent that it would not be possible to recort multiple fingers at the same time.
 3D markers very close to each other seemed to be connecting, and only become a single marker in the tracking software.
