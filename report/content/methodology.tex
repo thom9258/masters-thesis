@@ -50,15 +50,18 @@ It was chosen to use the Motive setup due to availablility and the additional be
 \label{sec:dataset}
 
 In order to train a simulated hand prosthetic, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
-The paper \cite{KeunTaeKim2021} proposes the SHAP procedure \cite{shap} as its main method of dataset creation.
-An alternative would be the Sollerman test \cite{sollerman} as both procedures are used in assessing the function and moveability of the human hand.
-By analyzing the most important gripping motions in both tests, it should be possible to denote a suitable set of grips that the dataset should contain.
+In order to create a dataset of the hand, it is important to choose a set of day-to-day movements the dataset should contain.
+The paper \cite{KeunTaeKim2021} proposes the ``Southampton Hand Assessment Procedure'' (SHAP) \cite{shap} as its main method of dataset creation, an alternative would be the ``Sollerman Hand  Function Test''  \cite{sollerman}.
+Both procedures are used in assessing the function and moveability of the human hand.
+By analyzing the most important gripping motions in both tests, it should be possible to denote a suitable set of grips that the dataset needs to contain.
 The sollerman grip types are ranked based on their usage percentage in activities of daily living.
-The most used grip types according to sollerman are the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}, see \cite{sollerman} for further details.
+From this, the most used grip types according to sollerman are the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}, see \cite{sollerman} for further details.
 SHAP also proposes a set of grip types that are used in day-to-day tasks, these are \textit{Spherical grip}, \textit{Tripod pinch}, \textit{Power grip} \& \textit{Lateral pinch}.
-
 In order to create a dataset mimics the movements of day-to-day tasks, the most important grips from \cite{sollerman} \& \cite{shap} has been chosen.
 The grip types that needs to be part of the dataset and their usage descriptions can be seen in table \ref{tab:grips}.
+A set of consise grip types has been chosen as an alternative to a larger set of general grips.
+This is done as a basis of creating a specialized dataset that would be easier to train and work with as a proof of concept.
+%The chosen grips are chosen as a basis for the creation of a dataset. creating 
 
 \begin{table}[h]
 \begin{center}
@@ -72,14 +75,10 @@ The grip types that needs to be part of the dataset and their usage descriptions
  Power grip & Between thumb, and all four fingers with contact to palm \\ 
  \hline
 \end{tabular}
-\caption{The most used hand grips in day-to-day tasks based on \cite{sollerman} \& \cite{shap}.}
+\caption{The most used hand grips in day-to-day tasks based on \textit{Southampton Hand Assessment Procedure} \cite{shap} \& \textit{Sollerman Hand Function Test} \cite{sollerman}.}
 \label{tab:grips}
 \end{center}
 \end{table}
-
-A set of consise grip types has been chosen as an alternative to a larger set of general grips.
-This is done as a basis of creating a specialized dataset that would be easier to train and work with as a proof of concept.
-%The chosen grips are chosen as a basis for the creation of a dataset. creating 
 
 
 \subsubsection{Existing datasets}
@@ -88,19 +87,45 @@ In addition to creating a dataset for this thesis, it would be intresting to com
 The paper \cite{jarque2019} proposes the use of their dataset \cite{kinmusdataset}.
 The dataset contains a very large set of recordings, consisting of precise anatomical angles of the hand, with the assosicated muscle activity of the forearm.
 The dataset consists of $572$ recordings from $22$ subjects, in both reaching, gripping \& releasing actions.
-
-Another dataset is explained in the paper \cite{ashirbad2022}.
-As an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
+Another dataset is explained in the paper \cite{ashirbad2022}, as an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
 The paper explains that the sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ bandpass buttersworth filter, and in order to remove powerline noise a $60Hz$ notch filter was used.
 The dataset was created on $43$ participants.
-
 
 %The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
 %TODO: Present more formally and mention company names.
 
-\subsubsection{Sensor Locations etc.}
+\subsubsection{sEMG Sensor Locations on the Body}
 
-The muscle recording sensors are located along the muscles of the forearm, the exact positions can be seen in figure \ref{fig:musclesensors}.
+To create a dataset that correlated muscle activity to the movements of the hand, it is important to choose a set of active muscles to record.
+$\sim 30$ muscles are used in total to control the hand, but it would not be possible to record all of them simultaneously.
+6 sEMG sensors were available in the Delsys Trigno \cite{trigno} system, and these needed to be placed optimally in order to increase recording of the most important muscles.
+Target areas on the lower-arm for sEMG sensors are proposed by the paper \cite{jarque2019}.
+Additionally, target areas of the upper-arm \& upper-body were chosen based on the suggestions from the paper \cite{Batzianoulis2018}.
+The chosen muscles to record with sEMG sensors can be seen in table \ref{tab:muscletargets}.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{ |l|l| } 
+\hline
+Muscle & Main Functionality \\ 
+\hline
+(A)  \textit{Flexor Digitorum Superficialis} & Flex of the 4 fingers \\
+(B)  \textit{Extensor Digitorum} & Extension of the fingers \\
+(C)  \textit{Extensor Carpi Radialis Longus} & Wrist exstension \& hand abduction \\
+(D)  \textit{Triceps Brachii (long head)} & Extension of the arm \\
+(E)  \textit{Biceps Brachii} & Flexion of the arm \\
+(F)  \textit{Pectoralis Major / Frontal Deltoid} & Movement of the Arm \\
+\hline
+\end{tabular}
+\caption{The muscles targeted with the 6 available sEMG sensors, as recommended by the papers  \cite{jarque2019} \& \cite{Batzianoulis2018}.
+ The targeted muscles contributes to a lot of the movements of hand \& lower-arm, and are ideal for the dataset.
+}
+\label{tab:muscletargets}
+\end{center}
+\end{table}
+
+The target muscles were chosen as they contribute to a lot of the overall movements of the hand \& lower-arm.
+The muscles in table \ref{tab:muscletargets} are numbered, and the locations of the individual sensor with the corresponding muscle can be seen in figure \ref{fig:musclesensors}.
 
 \begin{figure}[h]
 \begin{center}
@@ -110,7 +135,9 @@ The muscle recording sensors are located along the muscles of the forearm, the e
 \end{center}
 \end{figure}
 
-%\subsubsection{Trial/motion overview}
+\subsubsection{Problems with Creating a Dataset}
+
+
 
 \subsubsection{Motion Capture Glove}
 
@@ -140,7 +167,7 @@ An example of flexion with the capture glove can be seen in figure \ref{fig:glov
 \end{figure}
 \end{center}
 
-\textbf{Problems with Design of the Capture Glove and its Software}
+\subsubsection{Problems with Creating a Capture Glove}
 
 During testing several problems with the capture glove design became apparent.
 The Motive sofware used to generate the 3D poses of the markers uses an optimization algorithm that effectively tries to determine if the markers seen in 1 camera is the same as the markers in the other cameras.
@@ -151,7 +178,6 @@ On top of aggressive optimization, the markers also had a tendency to dissapear 
 
 %TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
 %TODO: Bones of the hand: https://www.bidneedham.org/departments/orthopaedics/hand-program/anatomy-hand-and-wrist
-
 \subsection{Design of a Simulated Prosthetic Hand}
 \label{sec:prost_sim}
 
@@ -201,7 +227,7 @@ Based on the literature review in Section \label{sec:literature}, it becomes app
 Raw sEMG data contains a lot of unwanted noise as explained in section \ref{sec:noise}.
 Some of the noise can be can be removed through signal processing using filters.
 State-of-the-Art papers use a lot of different methods to reduce noise in sEMG data.
-The paper \cite{multdof} proposes the use of a $50Hz$ Notch filter, while papers \cite{graspintent} \& \cite{ashirbad2022} respectively chooses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$ band-pass Buttersworth filter.
+The paper \cite{multdof} proposes the use of a $50Hz$ Notch filter, while papers \cite{graspintent} \& \cite{ashirbad2022} respectively chooses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$ band-pass Buttersworth filter, lastly the paper proposes a $60Hz$ notch filter in order to remove powerline noise.
 Due to me many different filtering types used in state-of-the-art, it was determined that the use of a filter depends on the specific sEMG data, and that the best filter for this thesis is to be determined through testing.
 
 \subsection{Network Design}
