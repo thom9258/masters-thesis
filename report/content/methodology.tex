@@ -135,10 +135,6 @@ The muscles in table \ref{tab:muscletargets} are numbered, and the locations of 
 \end{center}
 \end{figure}
 
-\subsubsection{Problems with Creating a Dataset}
-
-
-
 \subsubsection{Motion Capture Glove}
 
 The motive capture system created by OptiTrack is a set of 8 high-quality cameras mounted to cover a target capture area.
@@ -167,14 +163,35 @@ An example of flexion with the capture glove can be seen in figure \ref{fig:glov
 \end{figure}
 \end{center}
 
-\subsubsection{Problems with Creating a Capture Glove}
+\subsubsection{Problems with Motive Tacking Software \& Capture Glove}
 
-During testing several problems with the capture glove design became apparent.
-The Motive sofware used to generate the 3D poses of the markers uses an optimization algorithm that effectively tries to determine if the markers seen in 1 camera is the same as the markers in the other cameras.
-This optimization technique is prone to specular reflection in the scene caused by shiny surfaces redirecting light in the target area.
-Furthermore, the optimization algorithm seemed during recording to be optimizing 3D markers adjacent to each other into the same 3D pose.
-This problem occoured when the markers at the finger tips of the glove came in contact with each other causing data to be lost.
-On top of aggressive optimization, the markers also had a tendency to dissapear if less than 3 cameras were able to detect it, causing problems with the resulting continurity of the 3D poses. 
+During testing and the creation of the dataset, several problems with the capture glove design and the capture setup became apparent.
+These problem severely reduced the amount of time available to create and process a large dataset for this thesis.
+The Motive Motion Capture software \cite{motive} had a lot of difficulty with finding, recording and optimizing the 3D markers placed on the capture glove.
+
+The  Motive sofware used to generate the 3D poses is designed to detect 3D markers in the scene.
+Once the markers are found in the individual cameras, they are subject to an optimization algorithm that effectively tries to determine if the markers seen in 1 camera is the same as the markers in the other cameras.
+The first problem that occoured was specular reflection in the scene caused by shiny surfaces redirecting light in the target area.
+This creates \testit{phantom} markers that can be seen in only a small set of frames.
+Another problem with the capture setup is the optimization algorithm.
+During recording of the dataset, it became apparent that it would not be possible to recort multiple fingers at the same time.
+3D markers very close to each other seemed to be connecting, and only become a single marker in the tracking software.
+This problem specifically occoured when the markers at the finger tips of the glove came in contact with each other causing marker data to be lost.
+Furthermore, the Motive Capture software uses an auto-labeling system that is able to determine if the markers seen in one frame, are the same markers in the next frame.
+This system proved to only be semi-relieable, giving labeled marker sequences of less than $\sim 200$.
+During a sequence of 15 seconds of recording, a set of 7 markers in the scene became over $100$ labeled marker tracks. And the problem increased as 30 seconds of fotage could create up to 1000 marker labels.
+This problem requires the user to manually combine labeled marker sections into larger labeled sections.
+
+%TODO: Mention that markers needs to be very close (2-3 cm) and this might not be intended for motive software.
+
+
+\subsubsection{Methods to reduce Problems with the Motive Tracking Software}
+
+
+% In order to fix some of the problems, caused by the setup, software was written.
+%TODO: shitty starter
+
+
 
 %TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
 %TODO: Bones of the hand: https://www.bidneedham.org/departments/orthopaedics/hand-program/anatomy-hand-and-wrist
