@@ -118,7 +118,7 @@ def KMSession2InputsGts(session, inputLen, gtLen, verbose=False):
 
 
 def KMSessions2InputsGts(sessions, n_sessions, inputLen, gtLen):
-    example = 0
+    example = True
     if n_sessions < len(sessions) and n_sessions > 0:
         sessions = sessions[:n_sessions]
 
@@ -127,7 +127,7 @@ def KMSessions2InputsGts(sessions, n_sessions, inputLen, gtLen):
         # Extract session data
         i, g = s.slice_sequence_into_InputsGts(inputLen, gtLen)
 
-        if example == 0:
+        if example:
             i0 = i[0]
             g0 = g[0]
             print("Input:")
@@ -136,7 +136,7 @@ def KMSessions2InputsGts(sessions, n_sessions, inputLen, gtLen):
             print("Ground truth:")
             print(f"type {type(g0)}, dims [{len(g0)}, {len(g0[0])}]")
             print(g0)
-            example = 1
+            example = False
         inputs = KMconcat(inputs, i)
         gts = KMconcat(gts, g)
     # print(f"input dataset len = {len(inputs)}")

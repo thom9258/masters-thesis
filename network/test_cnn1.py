@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import random
 import sys
 import torch
@@ -6,64 +8,10 @@ from torch import nn
 from torch.nn import functional as F
 import numpy as np
 
+from cnnmodels import SimpleCNN, SimpleCNN2
 from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSessions2InputsGts
 from th_ai import th_csv, th_dataset, th_dataloaderCreate, th_datasetSlice
 from th_ai import th_quickPlot, th_mlp
-
-
-class SimpleCNN(nn.Module):
-    def __init__(self, input_size, output_size, verbose=False):
-        super(SimpleCNN, self).__init__()
-        self.verbose = verbose
-
-        self.conv1 = nn.Conv2d(1, 16, kernel_size=3, stride=1, padding=1)
-        self.relu1 = nn.ReLU()
-        self.conv2 = nn.Conv2d(16, 32, kernel_size=3, stride=1, padding=1)
-        self.relu2 = nn.ReLU()
-        self.flatten = nn.Flatten()
-        self.fc1 = nn.Linear(input_size*32, 64)
-        self.relu3 = nn.ReLU()
-        self.fc2 = nn.Linear(64, output_size)
-
-    def forward(self, x):
-        if self.verbose:
-            print("="*50)
-            print("Network Shape:")
-            print("input shape: ", x.shape)
-        # NOTE: We unsqueeze because our data needs an extra dimension:
-        # We want this structure: [batchsz, channels, w, h]
-        # so we unsqueeze and permute our input: [batchsz, w, h]
-        x = x.unsqueeze(0)
-        if self.verbose:
-            print("unsqueeze shape: ", x.shape)
-        x = x.permute(1, 0, 2, 3)
-        if self.verbose:
-            print("unsqueeze+permute shape: ", x.shape)
-        x = self.conv1(x)
-        x = self.relu1(x)
-        if self.verbose:
-            print("conv1 shape: ", x.shape)
-        x = self.conv2(x)
-        x = self.relu2(x)
-        if self.verbose:
-            print("conv2 shape: ", x.shape)
-        # Linear Part
-        x = self.flatten(x)
-        if self.verbose:
-            print("flattened shape: ", x.shape)
-        x = self.fc1(x)
-        x = self.relu3(x)
-        if self.verbose:
-            print("linear1 shape: ", x.shape)
-        x = self.fc2(x)
-        if self.verbose:
-            print("linear2 shape: ", x.shape)
-
-        if self.verbose:
-            print("output shape: ", x.shape)
-            print("="*50)
-        self.verbose = False
-        return x
 
 
 class regressionModel:
@@ -145,18 +93,46 @@ class regressionModel:
 # regressionModel
 
 
+def gtsFindMinMax(gts):
+    maxval = -99990
+    minval =  99999
+    for i, gt in enumerate(gts):
+        for val in gt[0]:
+            if val > maxval:
+                maxval = val
+            if val < minval:
+                minval = val 
+    print(f"min = ({minval}), max = {maxval}")
+    return minval, maxval
+
+def gtsMinMaxNormalize(gts, minval, maxval):
+    for i in range(len(gts)):
+        # print(f"gtset      = {gts[i][0]}")
+        norms = []
+        for val in gts[i][0]:
+            norms.append((val-minval)/(maxval-minval))
+        gts[i][0] = norms
+        # print(f"normalized = {gts[i][0]}")
+    return gts
+
 def main():
     # Tuneable parameters
     path = "datasets/KIN_MUS_UJI.mat"
-    maxepocs = 100
-    batchSize = 8
-    inputLen = 10
+    maxepocs = 20
+    batchSize = 16
+    inputLen = 20 
     gtLen = 1
-    n_sessions_in_trainer = 1
+    n_sessions_in_trainer = 10
     angle = 12
 
     sessions = KIN_MUS_sessions_get(path)
+    print(f"{len(sessions)} in training model.")
+
     inputs, gts = KMSessions2InputsGts(sessions, n_sessions_in_trainer, inputLen, gtLen)
+
+    minval, maxval = gtsFindMinMax(gts)
+    gts = gtsMinMaxNormalize(gts, minval, maxval)
+
     dataset = th_dataset(inputs, gts)
 
     # NON-Tuneable parameters below
@@ -201,8 +177,6 @@ def main():
     print("="*80)
     print("="*80)
 
-    inputs, gts = KMSessions2InputsGts([sessions[0]], 1, inputLen, gtLen)
-
     def datasetPredict(s_inputs, s_gts, trainer):
         gts = []
         preds = []
@@ -217,12 +191,33 @@ def main():
             preds.append(res)
         return preds, gts
 
+
+    inputs, gts = KMSessions2InputsGts([sessions[2]], 1, inputLen, gtLen)
     gts, preds = datasetPredict(inputs, gts, model)
 
+    # Un-normalize
+    for i, val in enumerate(gts):
+        gts[i] = val * (maxval - minval) + minval
+
+
     # Plot ground truth distribution and its predicted counterpart
-    th_quickPlot([gts, preds],
+    th_quickPlot([preds, gts],
                  [f"GT (Angle={angle})", "Prediction"],
                  axis_labels=["Timestep", "Angle [Degrees]"])
+
+
+    inputs, gts = KMSessions2InputsGts([sessions[3]], 1, inputLen, gtLen)
+    gts, preds = datasetPredict(inputs, gts, model)
+
+    # Un-normalize
+    for i, val in enumerate(gts):
+        gts[i] = val * (maxval - minval) + minval
+
+    # Plot ground truth distribution and its predicted counterpart
+    th_quickPlot([preds, gts],
+                 [f"GT (Angle={angle})", "Prediction"],
+                 axis_labels=["Timestep", "Angle [Degrees]"])
+
 
 
 if __name__ == "__main__":

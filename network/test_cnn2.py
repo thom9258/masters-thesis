@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import random
 import torch
 from torch import nn
@@ -7,7 +9,7 @@ import numpy as np
 from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSessions2InputsGts
 from th_ai import th_csv, th_dataset, th_dataloaderCreate, th_datasetSlice
 from th_ai import th_quickPlot, th_datasetPredict, th_mlp
-from th_ai import th_regressionModel, th_tinymlp, th_m5
+from th_ai import th_regressionModel, th_tinymlp
 
 
 def build_cnn_layer(in_channels, out_channels, kernel_size=3, stride=1, padding=1,
@@ -105,6 +107,8 @@ def main():
                                                         batch_size=batchSize,
                                                         shuffle=True)
     network = build_cnn_model()
+
+
 
 
 if __name__ == "__main__":

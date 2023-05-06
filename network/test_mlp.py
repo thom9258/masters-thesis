@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import random
 import torch
 import numpy as np
@@ -81,8 +83,6 @@ def main():
     print("="*80)
     print("="*80)
 
-    inputs, gts = KMSession2InputsGts(sessions[0], inputLen, gtLen)
-
     def datasetPredict(s_inputs, s_gts, trainer):
         gts = []
         preds = []
@@ -98,14 +98,21 @@ def main():
             preds.append(res)
         return preds, gts
 
+    inputs, gts = KMSession2InputsGts(sessions[2], inputLen, gtLen)
     gts, preds = datasetPredict(inputs, gts, model)
 
     # Plot ground truth distribution and its predicted counterpart
-    th_quickPlot([gts, preds],
+    th_quickPlot([preds, gts],
                  ["GT", "Prediction"],
                  axis_labels=["GT Angle", "Predicted Angle"])
 
 
+    inputs, gts = KMSessions2InputsGts([sessions[3]], 1, inputLen, gtLen)
+    gts, preds = datasetPredict(inputs, gts, model)
+    # Plot ground truth distribution and its predicted counterpart
+    th_quickPlot([preds, gts],
+                 [f"GT (Angle)", "Prediction"],
+                 axis_labels=["Timestep", "Angle [Degrees]"])
 
 
 if __name__ == "__main__":
