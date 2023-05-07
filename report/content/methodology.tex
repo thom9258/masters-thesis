@@ -167,6 +167,7 @@ An example of flexion with the capture glove can be seen in figure \ref{fig:glov
 \end{center}
 
 \subsubsection{Problems with Motive Tacking Software \& Capture Glove}
+\label{sec:motiveproblems}
 
 During testing and the creation of the dataset, several problems with the capture glove design and the capture setup became apparent.
 These problem severely reduced the amount of time available to create and process a large dataset for this thesis.
@@ -289,7 +290,10 @@ Furthermore, due to the training dataset \cite{kinmusdataset} from section \ref{
 Network types ideal for time-based data are Recurrent Neural Networks (RNN).
 RNN networks are similar to MLP's with the main difference being that a RNN keeps a hidden memory state that is derived from earlier inputs.
 This functionality makes RNN networks ideal for concurrent, time-based systems where a sequencial input distribution needs to be converted to a output regression.  
+Additionally, since the RNN network does not use a window of data, it would be able to have a quicker response time than a MLP or a CNN.
 
+A variant of a RNN can contain a special kind of hidden memory called Long Short Term Memory (LSTM).
+a LSTM uses gates as a way of containing a memory.
 
 %TODO: Some introduction and explanation of RNN and LSTM types of networks.
 %TODO: Go back and see what papers uses these.

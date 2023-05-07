@@ -5,43 +5,117 @@
 \begin{document}
 \section{Tests \& Results}
 
-\subsection{1. (Machine Learning Algorithms)}
-%TODO: Determine what algorithms i want here
+Due to the problems with the Motive motion capture software explained in section \ref{sec:motiveproblems}, it was determined that the main dataset for training the chosen methods would be based on dataset \cite{kinmusdataset} from the paper \cite{jarque2019}.
+The dataset created during the development of this thesis will be used as an additional test. 
+The dataset has been pre-processed using a 4th-order bandpass filter with a band of  $25$ to $500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
 
-\subsubsection{Types of Features for extraction}
-\textbf{Method}\\
-\textbf{Test}\\
-\textbf{Results}\\
 
-\subsection{2. Windowed MLP/CNN}
+\subsection{Windowed Multi Layer Perceptron Network}
 
-\subsubsection{Pre-Processing Filters}
-\textbf{Method}\\
-\textbf{Test}\\
-\textbf{Results}\\
+In order to initially test the the dataset, a simple MLP network will be trained as a baseline for performance, and for testing the general applicability of window-based networks.
 
-\subsubsection{Window Size}
-\textbf{Method}\\
-\textbf{Test}\\
-\textbf{Results}\\
 
-\subsubsection{Training Parameters}
-\textbf{Method}\\
-\textbf{Test}\\
-\textbf{Results}\\
 
-\subsubsection{Types of Features for extraction}
-\textbf{Method}\\
-\textbf{Test}\\
-\textbf{Results}\\
 
-\subsection{3. Recurrent Neural Networks}
 
-\subsubsection{Training Parameters}
-\textbf{Method}\\
-\textbf{Test}\\
-\textbf{Results}\\
+\subsection{Windowed Convolusional Neural Networks}
 
+A CNN network as alternative to the MLP network is to be tested.
+A CNN is trained on the network, using a window size of 40 samples were used.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{cnn_trainvalid.pdf}
+\caption{Example figure text}
+\label{fig:cnntrainvalid}
+\end{center}
+\end{figure}
+
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{CNNtest0.pdf}
+         \caption{}
+         \label{fig:y equals x}
+     \end{subfigure}
+     \hfill
+     \centering
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{CNNtest1.pdf}
+         \caption{}
+         \label{fig:y equals x}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{CNNtest2.pdf}
+         \caption{}
+         \label{fig:three sin x}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{CNNtest3.pdf}
+         \caption{}
+         \label{fig:five over x}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{CNNtest4.pdf}
+         \caption{}
+         \label{fig:five over x}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{CNNtest5.pdf}
+         \caption{}
+         \label{fig:five over x}
+     \end{subfigure}
+     \hfill
+     \caption{Regression of Finger angles using a CNN network.}
+     \label{fig:CNNregression}
+\end{figure}
+
+
+
+%\subsubsection{Pre-Processing Filters}
+%\textbf{Method}\\
+%\textbf{Test}\\
+%\textbf{Results}\\
+%
+%\subsubsection{Window Size}
+%\textbf{Method}\\
+%\textbf{Test}\\
+%\textbf{Results}\\
+%
+%\subsubsection{Training Parameters}
+%\textbf{Method}\\
+%\textbf{Test}\\
+%\textbf{Results}\\
+%
+%\subsubsection{Types of Features for extraction}
+%\textbf{Method}\\
+%\textbf{Test}\\
+%\textbf{Results}\\
+%
+%\subsection{3. Recurrent Neural Networks}
+%
+%\subsubsection{Training Parameters}
+%\textbf{Method}\\
+%\textbf{Test}\\
+%\textbf{Results}\\
+%
+%\subsection{(Machine Learning Algorithms)}
+%%TODO: Determine what algorithms i want here
+%
+%\subsubsection{Types of Features for extraction}
+%\textbf{Method}\\
+%\textbf{Test}\\
+%\textbf{Results}\\
 
 \subsection{Useability of the Simulated Prosthetic Hand}
 

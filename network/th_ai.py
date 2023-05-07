@@ -393,14 +393,18 @@ class th_dataset(torch.utils.data.Dataset):
 # th_dataset
 
 
-def th_quickPlot(data, data_labels, axis_labels=["x", "y"]):
-    plt.figure()
+def th_quickPlot(data, data_labels, axis_labels=["x", "y"], inches=[0, 0], save_pdf_as=None):
+    fig = plt.figure()
+    if inches != [0, 0]:
+        fig.set_size_inches((inches[0], inches[1]))
     plt.xlabel(axis_labels[0])
     plt.ylabel(axis_labels[1])
     for i in range(0, len(data)):
         plt.plot(data[i], label=data_labels[i])
     plt.legend()
     plt.grid()
+    if save_pdf_as:
+        plt.savefig(save_pdf_as, format="pdf", bbox_inches="tight")
     plt.show()
 
 

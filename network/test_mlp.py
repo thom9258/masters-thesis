@@ -8,7 +8,7 @@ from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSessions2InputsGts,
 from th_ai import th_csv, th_dataset, th_dataloaderCreate, th_datasetSlice
 from th_ai import th_quickPlot, th_datasetPredict, th_mlp
 from th_ai import th_regressionModel, th_tinymlp
-
+from normalize import gtsFindMinMax, gtsMinMaxNormalize, sequenceUnNormalize
 
 def main():
     # Tuneable parameters
@@ -16,14 +16,19 @@ def main():
     path = "datasets/KIN_MUS_UJI.mat"
     save_model_after_training = True
     use_existing_model = False
-    maxepocs = 100
-    batchSize = 16
-    inputLen = 10
+    maxepocs = 20
+    batchSize =  8
+    inputLen = 1
     gtLen = 1
-    n_sessions_in_trainer = 10
+    n_sessions_in_trainer = 40
 
     sessions = KIN_MUS_sessions_get(path)
     inputs, gts = KMSessions2InputsGts(sessions, n_sessions_in_trainer, inputLen, gtLen)
+
+    # Normalize GT data
+    minval, maxval = gtsFindMinMax(gts)
+    gts = gtsMinMaxNormalize(gts, minval, maxval)
+
 
     print(f"INPUTS size = {inputs[0].shape}")
     print(f"GTS size    = {gts[0].shape}")
@@ -49,7 +54,7 @@ def main():
     network = th_mlp()
     network.create(inputSize=network_inputLen,
                    outputSize=network_outputLen,
-                   hiddenLayerSize=128,
+                   hiddenLayerSize=16,
                    hiddenLayerCount=4,
                    useBatchNorm=False,
                    )
@@ -98,8 +103,9 @@ def main():
             preds.append(res)
         return preds, gts
 
-    inputs, gts = KMSession2InputsGts(sessions[2], inputLen, gtLen)
+    inputs, gts = KMSessions2InputsGts([sessions[2]], 1, inputLen, gtLen)
     gts, preds = datasetPredict(inputs, gts, model)
+    gts = sequenceUnNormalize(gts, minval, maxval)
 
     # Plot ground truth distribution and its predicted counterpart
     th_quickPlot([preds, gts],
@@ -109,6 +115,8 @@ def main():
 
     inputs, gts = KMSessions2InputsGts([sessions[3]], 1, inputLen, gtLen)
     gts, preds = datasetPredict(inputs, gts, model)
+    gts = sequenceUnNormalize(gts, minval, maxval)
+
     # Plot ground truth distribution and its predicted counterpart
     th_quickPlot([preds, gts],
                  [f"GT (Angle)", "Prediction"],

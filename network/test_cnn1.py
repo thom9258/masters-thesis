@@ -12,6 +12,7 @@ from cnnmodels import SimpleCNN, SimpleCNN2
 from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSessions2InputsGts
 from th_ai import th_csv, th_dataset, th_dataloaderCreate, th_datasetSlice
 from th_ai import th_quickPlot, th_mlp
+from normalize import gtsFindMinMax, gtsMinMaxNormalize, sequenceUnNormalize
 
 
 class regressionModel:
@@ -92,35 +93,13 @@ class regressionModel:
                 break
 # regressionModel
 
-
-def gtsFindMinMax(gts):
-    maxval = -99990
-    minval =  99999
-    for i, gt in enumerate(gts):
-        for val in gt[0]:
-            if val > maxval:
-                maxval = val
-            if val < minval:
-                minval = val 
-    print(f"min = ({minval}), max = {maxval}")
-    return minval, maxval
-
-def gtsMinMaxNormalize(gts, minval, maxval):
-    for i in range(len(gts)):
-        # print(f"gtset      = {gts[i][0]}")
-        norms = []
-        for val in gts[i][0]:
-            norms.append((val-minval)/(maxval-minval))
-        gts[i][0] = norms
-        # print(f"normalized = {gts[i][0]}")
-    return gts
-
 def main():
     # Tuneable parameters
     path = "datasets/KIN_MUS_UJI.mat"
     maxepocs = 20
-    batchSize = 16
+    batchSize = 8
     inputLen = 20 
+    #inputLen = 40 
     gtLen = 1
     n_sessions_in_trainer = 10
     angle = 12
@@ -130,6 +109,7 @@ def main():
 
     inputs, gts = KMSessions2InputsGts(sessions, n_sessions_in_trainer, inputLen, gtLen)
 
+    # Normalize GT data
     minval, maxval = gtsFindMinMax(gts)
     gts = gtsMinMaxNormalize(gts, minval, maxval)
 
@@ -171,7 +151,8 @@ def main():
     print(f"Best MSE: {model.best_validation_MSE}")
     th_quickPlot([model.train_MSEs, model.validation_MSEs],
                  ["train", "valid"],
-                 axis_labels=["Epoch", "MSE"])
+                 axis_labels=["Epoch", "MSE"],
+                 inches=[8, 4])
 
     print("="*80)
     print("="*80)
@@ -191,32 +172,35 @@ def main():
             preds.append(res)
         return preds, gts
 
+    print(f"LENGTH OF SESSIONS: {len(sessions)}")
 
-    inputs, gts = KMSessions2InputsGts([sessions[2]], 1, inputLen, gtLen)
-    gts, preds = datasetPredict(inputs, gts, model)
+    for i in range(6):
+        stt = 2+i
+        inputs, gts = KMSessions2InputsGts([sessions[stt]], 1, inputLen, gtLen)
+        gts, preds = datasetPredict(inputs, gts, model)
+        gts = sequenceUnNormalize(gts, minval, maxval)
+        # Plot ground truth distribution and its predicted counterpart
+        th_quickPlot([preds, gts],
+                    [f"GT (Angle={angle}, Session={stt})", "Prediction"],
+                     axis_labels=["Timestep", "Angle [Degrees]"],
+                     inches=[6,3],
+                     save_pdf_as=f"CNNtest{i}.pdf"
+                     #save_pdf_as="~/Masters-Thesis/report/src/CNNtest{i}.pdf"
+                     )
 
-    # Un-normalize
-    for i, val in enumerate(gts):
-        gts[i] = val * (maxval - minval) + minval
 
 
-    # Plot ground truth distribution and its predicted counterpart
-    th_quickPlot([preds, gts],
-                 [f"GT (Angle={angle})", "Prediction"],
-                 axis_labels=["Timestep", "Angle [Degrees]"])
-
-
-    inputs, gts = KMSessions2InputsGts([sessions[3]], 1, inputLen, gtLen)
-    gts, preds = datasetPredict(inputs, gts, model)
-
-    # Un-normalize
-    for i, val in enumerate(gts):
-        gts[i] = val * (maxval - minval) + minval
-
-    # Plot ground truth distribution and its predicted counterpart
-    th_quickPlot([preds, gts],
-                 [f"GT (Angle={angle})", "Prediction"],
-                 axis_labels=["Timestep", "Angle [Degrees]"])
+    # stt = 3
+    # inputs, gts = KMSessions2InputsGts([sessions[stt]], 1, inputLen, gtLen)
+    # gts, preds = datasetPredict(inputs, gts, model)
+    # 
+    # # Un-normalize
+    # gts = sequenceUnNormalize(gts, minval, maxval)
+    # 
+    # # Plot ground truth distribution and its predicted counterpart
+    # th_quickPlot([preds, gts],
+    #              [f"GT (Angle={angle}, Session={stt})", "Prediction"],
+    #              axis_labels=["Timestep", "Angle [Degrees]"])
 
 
 
