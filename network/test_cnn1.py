@@ -95,10 +95,11 @@ class regressionModel:
 
 def main():
     # Tuneable parameters
+    produce_graphs = False
     path = "datasets/KIN_MUS_UJI.mat"
-    maxepocs = 20
+    maxepocs = 10
     batchSize = 8
-    inputLen = 20 
+    inputLen = 20
     #inputLen = 40 
     gtLen = 1
     n_sessions_in_trainer = 10
@@ -108,6 +109,22 @@ def main():
     print(f"{len(sessions)} in training model.")
 
     inputs, gts = KMSessions2InputsGts(sessions, n_sessions_in_trainer, inputLen, gtLen)
+
+    print("="*80)
+    print("gts[0] = ")
+    print(gts[0])
+    print("="*80)
+
+    # Remove unwanted angles:
+    gts_reduced = []
+    for val in gts:
+        gts_reduced.append([[val[0][angle]]])
+    gts = gts_reduced
+
+    print("="*80)
+    print("gts[0] = ")
+    print(gts[0])
+    print("="*80)
 
     # Normalize GT data
     minval, maxval = gtsFindMinMax(gts)
@@ -168,7 +185,8 @@ def main():
             gts.append(sg[0][angle])
             # Generate a prediction using trained model
             si = torch.FloatTensor(np.array([si]))
-            res = trainer.predict(si)[0][angle]
+            res = trainer.predict(si)[0]
+            # res = trainer.predict(si)[0][angle]
             preds.append(res)
         return preds, gts
 
@@ -180,15 +198,17 @@ def main():
         gts, preds = datasetPredict(inputs, gts, model)
         gts = sequenceUnNormalize(gts, minval, maxval)
         # Plot ground truth distribution and its predicted counterpart
+        if produce_graphs:
+            pdf=None
+        else:
+            pdf=f"CNNtest{i}.pdf"
         th_quickPlot([preds, gts],
                     [f"GT (Angle={angle}, Session={stt})", "Prediction"],
                      axis_labels=["Timestep", "Angle [Degrees]"],
                      inches=[6,3],
-                     save_pdf_as=f"CNNtest{i}.pdf"
+                     save_pdf_as=pdf
                      #save_pdf_as="~/Masters-Thesis/report/src/CNNtest{i}.pdf"
                      )
-
-
 
     # stt = 3
     # inputs, gts = KMSessions2InputsGts([sessions[stt]], 1, inputLen, gtLen)

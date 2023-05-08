@@ -256,54 +256,6 @@ Due to me many different filtering types used in state-of-the-art, it was determ
 
 %TODO: Convert n sEMG angles into a image heat map kinda, and compare before and after different filters? the z dimension could be change in values?
 
-\subsection{Network Design}
-
-\subsubsection{Window-Based Neural Network Designs}
-
-%TODO: needs sources for this stuff?
-
-%TODO: Some introduction and explanation of MLP and CNN types of networks.
-%TODO: Go back and see what papers uses CNN's
-Neural Networks are widely used in the field of AI.
-One type of widely used neural network is a fully-connected Multi-Layer Perceptron (MLP) Network.
-The MLP network is popular due to its structure and training capabilities.
-A MLP consists of layers of weighted activation functions where each activation function in a layer recieves the entire previous layer's output summed up as input.
-Due to the structure of a MLP, the network is capable of recieving a set of inputs and be trained to approximate a n'th degree polynomial function that relates the given inputs and outputs.
-The network is trained by updating the individual weights through backpropagation with the predicted output and a ground-truth output.
-The MLP network could be used to predict the relation between muscle activity and finger movements.
-
-An alternative to a MLP that is similar in functionality is a Convoluted Neural Network (CNN).
-A CNN consists of a set of Convolutional Layers that deforms inputs to abstract convolution features.
-The structure is considered sparcely connected due to the convolution layers are only recieving a subset of the previous convolution features.
-The feature conversion is ideal when a network needs to become robust and needs to recognize larger concepts in the input.
-This functionality is especially used when the input data takes the shape of a matrix.
-Once the input is convoluted to a chosen feature abstraction, it is given to a MLP strucure trained to convert the convolution features into a useable output.
-
-MLP \& CNN networks have no time-based functionality, they recieve a set of inputs and produce an output.
-Because of this, the sEMG muscle activity is segmented into windows of a decired size, the output angles are then chosen to be the first angle after the window.
-Furthermore, due to the training dataset \cite{kinmusdataset} from section \ref{sec:dataset},  containing joint angles as ground truth, both methods are trained as regression networks rather than classification networks, and are trained using Mean Square Error (MSE) loss.
-
-%TODO: Images of these for better clarity!!!!
-
-\subsubsection{Recurrent Neural Network Designs}
-
-Network types ideal for time-based data are Recurrent Neural Networks (RNN).
-RNN networks are similar to MLP's with the main difference being that a RNN keeps a hidden memory state that is derived from earlier inputs.
-This functionality makes RNN networks ideal for concurrent, time-based systems where a sequencial input distribution needs to be converted to a output regression.  
-Additionally, since the RNN network does not use a window of data, it would be able to have a quicker response time than a MLP or a CNN.
-
-A variant of a RNN can contain a special kind of hidden memory called Long Short Term Memory (LSTM).
-a LSTM uses gates as a way of containing a memory.
-
-%TODO: Some introduction and explanation of RNN and LSTM types of networks.
-%TODO: Go back and see what papers uses these.
-
-\subsubsection{Machine-Learning Designs}
-
-%TODO: Some introduction and explanation of feature extraction, what types and papers that uses these.
-%TODO: Some introduction and explanation of SVM and LDA types of networks.
-%TODO: Go back and see what papers uses these.
-
 %\subsection{Software Hand Design}
 
 \end{document}
