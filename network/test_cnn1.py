@@ -148,9 +148,9 @@ def main():
                                                         batch_size=batchSize,
                                                         shuffle=True)
 
-    network = SimpleCNN(input_size=network_inputLen,
-                        output_size=network_outputLen,
-                        verbose=True)
+    network = SimpleCNN2(input_size=network_inputLen,
+                         output_size=network_outputLen,
+                         verbose=True)
 
     loss_function = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(network.parameters(), lr=1e-4)

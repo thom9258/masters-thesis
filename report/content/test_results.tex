@@ -44,16 +44,32 @@ The structure is considered sparcely connected due to the convolution layers are
 The feature conversion is ideal when a network needs to become robust and needs to recognize larger concepts in the input.
 This functionality is especially used when the input data takes the shape of a matrix.
 Once the input is convoluted to a chosen feature abstraction, it is given to a MLP strucure trained to convert the convolution features into a useable output.
-
 %TODO: needs sources for this stuff?
 %TODO: Go back and see what papers uses CNN's
-CNN networks have no time-based functionality, they recieve a set of inputs and produce an output.
-Because of this, the sEMG muscle activity is segmented into windows of a decired size, the output angles are then chosen to be the first angle after the window.
-
+CNN networks have no buildin time-based functionality, they recieve a set of inputs and produce an output.
+It is possible however to represent time if the input is given in segments consisting of multiple timeframes.
+Because of this, the sEMG muscle activity from the dataset is segmented into windows of a desired size, the output angles that the network should do regression towards are then chosen to be the first angle after the window.
 %TODO: Images of these for better clarity!!!!
+A CNN network can be used in the field of sEMG processing due to the convolution layer's ability to learn abstract formations of the sEMG data.
+The network would be able to identify patterns in sEMG data and correlate them to an appropoate output.
+%TODO: formations? another word?
+For this test, a CNN network is created that has the network structure seen in figure \ref{fig:cnn_structure}.
 
-A CNN network as alternative to the MLP network is to be tested.
-A CNN is trained on the network, using a window size of 40 samples were used.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{example-image-a}
+\caption{Chosen CNN network structure.}
+\label{fig:cnn_structure}
+\end{center}
+\end{figure}
+%TODO: figure of network
+
+As visualized in the figure, the CNN network consists of 3 Convolution layers followed by two MLP layers.
+The Convolution layers extract features up to a size of 
+%A CNN is trained on the network, using a window size of 40 samples were used.
+%TODO: Give example of a state-of-the-art paper CNN as an alternative to mine!!!
+
+
 
 %TODO: this is not a good way to show results!
 %\begin{figure}[h]
