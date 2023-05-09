@@ -98,7 +98,7 @@ def main():
     produce_graphs = False
     path = "datasets/KIN_MUS_UJI.mat"
     maxepocs = 10
-    batchSize = 8
+    batchSize = 16
     inputLen = 20
     #inputLen = 40 
     gtLen = 1

@@ -68,9 +68,11 @@ class SimpleCNN2(nn.Module):
         self.conv3 = nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1)
         self.relu2 = nn.ReLU()
         self.flatten = nn.Flatten()
-        self.fc1 = nn.Linear(input_size*32, 64)
+        self.fc1 = nn.Linear(input_size*32, 256)
         self.relu3 = nn.ReLU()
-        self.fc2 = nn.Linear(64, output_size)
+        self.fc2 = nn.Linear(256, 64)
+        self.relu4 = nn.ReLU()
+        self.fc3 = nn.Linear(64, output_size)
 
     def forward(self, x):
         if self.verbose:
@@ -107,8 +109,10 @@ class SimpleCNN2(nn.Module):
         if self.verbose:
             print("linear1 shape: ", x.shape)
         x = self.fc2(x)
+        x = self.relu4(x)
         if self.verbose:
             print("linear2 shape: ", x.shape)
+        x = self.fc3(x)
 
         if self.verbose:
             print("output shape: ", x.shape)

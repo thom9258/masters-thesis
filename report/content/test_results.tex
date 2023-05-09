@@ -3,11 +3,7 @@
 
 \begin{document}
 
-Due to the training dataset \cite{kinmusdataset} from section \ref{sec:dataset},  containing joint angles as ground truth, both methods are trained as regression networks rather than classification networks, and are trained using Mean Square Error (MSE) loss.
-
-The main objective of these tests...
-
-\subsubsection{Machine-Learning Designs}
+%\subsubsection{Machine-Learning Designs}
 
 %TODO: Some introduction and explanation of feature extraction, what types and papers that uses these.
 %TODO: Some introduction and explanation of SVM and LDA types of networks.
@@ -17,26 +13,21 @@ The main objective of these tests...
 
 \section{Tests \& Results}
 
+\subsection{Test Datasets}
+
 Due to the problems with the Motive motion capture software explained in section \ref{sec:motiveproblems}, it was determined that the main dataset for training the chosen methods would be based on dataset \cite{kinmusdataset} from the paper \cite{jarque2019}.
-The dataset created during the development of this thesis will be used as an additional test. 
-The dataset has been pre-processed using a 4th-order bandpass filter with a band of  $25$ to $500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
+The dataset created during the development of this thesis will be used as an additional comparison test of the models. 
+The Pre-processing step is not covered for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order bandpass filter with a band of  $25$ to $500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
 
+The main objective of these tests are to review and compare possible methods of regression \& Classification of sEMG data in order to determine the movements of the hand.
 
-\subsection{Feature-Based Multi Layer Perceptron Network}
-
-Neural Networks are widely used in the field of AI.
-One type of widely used neural network is a fully-connected Multi-Layer Perceptron (MLP) Network.
-The MLP network is popular due to its structure and training capabilities.
-A MLP consists of layers of weighted activation functions where each activation function in a layer recieves the entire previous layer's output summed up as input.
-Due to the structure of a MLP, the network is capable of recieving a set of inputs and be trained to approximate a n'th degree polynomial function that relates the given inputs and outputs.
-The network is trained by updating the individual weights through backpropagation with the predicted output and a ground-truth output.
-The MLP network could be used to predict the relation between muscle activity and finger movements.
-
-%In order to initially test the the dataset, a simple MLP network will be trained as a baseline for performance, and for testing the general applicability of window-based networks.
-
-
+%As explained in section \ref{sec:problems}, creation of a dataset proved to be difficult, due to this, the dataset created for this thesis is mainly used for a final comparison of methods.
 
 \subsection{Windowed Convolusional Neural Networks}
+
+\subsubsection{Implementation}
+
+%TODO: WHY CHOOSE A CNN? SELL IT LIKE A CAR!
 
 An alternative to a MLP that is similar in functionality is a Convoluted Neural Network (CNN).
 A CNN consists of a set of Convolutional Layers that deforms inputs to abstract convolution features.
@@ -53,33 +44,68 @@ Because of this, the sEMG muscle activity from the dataset is segmented into win
 A CNN network can be used in the field of sEMG processing due to the convolution layer's ability to learn abstract formations of the sEMG data.
 The network would be able to identify patterns in sEMG data and correlate them to an appropoate output.
 %TODO: formations? another word?
-For this test, a CNN network is created that has the network structure seen in figure \ref{fig:cnn_structure}.
+The CNN network structure seen in figure \ref{fig:cnn_structure}.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{Chosen CNN network structure.}
+\includegraphics[width=0.99\textwidth]{cnnstructure.drawio.pdf}
+\caption{The chosen CNN network structure, consisting of 3 Convolution Layers and 3 Linear layers. Network input is a window of sEMG recordings, with the purpose of regression of a finger joint angle.}
 \label{fig:cnn_structure}
 \end{center}
 \end{figure}
-%TODO: figure of network
+%TODO: The 20 in this case refers to N samples! if i want something else than 20, change the image!
 
-As visualized in the figure, the CNN network consists of 3 Convolution layers followed by two MLP layers.
-The Convolution layers extract features up to a size of 
+As visualized in the figure, the CNN network consists of 3 Convolution layers followed by 3 MLP layers.
+The chosen CNN network structure is chosen to be simple due to the small input window of 7 muscle sensors and a window size of 20 samples.
+For this reason, no pooling was used between the convolution layers.
+The Convolution layers extract features up to a size of 32 using a convolution kernel with a size of [$3, 3$].
+The convolution features are then flattened, to a size of $4480$, before being subject to the MLP layers that convert the extracted features into a regression prediction. 
 %A CNN is trained on the network, using a window size of 40 samples were used.
 %TODO: Give example of a state-of-the-art paper CNN as an alternative to mine!!!
 
+The CNN network is trained to do regression of joint angles of the hand, because of this, the loss function is determined to be Mean Square Error (MSE) loss.
+The network is trained using an Adam optimizer with a learning rate of $1\text{e}^{-4}$.
+A subset of the dataset is split into a test and a validation set, and windows are extracted correlating input and output.
+The output is normalized, and the input/output sets are shuffeled before training takes place.
+
+\subsubsection{Tests \& Results}
+
+In order to test the CNN network and assess its performance, the training MSE loss can be seen in figure \ref{fig:cnntrainvalid}.
+%TODO: Make sure this graph is explained properly and is the actual image
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{cnn_trainvalid.pdf}
+\caption{The Train and Validation MSE loss during training of the CNN network method.}
+\label{fig:cnntrainvalid}
+\end{center}
+\end{figure}
+
+The CNN network is trained with a batch size of 8 over 20 epocs, but as can be seen in the figure, the MSE loss settels at $\sim 34$ after just 3 epocs.
+
+A random set of 50 angles that have not been trained on are taken from the dataset for testing.
+The errors of the dataset are plotted, as can be seen in figure \ref{fig:cnntest}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{cnn_trainvalid.pdf}
+\caption{The errors of 50 regressions using the CNN network.}
+\label{fig:cnntest}
+\end{center}
+\end{figure}
+
+\subsubsection{Evaluation}
+
+As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a fairly low MSE loss.  
+The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly large error exists in the regressions, with a maximum regression error of ?? Radians.
+%TODO: Get the max error!
+
+%TODO: Maybe do a average error boxplot too?
+
+\newpage
 
 
 %TODO: this is not a good way to show results!
-%\begin{figure}[h]
-%\begin{center}
-%\includegraphics[width=0.99\textwidth]{cnn_trainvalid.pdf}
-%\caption{Example figure text}
-%\label{fig:cnntrainvalid}
-%\end{center}
-%\end{figure}
-%
 %\begin{figure}
 %    \centering
 %    \begin{subfigure}[b]{0.49\textwidth}
@@ -158,6 +184,19 @@ The Convolution layers extract features up to a size of
 %\textbf{Test}\\
 %\textbf{Results}\\
 %
+\subsection{Feature-Based Multi Layer Perceptron Network}
+
+Neural Networks are widely used in the field of AI.
+One type of widely used neural network is a fully-connected Multi-Layer Perceptron (MLP) Network.
+The MLP network is popular due to its structure and training capabilities.
+A MLP consists of layers of weighted activation functions where each activation function in a layer recieves the entire previous layer's output summed up as input.
+Due to the structure of a MLP, the network is capable of recieving a set of inputs and be trained to approximate a n'th degree polynomial function that relates the given inputs and outputs.
+The network is trained by updating the individual weights through backpropagation with the predicted output and a ground-truth output.
+The MLP network could be used to predict the relation between muscle activity and finger movements.
+
+%In order to initially test the the dataset, a simple MLP network will be trained as a baseline for performance, and for testing the general applicability of window-based networks.
+
+
 \subsubsection{Recurrent Neural Networks}
 
 Network types ideal for time-based data are Recurrent Neural Networks (RNN).
@@ -179,6 +218,8 @@ a LSTM uses gates as a way of containing a memory.
 %\textbf{Test}\\
 %\textbf{Results}\\
 
+\subsection{sEMG data Pre-Processing}
+%TODO: Create a pre-processing overview of different filters
 
 
 \subsection{Useability of the Simulated Prosthetic Hand}
