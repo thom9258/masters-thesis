@@ -13,7 +13,7 @@
 
 \section{Tests \& Results}
 
-\subsection{Test Datasets}
+\subsection{Dataset Used for Testing}
 
 Due to the problems with the Motive motion capture software explained in section \ref{sec:motiveproblems}, it was determined that the main dataset for training the chosen methods would be based on dataset \cite{kinmusdataset} from the paper \cite{jarque2019}.
 The dataset created during the development of this thesis will be used as an additional comparison test of the models. 
@@ -28,8 +28,9 @@ The main objective of these tests are to review and compare possible methods of 
 \subsubsection{Implementation}
 
 %TODO: WHY CHOOSE A CNN? SELL IT LIKE A CAR!
-
-An alternative to a MLP that is similar in functionality is a Convoluted Neural Network (CNN).
+The sEMG data used as input for regression networks is complex. The sequences of muscle activity needs to be understood by the proposed method and produced into a an output.
+A network type that is ideal to understand complex meaning in, 3-dimensionary inputs is a CNN network.
+%A CNN is an alternative to a MLP network that is similar in functionality is a Convoluted Neural Network (CNN).
 A CNN consists of a set of Convolutional Layers that deforms inputs to abstract convolution features.
 The structure is considered sparcely connected due to the convolution layers are only recieving a subset of the previous convolution features.
 The feature conversion is ideal when a network needs to become robust and needs to recognize larger concepts in the input.
@@ -93,6 +94,10 @@ The errors of the dataset are plotted, as can be seen in figure \ref{fig:cnntest
 \label{fig:cnntest}
 \end{center}
 \end{figure}
+%TODO: What i need to do:
+% Pull out 50 sets of data, do regression using my cnn model, plot their average errors in a barplot!
+% This method will be my main regression test!
+
 
 \subsubsection{Evaluation}
 
@@ -102,88 +107,75 @@ The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fa
 
 %TODO: Maybe do a average error boxplot too?
 
-\newpage
+
+\subsubsection{Recurrent Neural Networks}
+
+Due to sEMG data being time-based, Recurrent network types are ideal for regression predictions.
+RNN networks are similar to MLP's with the main difference being that a RNN has hidden feedback  memory state that is derived from earlier inputs.
+This functionality makes RNN networks ideal for concurrent, time-based systems where a sequencial input distribution needs to be converted to a output regression.  
+%TODO: Alternative to concurrent -> i want something that explains a set of data in a graph!
+Another use case of RNN-based regression systems are systems where responce time is critical.
+The RNN network does not use a window of data, it converts the input of the current time frame, and the feedback of the previous time frame into a prediction.
+Because of the hidden memory, a RNN network has a quicker response time than a window-based network.
+The RNN network structure designed to predict regression of finger movements from sEMG data can be seen in figure \ref{fig:rnn_structure}.
+%TODO: This one sounds nice, can it be integrated?
+%The recurrent feedback loop correlates previous predictions with future predictions, allowing the network to approximate regressions per time frame.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{rnnstructure.pdf}
+\caption{The chosen RNN network structure, consisting of a input layer, 4 hidden layers with a recurrent feedback loop, and a output layer.}
+\label{fig:rnn_structure}
+\end{center}
+\end{figure}
+
+\subsubsection{Tests \& Results}
+
+The RNN network is trained on the dataset \cite{kinmusdataset}, in a similar way as the RNN network, with the purpose of approximating finger angle regressions per time frame.
+The RNN network is trained with a batch size of 8, with the  MSE loss function and the Adam optimizer with a learning rate of $1\text{e}^{-2}$.
+
+In order to test the network, a random set of 50 regressions that have not been trained on are taken from the dataset.
+The average errors of each regression are plotted, as can be seen in figure \ref{fig:cnntest}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{cnn_trainvalid.pdf}
+\caption{The errors of 50 regressions using the RNN network.}
+\label{fig:rnntest}
+\end{center}
+\end{figure}
+%TODO: What i need to do:
+% Pull out 50 sets of data, do regression using my cnn model, plot their average errors in a barplot!
+% This method will be my main regression test!
 
 
-%TODO: this is not a good way to show results!
-%\begin{figure}
-%    \centering
-%    \begin{subfigure}[b]{0.49\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{CNNtest0.pdf}
-%        \caption{}
-%        \label{fig:y equals x}
-%    \end{subfigure}
-%    \hfill
-%    \centering
-%    \begin{subfigure}[b]{0.49\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{CNNtest1.pdf}
-%        \caption{}
-%        \label{fig:y equals x}
-%    \end{subfigure}
-%    \hfill
-%    \begin{subfigure}[b]{0.49\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{CNNtest2.pdf}
-%        \caption{}
-%        \label{fig:three sin x}
-%    \end{subfigure}
-%    \hfill
-%    \begin{subfigure}[b]{0.49\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{CNNtest3.pdf}
-%        \caption{}
-%        \label{fig:five over x}
-%    \end{subfigure}
-%    \hfill
-%    \begin{subfigure}[b]{0.49\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{CNNtest4.pdf}
-%        \caption{}
-%        \label{fig:five over x}
-%    \end{subfigure}
-%    \hfill
-%    \begin{subfigure}[b]{0.49\textwidth}
-%        \centering
-%        \includegraphics[width=\textwidth]{CNNtest5.pdf}
-%        \caption{}
-%        \label{fig:five over x}
-%    \end{subfigure}
-%    \hfill
-%    \caption{Regression of Finger angles using a CNN network.}
-%    \label{fig:CNNregression}
-%\end{figure}
+\subsubsection{Evaluation}
+
+%As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a fairly low MSE loss.  
+The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly small error exists in the regressions, with a maximum regression error of ?? Radians.
+
+%TODO: Get the max error!
+
+%TODO: Maybe do a average error boxplot too?
 
 
+%TODO: Some introduction and explanation of RNN and LSTM types of networks.
+%TODO: Go back and see what papers uses these.
 
-%\subsubsection{Pre-Processing Filters}
-%\textbf{Method}\\
-%\textbf{Test}\\
-%\textbf{Results}\\
-%
-%\subsubsection{Window Size}
-%\textbf{Method}\\
-%\textbf{Test}\\
-%\textbf{Results}\\
-%
-%\subsubsection{Training Parameters}
-%\textbf{Method}\\
-%\textbf{Test}\\
-%\textbf{Results}\\
+%\subsection{(Machine Learning Algorithms)}
+%%TODO: Determine what algorithms i want here
 %
 %\subsubsection{Types of Features for extraction}
 %\textbf{Method}\\
 %\textbf{Test}\\
 %\textbf{Results}\\
-%
-%\subsection{3. Recurrent Neural Networks}
-%
-%\subsubsection{Training Parameters}
-%\textbf{Method}\\
-%\textbf{Test}\\
-%\textbf{Results}\\
-%
+
+
+%\subsubsection{Long-Short-Term-Memory Recurrent Neural Networks}
+%TODO: Create this if you have the time..
+%A variant of a RNN can contain a special kind of hidden memory called Long Short Term Memory (LSTM).
+%a LSTM uses gates as a way of containing a memory.
+
 \subsection{Feature-Based Multi Layer Perceptron Network}
 
 Neural Networks are widely used in the field of AI.
@@ -197,30 +189,11 @@ The MLP network could be used to predict the relation between muscle activity an
 %In order to initially test the the dataset, a simple MLP network will be trained as a baseline for performance, and for testing the general applicability of window-based networks.
 
 
-\subsubsection{Recurrent Neural Networks}
+\subsection{Creation of a Dataset}
 
-Network types ideal for time-based data are Recurrent Neural Networks (RNN).
-RNN networks are similar to MLP's with the main difference being that a RNN keeps a hidden memory state that is derived from earlier inputs.
-This functionality makes RNN networks ideal for concurrent, time-based systems where a sequencial input distribution needs to be converted to a output regression.  
-Additionally, since the RNN network does not use a window of data, it would be able to have a quicker response time than a MLP or a CNN.
-
-A variant of a RNN can contain a special kind of hidden memory called Long Short Term Memory (LSTM).
-a LSTM uses gates as a way of containing a memory.
-
-%TODO: Some introduction and explanation of RNN and LSTM types of networks.
-%TODO: Go back and see what papers uses these.
-
-%\subsection{(Machine Learning Algorithms)}
-%%TODO: Determine what algorithms i want here
-%
-%\subsubsection{Types of Features for extraction}
-%\textbf{Method}\\
-%\textbf{Test}\\
-%\textbf{Results}\\
-
-\subsection{sEMG data Pre-Processing}
-%TODO: Create a pre-processing overview of different filters
-
+%TODO: Explain the software i made to clearn motive!
+%TODO: Explain and showcase some pre-processing filters mentioned by other papers!
+%TODO: Maybe here, maybe in methodology: Show how the gt angles are calculated too..
 
 \subsection{Useability of the Simulated Prosthetic Hand}
 
@@ -250,6 +223,7 @@ The hand was manually posed into all 4 grip types, and visually compared, as can
 \label{fig:hand_pose_test}
 \end{center}
 \end{figure}
+
 
 Based on a visual comparison of figure \ref{fig:hand_pose_test}, it can be concluded that the prosthetic hand is able to be posed similarly to the real-life refrence.
 It can be seen how the prosthetic is porpotionally correct and thus also allows for accurate posing when posed manually.

@@ -27,6 +27,10 @@ class RNN(nn.Module):
             # [batch, time_step, input_size]
             batch_first=True,
         )
+        print(f"input len = {inputlen}")
+        print(f"output len = {outputlen}")
+        print(f"hidden layer size = {hlsize}")
+        print(f"hidden layer count = {hlcount}")
         self.out = nn.Linear(hlsize, outputlen)
         self.verbose = verbose
 
@@ -55,6 +59,31 @@ class RNN(nn.Module):
         outs = torch.stack(outs, dim=1)[0]
         return outs, h_state
 
+def trainRNN(train_dataloader, network, loss_function, optimizer):
+    h_state = None      
+    predictions = []
+    gts = []
+    for x, y in train_dataloader:
+        x, y = x.float(), y.float()
+        prediction, h_state = network(x, h_state)
+        # print(f"GT: {y}")
+        #print(f"Predicted: {prediction}")
+        # !! next step is important !!
+        # repack the hidden state, break the connection from last iteration
+        h_state = h_state.data
+
+        loss = loss_function(prediction, y)         # calculate loss
+        optimizer.zero_grad()                   # clear gradients for this training step
+        loss.backward()                         # backpropagation, compute gradients
+        optimizer.step()                        # apply gradients
+        # print("="*50)
+        # print(f"GT: (shape={y.numpy().shape}) {y.numpy()}")
+        # print(f"Predicted: (shape={prediction.detach().numpy().shape}) {prediction.detach().numpy()}")
+        # print("="*50)
+        for g,p in zip(y.numpy(), prediction.detach().numpy().flatten()):
+            predictions.append(p)
+            gts.append(g)
+    return gts, predictions
 
 
 def main():
@@ -68,7 +97,11 @@ def main():
     batchSize = 8
     inputLen = 1
     gtLen = 1
-    angle_to_keep = 8
+    angle_to_keep = 12
+
+    hlsize=128
+    hlcount=4
+    epochs = 100
 
     # NON-Tuneable parameters below
     sessions = KIN_MUS_sessions_get(path)
@@ -115,52 +148,28 @@ def main():
     print(f"angles:  {n_angles} angles with sample length of {gtLen}")
 
     network = RNN(inputlen=n_muscles, outputlen=n_angles,
-                  hlsize=32, hlcount=2,
+                  hlsize=hlsize, hlcount=hlcount,
                   batch_first=True, verbose=True)
 
     loss_function = torch.nn.MSELoss()
     # optimizer = torch.optim.Adam(network.parameters(), lr=1e-4)
-    optimizer = torch.optim.Adam(network.parameters(), lr=1e-3)
+    optimizer = torch.optim.Adam(network.parameters(), lr=1e-2)
+    # optimizer = torch.optim.Adam(network.parameters(), lr=0.6)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"device={device}")
 
     # ==========================================================
     # Train the RNN on our session
     # ==========================================================
-    TIME_STEP = 10
-    # for initial hidden state
-    h_state = None      
-    predictions = []
-    gts = []
-    for x, y in train_dataloader:
-        x, y = x.float(), y.float()
-        prediction, h_state = network(x, h_state)
-        print(f"GT: {y}")
-        print(f"Predicted: {prediction}")
-        # !! next step is important !!
-        # repack the hidden state, break the connection from last iteration
-        h_state = h_state.data
 
-        loss = loss_function(prediction, y)         # calculate loss
-        optimizer.zero_grad()                   # clear gradients for this training step
-        loss.backward()                         # backpropagation, compute gradients
-        optimizer.step()                        # apply gradients
-        # print("="*50)
-        # print(f"GT: (shape={y.numpy().shape}) {y.numpy()}")
-        # print(f"Predicted: (shape={prediction.detach().numpy().shape}) {prediction.detach().numpy()}")
-        # print("="*50)
-        for g,p in zip(y.numpy(), prediction.detach().numpy().flatten()):
-            predictions.append(p)
-            gts.append(g)
-
-    print(f"gts   = {gts}")
-    print(f"preds = {predictions}")
-            
+    for _ in range(epochs):
+        _, _ = trainRNN(train_dataloader, network, loss_function, optimizer)
+           
     # Plot ground truth distribution and its predicted counterpart
-    th_quickPlot([gts, predictions, t_gt_angles],
-                 [f"Processed GT angle ({angle_to_keep})",
-                  "Prediction",
-                  "Input GT angle ({angle_to_keep})"],
+    gts, predictions = trainRNN(train_dataloader, network, loss_function, optimizer)
+    th_quickPlot([gts, predictions],
+                 [f"GT angle ({angle_to_keep})",
+                  "Prediction"],
                  axis_labels=["Timestep", "Angle [Degrees]"])
 
     # th_quickPlot([gts],
