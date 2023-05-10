@@ -117,8 +117,7 @@ def KMSession2InputsGts(session, inputLen, gtLen, verbose=False):
     return inputs, gts
 
 
-def KMSessions2InputsGts(sessions, n_sessions, inputLen, gtLen):
-    example = True
+def KMSessions2InputsGts(sessions, n_sessions, inputLen, gtLen, example=True):
     if n_sessions < len(sessions) and n_sessions > 0:
         sessions = sessions[:n_sessions]
 

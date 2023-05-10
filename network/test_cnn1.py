@@ -2,11 +2,13 @@
 
 import random
 import sys
+import math
 import torch
 from tqdm import tqdm
 from torch import nn
 from torch.nn import functional as F
 import numpy as np
+import matplotlib.pyplot as plt
 
 from cnnmodels import SimpleCNN, SimpleCNN2
 from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSessions2InputsGts
@@ -166,10 +168,10 @@ def main():
 
     print("Trained the model!")
     print(f"Best MSE: {model.best_validation_MSE}")
-    th_quickPlot([model.train_MSEs, model.validation_MSEs],
-                 ["train", "valid"],
-                 axis_labels=["Epoch", "MSE"],
-                 inches=[8, 4])
+    # th_quickPlot([model.train_MSEs, model.validation_MSEs],
+    #              ["train", "valid"],
+    #              axis_labels=["Epoch", "MSE"],
+    #              inches=[8, 4])
 
     print("="*80)
     print("="*80)
@@ -192,23 +194,51 @@ def main():
 
     print(f"LENGTH OF SESSIONS: {len(sessions)}")
 
-    for i in range(6):
-        stt = 2+i
-        inputs, gts = KMSessions2InputsGts([sessions[stt]], 1, inputLen, gtLen)
+    def avg_err(A, B):
+        err = 0
+        assert len(A) == len(B)
+        for a, b in zip(A,B):
+            diff = b - a
+            err += math.sqrt(diff * diff)
+        return err / len(A)
+        
+
+    avg_errs = []
+
+    for i in range(50):
+        stt = i
+        inputs, gts = KMSessions2InputsGts([sessions[stt]], 1, inputLen, gtLen, example=False)
         gts, preds = datasetPredict(inputs, gts, model)
         gts = sequenceUnNormalize(gts, minval, maxval)
-        # Plot ground truth distribution and its predicted counterpart
-        if produce_graphs:
-            pdf=None
-        else:
-            pdf=f"CNNtest{i}.pdf"
-        th_quickPlot([preds, gts],
-                    [f"GT (Angle={angle}, Session={stt})", "Prediction"],
-                     axis_labels=["Timestep", "Angle [Degrees]"],
-                     inches=[6,3],
-                     save_pdf_as=pdf
-                     #save_pdf_as="~/Masters-Thesis/report/src/CNNtest{i}.pdf"
-                     )
+        gts = [math.radians(v) for v in gts]
+        preds = [math.radians(v) for v in preds]
+        avg_errs.append(avg_err(gts, preds))
+
+    print(f"Mean of average errors: {np.array(avg_errs).mean()}")
+    print(f"Average errors: {avg_errs}")
+    fig = plt.figure()
+    plt.bar(range(len(avg_errs)), avg_errs)
+    plt.axhline(np.array(avg_errs).mean(), linewidth=2, color='red')
+    plt.show()
+
+
+    # for i in range(6):
+    #     stt = i
+    #     inputs, gts = KMSessions2InputsGts([sessions[stt]], 1, inputLen, gtLen)
+    #     gts, preds = datasetPredict(inputs, gts, model)
+    #     gts = sequenceUnNormalize(gts, minval, maxval)
+    #     # Plot ground truth distribution and its predicted counterpart
+    #     if produce_graphs:
+    #         pdf=None
+    #     else:
+    #         pdf=f"CNNtest{i}.pdf"
+    #     th_quickPlot([preds, gts],
+    #                 [f"GT (Angle={angle}, Session={stt})", "Prediction"],
+    #                  axis_labels=["Timestep", "Angle [Degrees]"],
+    #                  inches=[6,3],
+    #                  save_pdf_as=pdf
+    #                  #save_pdf_as="~/Masters-Thesis/report/src/CNNtest{i}.pdf"
+    #                  )
 
     # stt = 3
     # inputs, gts = KMSessions2InputsGts([sessions[stt]], 1, inputLen, gtLen)
