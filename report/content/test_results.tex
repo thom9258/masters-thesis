@@ -101,8 +101,8 @@ The errors of the dataset are plotted, as can be seen in figure \ref{fig:cnntest
 
 \subsubsection{Evaluation}
 
-As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a fairly low MSE loss.  
-The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly large error exists in the regressions, with a maximum regression error of ?? Radians.
+As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a validation set MSE loss of $0.34$.
+The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly large error exists in the regressions, with an average regression error of $0.17$ Radians.
 %TODO: Get the max error!
 
 %TODO: Maybe do a average error boxplot too?
@@ -151,6 +151,15 @@ The average errors of each regression are plotted, as can be seen in figure \ref
 
 \subsubsection{Evaluation}
 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{rnn50test.pdf}
+\caption{The errors of 50 regressions using the CNN network.}
+\label{fig:rnntest}
+\end{center}
+\end{figure}
+
+
 %As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a fairly low MSE loss.  
 The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly small error exists in the regressions, with a maximum regression error of ?? Radians.
 
@@ -175,6 +184,19 @@ The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fa
 %TODO: Create this if you have the time..
 %A variant of a RNN can contain a special kind of hidden memory called Long Short Term Memory (LSTM).
 %a LSTM uses gates as a way of containing a memory.
+
+\subsection{Comparison of Regression-based Networks}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{regression_comparison.pdf}
+\caption{hi}
+\label{fig:regression_comp}
+\end{center}
+\end{figure}
+
+
+
 
 \subsection{Feature-Based Multi Layer Perceptron Network}
 

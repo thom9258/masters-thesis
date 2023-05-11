@@ -204,7 +204,6 @@ def main():
         
 
     avg_errs = []
-
     for i in range(50):
         stt = i
         inputs, gts = KMSessions2InputsGts([sessions[stt]], 1, inputLen, gtLen, example=False)

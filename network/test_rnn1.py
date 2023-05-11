@@ -3,13 +3,14 @@
 import random
 import sys
 import torch
+import math
 from tqdm import tqdm
 from torch import nn
 from torch.nn import functional as F
 import numpy as np
 import matplotlib.pyplot as plt
 
-from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSession2InputsGts
+from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSession2InputsGts, KMSessions2InputsGts
 from th_ai import th_csv, th_dataset, th_dataloaderCreate, th_datasetSlice
 from th_ai import th_quickPlot, th_datasetPredict, th_mlp
 
@@ -85,6 +86,14 @@ def trainRNN(train_dataloader, network, loss_function, optimizer):
             gts.append(g)
     return gts, predictions
 
+def predictRNN(inp, network):
+    h_state = None      
+    predictions = []
+    for v in inp:
+        prediction, h_state = network(v, h_state)
+        for p in prediction.detach().numpy().flatten():
+            predictions.append(p)
+    return predictions
 
 def main():
     # https://github.com/MorvanZhou/PyTorch-Tutorial/blob/master/tutorial-contents/403_RNN_regressor.py#L44
@@ -165,12 +174,80 @@ def main():
     for _ in range(epochs):
         _, _ = trainRNN(train_dataloader, network, loss_function, optimizer)
            
+
+    print("==========================================================")
+    print("Training complete!")
+    print("==========================================================")
+
+    def avg_err(A, B):
+        err = 0
+        assert len(A) == len(B)
+        for a, b in zip(A,B):
+            diff = b - a
+            err += math.sqrt(diff * diff)
+        return err / len(A)
+
+    def rnnpred_prepare(inp, gt, verbose=False):
+        t_cut_input_muscles = []
+        t_cut_gt_angles = []
+        vbi = verbose
+        vbg = verbose
+        for a in inp:
+            na = a[0]
+            t_cut_input_muscles.append(na)
+            if vbi:
+                # print(f"type={type(na)} -> {na}")
+                vbi = False
+        for a in gt:
+            na = np.array(a[angle_to_keep])
+            t_cut_gt_angles.append(na)
+            if vbg:
+                # print(f"type={type(na)} -> {na}")
+                vbg = False
+        return t_cut_input_muscles, t_cut_gt_angles
+
+
+    avg_errs = []
+    for i in range(50):
+        stt = i
+        inputs, gts = KMSessions2InputsGts([sessions[stt]], 1, inputLen, gtLen, example=False)
+        #preds = predictRNN(inputs, network)
+        t_input_muscles, t_gt_angles = rnndata_prepare(inputs, gts, verbose=False)
+        dataset = th_dataset(t_input_muscles, t_gt_angles)
+        loader = torch.utils.data.DataLoader(dataset,
+                                             batch_size=1,
+                                             shuffle=False)
+
+        gts, preds = trainRNN(loader, network, loss_function, optimizer)
+        # print(f"preds={preds}")
+        # print(f"gts  ={gts}")
+        gts = [math.radians(v) for v in gts]
+        preds = [math.radians(v) for v in preds]
+        th_quickPlot([gts, preds],
+                     [f"GT angle ({angle_to_keep})",
+                      "Prediction"],
+                     axis_labels=["Timestep", "Angle [Degrees]"],
+                     inches=[6,3],
+                     save_pdf_as=f"rnngraphs/RNNregression{i}.pdf",
+                     no_show=True
+                     )
+        avg_errs.append(avg_err(gts, preds))
+        print(f"completed {i}")
+
+    print(f"Mean of average errors: {np.array(avg_errs).mean()}")
+    print(f"Average errors: {avg_errs}")
+    fig = plt.figure()
+    plt.bar(range(len(avg_errs)), avg_errs)
+    plt.axhline(np.array(avg_errs).mean(), linewidth=2, color='red')
+    plt.show()
+
+
     # Plot ground truth distribution and its predicted counterpart
-    gts, predictions = trainRNN(train_dataloader, network, loss_function, optimizer)
-    th_quickPlot([gts, predictions],
-                 [f"GT angle ({angle_to_keep})",
-                  "Prediction"],
-                 axis_labels=["Timestep", "Angle [Degrees]"])
+    # gts, predictions = trainRNN(train_dataloader, network, loss_function, optimizer)
+    # th_quickPlot([gts, predictions],
+    #              [f"GT angle ({angle_to_keep})",
+    #               "Prediction"],
+    #              axis_labels=["Timestep", "Angle [Degrees]"])
 
     # th_quickPlot([gts],
     #              [f"GT (Angle={angle_to_keep})"],
