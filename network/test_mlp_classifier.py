@@ -1,53 +1,15 @@
 #!/usr/bin/env python3
 
 import random
+import math
 import torch
 import numpy as np
 
+from feature_extract import features_extract, slice_session, concat, KMSessions2ClassifierInputsGts
 from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSessions2InputsGts, KMSession2InputsGts
 from th_ai import th_csv, th_dataset, th_dataloaderCreate, th_datasetSlice
 from th_ai import th_quickPlot, th_datasetPredict, th_mlp
 from th_ai import th_regressionModel, th_tinymlp
-
-class_reaching = 1
-class_manipulation = 2
-class_releasing = 3
-
-def class2onehot(v):
-    if v == class_reaching:
-        return [1, 0, 0]
-    if v == class_manipulation:
-        return [0, 1, 0]
-    if v == class_releasing:
-        return [0, 0, 1]
-    return [0, 0, 0]
- 
-def concat(a, b):
-     out = []
-     for v in a:
-         out.append(v)
-     for v in b:
-         out.append(v)
-     return out
-
-def slice_session(session, length):
-    inputs = []
-    maxlen = len(session.time)
-    # Slice up session into prediction sets
-    for i in range(maxlen - length):
-        inp = session.muscles[i:i+length]
-        inputs.append(np.array(inp))
-        # print(f"extracted ({i}) = {inp}")
-    return inputs
-
-def KMSessions2ClassifierInputsGts(sessions, inputlen):
-    inputs = []
-    gts = []
-    for session in sessions:
-        sliced = slice_session(session, inputlen)
-        inputs = concat(inputs, sliced)
-        gts = concat(gts, [class2onehot(session.phase) for _ in range(len(sliced))])
-    return inputs, gts
 
 def main():
     # Tuneable parameters
@@ -57,7 +19,7 @@ def main():
     use_existing_model = False
     maxepocs = 20
     batchSize =  8
-    inputLen = 1
+    inputLen = 10
     outputLen = 3
     gtLen = 1
     n_sessions_in_trainer = 50
@@ -65,15 +27,14 @@ def main():
     sessions = KIN_MUS_sessions_get(path)
     inputs, gts = KMSessions2ClassifierInputsGts(sessions[:n_sessions_in_trainer], inputLen)
 
-    examples = 5
-    for inp, gt in zip(inputs[0:examples], gts[0:examples]):  
+    inputs = features_extract(inputs)
+
+    examples = 1
+    for inp, gt in zip(inputs[0:examples], gts[0:examples]):
         print(f"onehot: {gt}, input: {inp}")
 
     dataset = th_dataset(inputs, gts)
     # NON-Tuneable parameters below
-    n_muscles = dataset.input_dims()[1]
-    print(f"muscles: {n_muscles} muscles with sample length of {inputLen}")
-    network_inputLen = inputLen * n_muscles
     train_set, val_set = dataset.split(0.8)
     train_dataloader = torch.utils.data.DataLoader(train_set,
                                                    batch_size=batchSize,
@@ -82,11 +43,14 @@ def main():
                                                         batch_size=batchSize,
                                                         shuffle=True)
 
+    network_inputLen = inputLen * dataset.input_dims()[1]
+    print(f"Input Length {network_inputLen}")
+
     network = th_mlp()
     network.create(inputSize=network_inputLen,
                    outputSize=outputLen,
-                   hiddenLayerSize=16,
-                   hiddenLayerCount=4,
+                   hiddenLayerSize=24,
+                   hiddenLayerCount=2,
                    useBatchNorm=False,
                    )
 
