@@ -10,6 +10,8 @@ from KIN_MUS_parse import KMSession, KIN_MUS_sessions_get, KMSessions2InputsGts,
 
 import sklearn
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+from sklearn import svm
 
 def main():
     # Tuneable parameters
@@ -17,6 +19,17 @@ def main():
     inputLen = 50
     outputLen = 3
     n_sessions_in_trainer = 20
+
+    # model = LinearDiscriminantAnalysis()
+    # model = QuadraticDiscriminantAnalysis()
+    # model = svm.SVC(decision_function_shape='ovr')
+    model = svm.NuSVC(gamma="auto", nu=0.12)
+    # nu specifies the nu parameter for the one-class SVM model.
+    # The nu parameter is both a lower bound for the number of samples that are
+    # support vectors and an upper bound for the number of samples that are on
+    # the wrong side of the hyperplane.
+    # The default is 0.1. The nu parameter must be in the range [0,1].
+
 
     sessions = KIN_MUS_sessions_get(path)
     inputs, gts = KMSessions2ClassifierInputsGts(sessions[:n_sessions_in_trainer], inputLen)
@@ -33,7 +46,6 @@ def main():
         print(f"result: {gt}")
         print(f"input: {inp}")
 
-    model = LinearDiscriminantAnalysis()
     model.fit(np.array(inputs), np.array(gts).ravel())
 
     print("="*80)
@@ -73,6 +85,7 @@ def main():
     test_percents = cleaned[:50]
 
     print("correct/total list")
+    print(f"Mean of test_percents: {np.mean(test_percents)}")
     print(test_percents)
         
 
