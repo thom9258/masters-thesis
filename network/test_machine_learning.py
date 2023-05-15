@@ -23,7 +23,12 @@ def main():
     # model = LinearDiscriminantAnalysis()
     # model = QuadraticDiscriminantAnalysis()
     # model = svm.SVC(decision_function_shape='ovr')
-    model = svm.NuSVC(gamma="auto", nu=0.12)
+    # SVM kernel= ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’, default=’rbf’
+    # model = svm.SVC(kernel='rbf') # standard kernel
+    # model = svm.SVC(kernel='poly')
+    model = svm.SVC(kernel='sigmoid')
+    # model = svm.SVC(kernel='linear')
+    # model = svm.NuSVC(gamma="auto", nu=0.12)
     # nu specifies the nu parameter for the one-class SVM model.
     # The nu parameter is both a lower bound for the number of samples that are
     # support vectors and an upper bound for the number of samples that are on
