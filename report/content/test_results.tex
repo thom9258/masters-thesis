@@ -30,6 +30,7 @@ The dataset created using the Motive Capture Software in section \ref{??} during
 Because of this, the dataset is not suitable for training in any of the methods.
 
 
+\newpage
 \section{Machine-Learning Intent Classification}
 
 Due to the dataset containing labels associated with movements of the hand, it is possible to use the dataset to train a intent prediction classifier.
@@ -164,12 +165,14 @@ This result is similar to the paper \cite{??} that has the same conclusion.
 The resulting performance metrics of the ML methods are dependent on the chosen feature extraction techniques used.
 Zero crossing and MSE features can be used for the classifiers and provide insight into what parameters are important when working with sEMG data.
 
-%\newpage
-\section{Windowed Convolusional Neural Network Regression}
+\newpage
+\section{Neural Network Movement Regression}
+
+\subsection{Windowed Convolusional Neural Network}
 
 As an alternative to intent classsification, the dataset could be used to train finger movement regression networks.
 
-\subsection{Implementation}
+\subsubsection{Implementation}
 
 %TODO: WHY CHOOSE A CNN? SELL IT LIKE A CAR!
 The sEMG data used as input for regression networks is complex.
@@ -214,7 +217,7 @@ The network is trained using an Adam optimizer with a learning rate of $1\text{e
 A subset of the dataset is split into a test and a validation set, and windows are extracted correlating input and output.
 The output is normalized, and the input/output sets are shuffeled before training takes place.
 
-\subsection{Tests \& Results}
+\subsubsection{Tests \& Results}
 
 In order to test the CNN network and assess its performance, the training MSE loss can be seen in figure \ref{fig:cnntrainvalid}.
 %TODO: Make sure this graph is explained properly and is the actual image
@@ -244,7 +247,7 @@ The errors of the dataset are plotted, as can be seen in figure \ref{fig:cnntest
 % This method will be my main regression test!
 
 
-\subsection{Evaluation}
+\subsubsection{Evaluation}
 
 As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a validation set MSE loss of $0.34$.
 The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly large average regression error of $0.17$ Radians exists in the test regressions, and that the average error is skewed upwards due to some outlier tests having large average errors up to $0.3$ Radians.
@@ -253,7 +256,7 @@ The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fa
 %TODO: Maybe do a average error boxplot too?
 
 
-\section{Recurrent Neural Network Regression}
+\subsection{Recurrent Neural Network Regression}
 
 Due to sEMG data being time-based, Recurrent network types are ideal for regression predictions.
 RNN networks are similar to MLP's with the main difference being that a RNN has hidden feedback  memory state that is derived from earlier inputs.
@@ -274,7 +277,7 @@ The RNN network structure designed to predict regression of finger movements fro
 \end{center}
 \end{figure}
 
-\subsection{Tests \& Results}
+\subsubsection{Tests \& Results}
 
 The RNN network is trained on the dataset \cite{kinmusdataset}, in a similar way as the RNN network, with the purpose of approximating finger angle regressions per time frame.
 The RNN network is trained with a batch size of 8, with the  MSE loss function and the Adam optimizer with a learning rate of $1\text{e}^{-2}$.
@@ -294,16 +297,7 @@ The average errors of each regression are plotted, as can be seen in figure \ref
 % This method will be my main regression test!
 
 
-\subsection{Evaluation}
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=0.99\textwidth]{rnn50test.pdf}
-\caption{The errors of 50 regressions using the CNN network.}
-\label{fig:rnntest}
-\end{center}
-\end{figure}
-
+\subsubsection{Evaluation}
 
 %As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a fairly low MSE loss.  
 The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly small error exists in the regressions, with a maximum regression error of ?? Radians.
@@ -331,11 +325,18 @@ The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fa
 %a LSTM uses gates as a way of containing a memory.
 
 %\section{Comparison of Regression-based Networks}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{rnn50test.pdf}
+\caption{The errors of 50 regressions using the CNN network.}
+\label{fig:rnntest}
+\end{center}
+\end{figure}
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{regression_comparison.pdf}
-\caption{hi}
+\caption{Comparison of Windows CNN and RNN regression methods.}
 \label{fig:regression_comp}
 \end{center}
 \end{figure}
@@ -360,56 +361,87 @@ The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fa
 %TODO: Explain and showcase some pre-processing filters mentioned by other papers!
 %TODO: Maybe here, maybe in methodology: Show how the gt angles are calculated too..
 
+\newpage
 \section{Simulated Prosthetic Hand}
 
 \subsection{Useability of the Simulated Prosthetic Hand}
+%\subsection{Anatomical Assessment and Maneuverability}
 
-Existing prosthetic hand simulations are not possible to get access to, as explained in section \ref{sec:hand_alternatives}, they are either unavailable through deprecation or pay-to-acces by buying a real prosthetic.
+Access to existing prosthetic hand simulations proved to be impossible to access and use, as explained in section \ref{sec:hand_alternatives}. they are either unavailable because their associated products have been discontinued or locked behind a pay-to-acces barrier where you have to pay to recieve a real prosthetic.
 Due to non-availability of prosthetic hand simulations, it was chosen that through this thesis, a open source prosthetic hand needed to be created for testing of the algorithms developed as part of this project.
-The prosthetic hand created for this thesis can be seen in section \ref{sec:prost_sim}.
-The prosthetic was designed to be as anatomically similar as a real hand as possible.
-This was done in order to accurately simulate the movement of a real hand.
-%TODO: Is this intro good?
-
-\subsection{Anatomical Assessment and Maneuverability}
-
+The creation of a prosthetic hand simulation can be seen in section \ref{sec:prost_sim}.
+The prosthetic hand was designed to be as anatomically similar as a real hand as possible.
+This was done in order to accurately simulate the movement of a real hand, and because of it, allow users to test and validate control methods on a simulation before needing to construct a real prosthetic.
 The useability and moveability of the simulated prosthetic hand needs to be assessed.
+This is important because the useability of a prosthetic hand has a large impact on rehabilitation for the end-user.
 
-\textbf{Method}\\
-As an initial test, it is reasonable to test if the hand is able to acheive the end poses of the grip types from section \ref{sec:dataset} table \ref{tab:grips}. 
+\subsection{Method}
+In order to test the useability and moveability of the simulated prosthetic hand, the hand was tasked with acheiving the end-poses of the most used day-to-day grips.
+These grips were explained in section \ref{sec:dataset} table \ref{tab:grips}, namely the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}.
+In order to pose the simulated hand, the interface created in ROS2 was used to send kinematic configurations to the hand simulation.
 
-\textbf{Test \& Results}\\
+\subsection{Test \& Results}
 
-The hand was manually posed into all 4 grip types, and visually compared, as can be seen in figure  \ref{fig:hand_pose_test}.
+The hand was posed into all 4 day-to-day grip configurations for visual assessement.
+The resulting configurations of the hand can be seen in figure  \ref{fig:hand_pose_test}.
+The software used to pose the hand simulation can be seen in appendix \ref{appendix:ros2impl} 
 
-%TODO: Needs to be a figure of figures!
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{Example figure text}
-\label{fig:hand_pose_test}
-\end{center}
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        %\includegraphics[width=\textwidth]{pulppinch_grip.png}
+        \includegraphics[height=8cm]{pulppinch_grip.png}
+        \caption{Pulp pinch}
+    \end{subfigure}
+    \hfill
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        %\includegraphics[width=\textwidth]{lateralpinch_grip.png}
+        \includegraphics[height=8cm]{lateralpinch_grip.png}
+        \caption{Lateral pinch}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        %\includegraphics[width=\textwidth]{fivefingerpinch_grip.png}
+        \includegraphics[height=8cm]{fivefingerpinch_grip.png}
+        \caption{Five-Finger pinch}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        %\includegraphics[width=\textwidth]{power_grip.png}
+        \includegraphics[height=8cm]{power_grip.png}
+        \caption{Diagonal Volar grip (Power grip)}
+    \end{subfigure}
+    \caption{The four most used day-to-day poses, tested in a hand prosthetic simulation.}
+    \label{fig:hand_pose_test}
 \end{figure}
 
 
-Based on a visual comparison of figure \ref{fig:hand_pose_test}, it can be concluded that the prosthetic hand is able to be posed similarly to the real-life refrence.
-It can be seen how the prosthetic is porpotionally correct and thus also allows for accurate posing when posed manually.
+%TODO: Needs to be a figure of figures!
+%\begin{figure}[h]
+%\begin{center}
+%\includegraphics[width=0.8\textwidth]{example-image-a}
+%\caption{Example figure text}
+%\end{center}
+%\end{figure}
 
+\subsection{Evaluation}
+
+Based on a visual assessment of figure \ref{fig:hand_pose_test}, it can be concluded that the prosthetic hand is able to be posed similarly to the real-life refrence.
+The ROS2 interface created for the simulation allows for easy manipulation of the joint rotations, and because of this, acheiving different poses becomes easy to do.
+The hand simulation is able to acheive a wide range of motion because of its design and its ability to mimic the anatomy of the real hand.
+From this it can be concluded that the prosthetic hand is porpotionally correct and thus also allows for accurate posing, applicable in different day-to-day scenarios.
+
+%\newpage
 \subsection{Posing based on Network Output}
 
 As a result of testing different network types and their applicability for creating suitable motorcontrol output for a prosthetic hand, it would be ideal to test the network output on the prosthetic simulation.
 For full video see appendix ??.
 %TODO: Insert appendix here
-
-
-
-%\subsection{Method 1: Windowed CNN}
-%\subsection{Test 1: Windowed CNN}
-%\subsection{Results 1: Windowed CNN}
-%\subsection{Method 2: RNN}
-%\subsection{Test 2: RNN}
-%\subsection{Results 2: RNN}
-
 
 %TODO: see Zhaolong2021 (page 10) for example of how to compare MSE for different neuron amounts, even for multiple subjects!
 
