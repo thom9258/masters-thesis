@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import csv
 import matplotlib.pyplot as plt
 import itertools
@@ -145,7 +147,7 @@ def Buttersworth_bandpass_test(data, lowhighs, orders, title=None):
 
 if __name__ == "__main__":
     print("TEST:")
-    emgcsvfile = "../datasets/grasp_dataset/tjens18_index_30s_2_Trigno_2801.csv"
+    emgcsvfile = "./datasets/grasp_dataset/tjens18_index_30s_2_Trigno_2801.csv"
     parser = emgParser(emgcsvfile)
     emg = parser.arm1[0::10]
     emg = emg[:300]
