@@ -279,45 +279,45 @@ The RNN network structure designed to predict regression of finger movements fro
 
 \subsubsection{Tests \& Results}
 
-The RNN network is trained on the dataset \cite{kinmusdataset}, in a similar way as the RNN network, with the purpose of approximating finger angle regressions per time frame.
+The RNN network is trained on the dataset \cite{kinmusdataset}, in a similar way as the CNN network, with the purpose of approximating finger angle regressions per time frame.
 The RNN network is trained with a batch size of 8, with the  MSE loss function and the Adam optimizer with a learning rate of $1\text{e}^{-2}$.
-
 In order to test the network, a random set of 50 regressions that have not been trained on are taken from the dataset.
-The average errors of each regression are plotted, as can be seen in figure \ref{fig:cnntest}.
+The average errors of each regression test is plotted, as can be seen in figure \ref{fig:rnntest}.
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{cnn_trainvalid.pdf}
-\caption{The errors of 50 regressions using the RNN network.}
+\includegraphics[width=0.99\textwidth]{rnn50test.pdf}
+\caption{The errors of 50 regression tests using the RNN network.}
 \label{fig:rnntest}
 \end{center}
 \end{figure}
-%TODO: What i need to do:
-% Pull out 50 sets of data, do regression using my cnn model, plot their average errors in a barplot!
-% This method will be my main regression test!
 
-
-\subsubsection{Evaluation}
+\subsection{Evaluation of Regression Methods}
 
 %As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a fairly low MSE loss.  
 The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly small error exists in the regressions, with a maximum regression error of ?? Radians.
 
-%TODO: Get the max error!
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{regression_comparison.pdf}
+\caption{Comparison of Windowed CNN and RNN regression methods.}
+\label{fig:regression_comp}
+\end{center}
+\end{figure}
+
+The figure clearly shows that there is a large difference in window-based and recurrent network types.
+The CNN shows a average test error of $0.17$ Radians, while the RNN network has a average test error of $0.01$ Radians. 
+The reason for the large error in the CNN network test is unclear.
+One of the reasons the CNN network is unable to accurately learn regression could be because of the pre-processing done in the dataset.
+Alternatively, the network is unable to learn because of the window size. This would make sense since the RNN network with a really low error is able to learn to do regression, as it is not limited by a arbitrary window of input.
+
+It becomes apparent that teaching a neural network to do regression of finger joints is a complicated task.
+Because of this, the tests propose that it is ideal to use a type of Recurrent Network for regression.
 
 %TODO: Maybe do a average error boxplot too?
 
-
 %TODO: Some introduction and explanation of RNN and LSTM types of networks.
 %TODO: Go back and see what papers uses these.
-
-%\subsection{(Machine Learning Algorithms)}
-%%TODO: Determine what algorithms i want here
-%
-%\subsubsection{Types of Features for extraction}
-%\textbf{Method}\\
-%\textbf{Test}\\
-%\textbf{Results}\\
-
 
 %\subsubsection{Long-Short-Term-Memory Recurrent Neural Networks}
 %TODO: Create this if you have the time..
@@ -325,24 +325,6 @@ The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fa
 %a LSTM uses gates as a way of containing a memory.
 
 %\section{Comparison of Regression-based Networks}
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=0.99\textwidth]{rnn50test.pdf}
-\caption{The errors of 50 regressions using the CNN network.}
-\label{fig:rnntest}
-\end{center}
-\end{figure}
-
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.99\textwidth]{regression_comparison.pdf}
-\caption{Comparison of Windows CNN and RNN regression methods.}
-\label{fig:regression_comp}
-\end{center}
-\end{figure}
-
-
-
 
 %\subsection{Feature-Based Multi Layer Perceptron Network}
 
@@ -443,6 +425,14 @@ As a result of testing different network types and their applicability for creat
 For full video see appendix ??.
 %TODO: Insert appendix here
 
+
+
 %TODO: see Zhaolong2021 (page 10) for example of how to compare MSE for different neuron amounts, even for multiple subjects!
+
+
+\section{Pre-Processing of sEMG data}
+
+%TODO: Show graphs of different filters!
+%TODO: Talk about what filters are and how they affect incoming signals, what type to use against what noise etc. 
 
 \end{document}
