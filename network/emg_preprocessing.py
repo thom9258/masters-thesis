@@ -4,6 +4,7 @@ import csv
 import matplotlib.pyplot as plt
 import itertools
 from itertools import product
+from th_ai import th_quickPlot
 
 from scipy import signal 
 
@@ -76,19 +77,6 @@ class emgParser():
         print("... Parsed sEMG data!")
 #class emgParser
 
-def quickPlot(data, data_labels, axis_labels=["x", "y"], title=None):
-    plt.figure()
-    plt.xlabel(axis_labels[0])
-    plt.ylabel(axis_labels[1])
-    for i in range(0, len(data)):
-        plt.plot(data[i], label=data_labels[i])
-    if title is not None:
-        plt.title(title)
-    plt.legend()
-    plt.grid()
-    plt.show()
-
-
 def uniquecombinations(arr1, arr2):
     res = []
     for i in range(len(arr1)):
@@ -129,7 +117,7 @@ def Buttersworth_lowpass_test(data, cutoffs, orders, title=None):
         o = pair[1]
         f_graphs.append(Buttersworth_Low(data, fs, c, o))
         f_labels.append(f"Buttersworth Lowpass (fc={c},order={o})")
-    quickPlot(f_graphs, f_labels, axis_labels=["Time", "mV"], title=title)
+    th_quickPlot(f_graphs, f_labels, axis_labels=["Time", "mV"], inches=[8, 4])
     return f_graphs, f_labels
 
 def Buttersworth_bandpass_test(data, lowhighs, orders, title=None):
@@ -142,7 +130,7 @@ def Buttersworth_bandpass_test(data, lowhighs, orders, title=None):
         o = pair[1]
         f_graphs.append(Buttersworth_Band(data, lh[0], lh[1], fs, o))
         f_labels.append(f"Buttersworth Bandpass (lowhigh={lh},order={o})")
-    quickPlot(f_graphs, f_labels, axis_labels=["Time", "mV"], title=title)
+    th_quickPlot(f_graphs, f_labels, axis_labels=["Time", "mV"], inches=[8, 4])
     return f_graphs, f_labels
 
 if __name__ == "__main__":
@@ -152,8 +140,66 @@ if __name__ == "__main__":
     emg = parser.arm1[0::10]
     emg = emg[:300]
 
+    fs = 200
+
+    bwf_20lp5or = Buttersworth_Low(data=emg,
+                                   sampling_frequency=fs,
+                                   cutoff_frequency=20,
+                                   order=5)
+    bwf_10lp10or = Buttersworth_Low(data=emg,
+                                   sampling_frequency=fs,
+                                   cutoff_frequency=10,
+                                    order=10)
+
+
+    bwf_10_500bp5or = Buttersworth_Band(data=emg,
+                                        lowcut=10,
+                                        highcut=500,
+                                        sampling_frequency=fs,
+                                        order=2)
+    bwf_10_500bp5or_notch = Notch(data=bwf_10_500bp5or, fs=fs, fc=60, quality=6)
+
+
+    bwf_20_800bp5or = Buttersworth_Band(data=emg,
+                                        lowcut=20,
+                                        highcut=800,
+                                        sampling_frequency=fs,
+                                        order=4)
+    bwf_20_800bp5or_notch = Notch(data=bwf_20_800bp5or, fs=fs, fc=60, quality=6)
+
+
+
+
+    th_quickPlot([emg,
+                  bwf_20lp5or,
+                  bwf_10lp10or,
+                 ],
+                 [
+                     "Raw (Unfiltered)",
+                     "Buttersworth Lowpass (20, 5)",
+                     "Buttersworth Lowpass (10, 10)",
+                 ],
+                 axis_labels=["Samples", "mV"], inches=[8, 4])
+
+    th_quickPlot([emg,
+                  bwf_10_500bp5or,
+                  bwf_10_500bp5or_notch,
+                  # bwf_20_800bp5or_notch,
+                 ],
+                 [
+                     "Raw (Unfiltered)",
+                     "Buttersworth Bandpass ([10, 500], 2)",
+                     "Buttersworth Bandpass ([10, 500], 2) + Notch (60)",
+                   #  "Buttersworth Bandpass ([20, 1500], 2) + Notch (60)",
+                 ],
+                 axis_labels=["Samples", "mV"], inches=[8, 4])
+
+
+
+
+
     # Buttersworth tests
-    if 1:
+    if 0:
         Buttersworth_lowpass_test(emg,
                                   cutoffs=[10, 20, 30, 40, 50],
                                   orders=[10],

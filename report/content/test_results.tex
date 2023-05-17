@@ -14,7 +14,45 @@
 %\section{Tests \& Results}
 
 \section{Datasets}
-\subsection{Training Dataset}
+\subsection{Created Dataset}
+
+As explained in section \ref{sec:problems}, creation of a custom dataset to train and test models on proved to be difficult.
+The dataset created using the Motive Capture Software in section \ref{??} during the development of this thesis is not very large, and has no labeling for clasification.
+Because of this, the dataset is not suitable for training in any of the methods.
+
+%\subsection{sEMG Data Processing}
+
+\subsection{Implementation}
+
+Raw sEMG data contains a lot of unwanted noise as explained in section \ref{sec:noise}.
+Some of the noise can be can be removed through signal processing using filters.
+State-of-the-Art papers use a lot of different methods to reduce noise in sEMG data.
+The paper \cite{multdof} proposes the use of a $50Hz$ Notch filter, while papers \cite{graspintent} \& \cite{ashirbad2022} respectively chooses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$ band-pass Buttersworth filter, lastly the paper proposes a $60Hz$ notch filter in order to remove powerline noise.
+Due to me many different filtering types used in state-of-the-art, it was determined that the use of a filter depends on the specific sEMG data, and that the best filter for this thesis is to be determined through testing.
+
+%TODO: Convert n sEMG angles into a image heat map kinda, and compare before and after different filters? the z dimension could be change in values?
+
+\subsection{Tests \& Results}
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{lowpass.pdf}
+\caption{Comparison of Discriminant Analysis methods (LDA/QDA) over 50 tests.}
+\label{fig:lda_test}
+\end{center}
+\end{figure}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{bandpass.pdf}
+\caption{Comparison of Discriminant Analysis methods (LDA/QDA) over 50 tests.}
+\label{fig:lda_test}
+\end{center}
+\end{figure}
+
+\subsection{Evaluation}
+
+
+\subsection{Dataset used for Training}
 
 Due to the problems with the Motive motion capture software explained in section \ref{sec:motiveproblems}, it was determined that the main dataset for training the chosen methods would be based on dataset \cite{kinmusdataset} from the paper \cite{jarque2019}.
 The dataset contains sections of sEMG data and kinematic movements of the hand.
@@ -22,13 +60,6 @@ These sections are labeled as either \textit{reaching}, \textit{manipulation} or
 Due to the dataset containing data for regression and classification, it is possible to explore multiple methods of HMI's. 
 The Pre-processing step is not covered for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order bandpass filter with a band of  $25$ to $500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
 The main objective of these tests are to review and compare possible methods of regression \& Classification of sEMG data in order to determine the movements of the hand.
-
-\subsection{Created Dataset}
-
-As explained in section \ref{sec:problems}, creation of a custom dataset to train and test models on proved to be difficult.
-The dataset created using the Motive Capture Software in section \ref{??} during the development of this thesis is not very large, and has no labeling for clasification.
-Because of this, the dataset is not suitable for training in any of the methods.
-
 
 \newpage
 \section{Machine-Learning Intent Classification}
@@ -430,7 +461,6 @@ For full video see appendix ??.
 %TODO: see Zhaolong2021 (page 10) for example of how to compare MSE for different neuron amounts, even for multiple subjects!
 
 
-\section{Pre-Processing of sEMG data}
 
 %TODO: Show graphs of different filters!
 %TODO: Talk about what filters are and how they affect incoming signals, what type to use against what noise etc. 
