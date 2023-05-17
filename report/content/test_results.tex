@@ -25,31 +25,43 @@ Because of this, the dataset is not suitable for training in any of the methods.
 \subsection{Implementation}
 
 Raw sEMG data contains a lot of unwanted noise as explained in section \ref{sec:noise}.
-Some of the noise can be can be removed through signal processing using filters.
+Some of the noise can be can be removed through signal processing using analog filters.
+Different filter types exists, and different filters are used to remove a specific frequency in the data. 
 State-of-the-Art papers use a lot of different methods to reduce noise in sEMG data.
 The paper \cite{multdof} proposes the use of a $50Hz$ Notch filter, while papers \cite{graspintent} \& \cite{ashirbad2022} respectively chooses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$ band-pass Buttersworth filter, lastly the paper proposes a $60Hz$ notch filter in order to remove powerline noise.
-Due to me many different filtering types used in state-of-the-art, it was determined that the use of a filter depends on the specific sEMG data, and that the best filter for this thesis is to be determined through testing.
+Due to me many different filtering types used in state-of-the-art literature, it was determined that the use of a filter depends on the specific sEMG data and the purpose of what the paper tries to do.
+In order to determine what types of filters have a positive effect on the sEMG data recorded using the Motive Capture system, different types of state-of-the-art pre-processing filters were tested and compared.
+%And that the best filter for this thesis is to be determined through testing.
 
 %TODO: Convert n sEMG angles into a image heat map kinda, and compare before and after different filters? the z dimension could be change in values?
 
 \subsection{Tests \& Results}
 
+A subset of the recorded sEMG data was used, and different filter types were tested in order to reduce noise in the raw recordings.
+Different types of Buttersworth filters were tested, as can be seen in figure \ref{fig:lowpass} \& \ref{fig:bandpass}.
+
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{lowpass.pdf}
-\caption{Comparison of Discriminant Analysis methods (LDA/QDA) over 50 tests.}
-\label{fig:lda_test}
+\caption{Comparison of Buttersworth lowpass filters of different cutoff frequencies and orders.}
+\label{fig:lowpass}
 \end{center}
 \end{figure}
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{bandpass.pdf}
-\caption{Comparison of Discriminant Analysis methods (LDA/QDA) over 50 tests.}
-\label{fig:lda_test}
+\caption{Comparison of Buttersworth bandpass filters of different cutoff frequencies, orders and the usage of a Notch filter.}
+\label{fig:bandpass}
 \end{center}
 \end{figure}
 
 \subsection{Evaluation}
+
+As can be seen in the figure, different configurations of pre-processing filters have a large impact on the resulting filtered sequence. 
+It can be seen in figure \ref{fig:lowpass} that most of the change in amplitude exists in the low frequencies, and these are removed due to using a low-pass filter.
+Furthermore, it can be seen that the intent of the signal is kept when a filter order of 5 is used, compared to a filter order of 10.
+When comparing the two low-pass filters, it can be determined that using a cutoff frequency of $20Hz$ and a order of $5$ is a ideal for sEMG signals due to the amount of large frequencies in the recordings.
+Alternatively, Buttersworth band-pass filters are tested in figure \ref{fig:bandpass},
 
 
 \subsection{Dataset used for Training}
