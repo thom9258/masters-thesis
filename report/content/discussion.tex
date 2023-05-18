@@ -5,11 +5,67 @@
 \begin{document}
 \section{Discussion}
 
-%TODO: Mention gazebo and copelliasim problems
-
+The main purpose of this thesis is to research and experiment with state-of-the-art sEMG-based human-machine-interfaces for development of prosthetics devices.
+The experimentation is mainly done with the focus of identifying and modelling the intent \& movement of the fingers.
+% Mention gazebo and copelliasim problems
+During the development of this thesis, several problems occoured with the choise of simulation tools.
+The initial chosen simulation software was the Gazebo \cite{gazebo} due to its close integration with ROS2 \cite{ros2}, and its use in modern robotics simulation tasks.
+After a lot of long-term problems and complications caused by the chosen software, a desision to switch to CoppeliaSim \cite{coppeliasim} was made.
+The change to CoppeliaSim solved a lot of the problems caused by Gazebo, the setup of the simulation and development of the kinematics became much clearer.
+Furthermore, setting up the controller of the prosthetic could be done using the build-in ROS2 communication.
 %TODO: Problems with motive
 %      Data unreliability
 %      having to make my own methods to clean data
+%      Unable to create a proper dataset with own methods
+%      Unable to have multiple people in the dataset due to extensive clearning
+Another problem had a large impact on the development of this thesis.
+In order to capture the movements of the fingers for the dataset, the product Motive Motion Capture Setup \cite{motive} was chosen, due to reccomendation, availability and its use in state-of-the-art industry motion capture.
+The Motive setup consists of a camera rig designed to locate 3D markers in the scene.
+As a recording target, a glove was fitted with 3D markers.
+This was done in order to record the kinematic movements of the hand, a glove is fitted with 3D markers at the joints of the fingers.
+%so that it would be possible to calculate the angles between the 3D markers.
+The main problem is that the setup is designed to capture large objects such as full-body tracking suits and larger static objects.
+Because of this, the 3D optimization algorithms used by the cameras has a tendency to remove markers that are close. 
+This would cause the 3D markers of adjacent fingers to be combined into a single marker.
+The only way to solve this is to reduce the amount of markers on the glove.
+Furthermore, the 3D marker labeling is unreliable.
+The markers are shifting in labels if they dissapear for a few frames at a time.
+This problem scaled with the length of the recording session, a 15 second recording of 7 markers would be recorded as $100+$ labels in the resulting tracker output.
+In addition to the tracking being unreliable, the Motive software is unable to provide an effective label correction tool.
+Label rendering \& correction tools is developed as part of this thesis, and is used to clean up a subset of the recorded dataset.
+Due to the extensive work needed to record and clean the movements of the hand, it became impossible to create a dataset large enough to train models on, and to create a general purpose dataset with recordings from multiple people. 
+The time-consuming process of creating a simulated prosthetic and recording a dataset resulted in some of the goals of this thesis as explained in section \ref{sec:motivation} to not be furfilled.
+It was not possible to fully test the simulated prosthetic device with real-time predictions from a model. 
+% if i had the time: compared kinematic output with control of the sim hand.
+Furthermore, it was not possible to fully test different pre-processing methods and their differences when used for training a model.
+
+%TODO: Explain that actual angle calculation was not done for recorded markers.
+
+\textbf{Classification Tests}\\
+% It would have been nice to test different types of feature extraction methods for classification.
+Multiple different machine learning methods is tested in section \ref{sec:classification}.
+The data is converted to a feature space set consisting of zero-crossing and MSE, and is then used as input to a machine learning algorithm to create a lower-arm intent classifier.
+The accuracy of the resulting classifiers could have been improved, if more types of feature extractions had been tested.
+Furthermore, diffenent types of machine learning classifiers and network based classifiers could have been tested in order to improve classsification accuracy.
+
+\textbf{Regression Tests}\\
+Different regression network models were trained to do regression of finger joint angles. These tests can be seen in section \ref{sec:regression}.
+Window based regression network methods were compared to recurrent network based methods.
+The window based regression has a large error, and it is unclear what the exact cause is.
+The large error could be result of using an incorrect size of window, or the result of the training data not being optimal for training.
+The error could also be the result of the training parameters used, and it might have been solved by extensive parameter tuning.
+The use of a recurrent network proved to have very accurate results for regression of finger angles.
+
+
+\textbf{Hand Simulation Tests}\\
+The simulated hand created in CoppeliaSim \ref{coppeliasim} is tested in section \ref{sec:simtest}.
+The hand is designed to be anatomically porpotional to a real hand, with the same amount of degree of freedom as its real counterpart.
+The tests were created to assess the simulated prosthetic hand's ability to be manipulated and its ability to perform anatomically correct poses.
+The hand was manipulated to the 4 most used day-to-day grip types with great presision by a visual assessment.
+The main problem with the hand simulation is that it was not possible to test its performance using the output of a regression model as a controller.
+This was not possible due to the created dataset.
+
+
 
 %TODO: Tests not being too good, explain its due to dataset problems,
 % Explain more time could have been used on methods fine tuning and experimentation, if there had been no problems with dataset creation.
@@ -17,8 +73,6 @@
 %TODO: CNN network seems to approximate the median of all the ground truth regression angles.
 
 % Results are liable to parameter tuning
-
-% It would have been nice to test different types of feature extraction methods for classification.
 
 % if i had the time: compared kinematic output with control of the sim hand.
 
