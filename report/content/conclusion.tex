@@ -13,6 +13,15 @@ Another purpose of this thesis is to research and test state-of-the-art HMI tech
 This thesis tests two different areas of HMI interfaces, ML based lower-arm intent classification and AI based finger movement regression.
 Different models in each area are tested and compared, based on reccomendations of state-of-the-art
 literature, in order to determine what models are ideal for the control of a prosthetic hand.
+Several different ML models were trained and compared in section \ref{sec:ML}.
+All models were trained on feature-space converted sEMG data.
+Based on the tests and comparison of the classification accuracy table \ref{tab:classification_comparison}, it can be seen that the Linear Discriminant Analysis (LDA) performs best in average accuracy of $0.61\%$ and interquantile range of $0.679\%$.
+It can also be seen, and that QDA performs best in the interquantile median with a value of $0.803\%$.
+From this, the LDA machine learning algorithm is proposed to be best at intent classification of the lower-arm.
+As an alternative to intent classification, different AI models designed to do regression of finger movements were trained and compared in section \ref{sec:AI}.
+Based on the regression comparison in figure \ref{fig:regression_comparison}, it can be seen that Recurrent methods perform best compared to window based methods.
+This can be seen when comparing the average error in 50 tests, the CNN network has an average error of $0.17$ Radians per test, where the RNN network has a low average error of $0.01$ Radians.
+
 
 % in debth of classification
 % in debth of regression
