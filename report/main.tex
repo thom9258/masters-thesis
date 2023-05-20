@@ -57,8 +57,9 @@
   \fancyhf{}                                       
   \fancyhead[L]{\center{Surface-EMG Processing \& Classification for Muscle Interfaces}}
   \fancyhead[R]{}
-  \fancyfoot[L]{Thomas Alexgaard Jensen (tjens18) \\ University of Southeren Denmark}
-  \fancyfoot[R]{\thepage\  / \pageref{LastPage}}
+  \fancyfoot[L]{Thomas Alexgaard Jensen \\ University of Southeren Denmark}
+  % The \ after thepage makes a spacer..
+  \fancyfoot[R]{\thepage\ / \pageref{LastPage}}
 }
 
 % Set page style to plain.
@@ -66,14 +67,14 @@
 
 % Define Title Page information
 \title{\textbf{Surface-EMG Processing \& Classification for Muscle Interfaces}}
-\author{
+\author{Thomas Alexgaard Jensen (tjens18@student.sdu.dk)
 \\University of Southeren Denmark
 \\
 \\Supervisors: 
 \\Poramate Manoonpong (poma@mmmi.sdu.dk)
 \\Xiaofeng Xiong (xizi@mmmi.sdu.dk)
 }
-\date{Date: }
+\date{1. June 2023}
 
 % norm symbols for math
 \newcommand{\norm}[1]{\lvert #1 \rvert}
@@ -85,20 +86,25 @@
 
 \makeglossaries
 
-\begin{document}
-
+\begin{document}\thispagestyle{empty}
 \maketitle
+\thispagestyle{empty}
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{example-image-a}
+\includegraphics[width=0.8\textwidth]{pulppinch_grip.png}
 \end{center}
 \end{figure}
 %TODO: Picture of setup real hand + sim, in some cool pose
-\newpage
 
+
+\newpage
 \subfile{content/abstract.tex}
-\newpage
 
+% Reset counter to not count front page
+%TODO: Do i want to reduce count by 1?
+\setcounter{page}{1}
+
+\newpage
 \subfile{content/acknowlegdements.tex}
 \newpage
 

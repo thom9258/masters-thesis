@@ -90,8 +90,16 @@ For this, it was chosen based on state-of-the-art literature, that the feature e
 The input channel for a single sEMG window was converted into a vector of zeros and ones for the zero-crossing features, where a one is set if the data crosses over the zero line.
 Furthermore, the RMS for a window was calculated, and inserted to the end of the input vector. This effectively converts the 6 sEMG channels of a window size of $N$ into a feature vector of size $N+1$.
 The feature-based inputs were extracted, and their movement labels were used as the target classification.
-The dataset of features and ground truths were then used as input for discriminant analysis, and SVM classifiers.
 
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.99\textwidth]{MLClassifier.pdf}
+\caption{hi}
+\label{fig:mlclassifier}
+\end{center}
+\end{figure}
+
+The dataset of features and ground truths were then used as input for discriminant analysis, and SVM classifiers.
 The purpose of \textbf{Discriminant Analysis} is to classify inputs into groups.
 Discriminant analysis is a classical multivariate method of Supervised Learning, that takes a input set with their ground-thuth classes and tries to maximize seperation between these different classes.
 The models assumes that data follows a gaussian distribution. 

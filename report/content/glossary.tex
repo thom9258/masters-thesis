@@ -2,6 +2,7 @@
 \graphicspath{{\subfix{../src/}}}
 
 %TODO: Go through entire report and add glossaries!
+% glossary is inserted by \gls{name}
 
 \newglossaryentry{congential}
 {name=congential,
@@ -10,6 +11,10 @@
 \newglossaryentry{traumatic}
 {name=traumatic,
  description={A disease or physical abnormality due to trauma}}
+
+\newglossaryentry{residuallimb}
+{name=Residual Limb,
+ description={The remaining appendage after congential or traumatic amputation}}
 
 \newglossaryentry{isotonic contraction}
 {name=isotonic contraction,
@@ -35,8 +40,22 @@
 {name=abduction/adduction,
  description={Movement away/towards the midline of the hand}}
 
+% ------------------------------------------------------------------------------------------
+% ACRONYMS
+% ------------------------------------------------------------------------------------------
+%TODO: Make sure these are used
+
+% \newacronym args: {name} {short} {long}
+% acronym is inserted by \gls{name}
 \newacronym{sEMG}{sEMG}{surface-electromyography}
 \newacronym{HMI}{HMI}{human-machine-interface}
+\newacronym{AI}{AI}{artificial intelligence}
+\newacronym{ML}{ML}{machine learning}
+\newacronym{CNN}{CNN}{convolutional neural network}
+\newacronym{RNN}{RNN}{recurrent neural network}
+\newacronym{LDA}{LDA}{linear discriminant analysis}
+\newacronym{QDA}{QDA}{quadratic discriminant analysis}
+\newacronym{SVM}{SVM}{support vector machine}
 
 
 \begin{document}
