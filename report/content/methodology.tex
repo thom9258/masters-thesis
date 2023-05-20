@@ -3,27 +3,33 @@
 
 
 \begin{document}
-%\section{Methodology \& Implementation}
+
 \section{Methodology}
 
-\subsection{Anatomy}
+\subsection{Anatomy of the Lower-Arm}
 \label{sec:anatomy}
 
-The hand is an anatomically-complex appendage designed to facilitate a large amount of control in different usage scenarios.
+The hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
 The hand consists of 27 bones, 14 of these are called phalnages, and make up the 4 fingers and the thumb.
-These bones, alongside a complex set of $\sim30$ muscles are able to perform $24$ Degree-of-Freedom (DoF) of rotational motion.
+These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ Degree-of-Freedom (DoF) of rotational motion along the joints of the bones \cite{anatomy}.
 The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand.
-The 3 finger bones are called the proximal phalange, middle phalange and distal phalange.
-The joints between the phalanges have 1 DoF and are able to do \gls{flexion/extension} movement, while the base of the finger have 2 DoF and are able to do \gls{flexion/extension} \& \gls{abduction/adduction} movement.
-The anatomical muscle and joint structure of the hand/forearm can be seen in the figure \ref{fig:anatomy}.
+These bones are respectively called the proximal phalange, middle phalange and distal phalange.
+The different joints located in the hand are uniquely rotateable,
+the joints between the proximal and distal phalanges have 1 DoF of independent movement and are able to do \gls{flexion/extension} movement.
+The base of the proximal phalnage has 2 DoF and are able to do \gls{flexion/extension} \& \gls{abduction/adduction} movement.
+Additionally, the joint between the middle and distal phalnage is passively moved relative to the proximal and distal phalnage, or in relation to joint constrains from gripped objects.
+The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion/extension} \& \gls{abduction/adduction} movement.
 
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{A rendering of the anatomical muscle and joint strucutre of the lower-arm. The complexity of the muscles controlling the hand can be seen. Source \cite{???}}
-\label{fig:anatomy}
-\end{center}
-\end{figure}
+%TODO: Fix this so we have something visual instead of boring text.
+%The anatomical muscle and joint structure of the hand/forearm can be seen in the figure \ref{fig:anatomy}.
+
+%   \begin{figure}[H]
+%   \begin{center}
+%   \includegraphics[width=0.8\textwidth]{example-image-a}
+%   \caption{A rendering of the anatomical muscle and joint strucutre of the lower-arm. The complexity of the muscles controlling the hand can be seen. Source \cite{???}}
+%   \label{fig:anatomy}
+%   \end{center}
+%   \end{figure}
 
 \subsection{Brief of used Software}
 \label{sec:software}
@@ -64,7 +70,7 @@ A set of consise grip types has been chosen as an alternative to a larger set of
 This is done as a basis of creating a specialized dataset that would be easier to train and work with as a proof of concept.
 %The chosen grips are chosen as a basis for the creation of a dataset. creating 
 
-\begin{table}[h]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{ |l|l| } 
  \hline
@@ -104,7 +110,7 @@ Target areas on the lower-arm for sEMG sensors are proposed by the paper \cite{j
 Additionally, target areas of the upper-arm \& upper-body were chosen based on the suggestions from the paper \cite{Batzianoulis2018}.
 The chosen muscles to record with sEMG sensors can be seen in table \ref{tab:muscletargets}.
 
-\begin{table}[h]
+\begin{table}[H]
 \begin{center}
 \begin{tabular}{ |l|l| } 
 \hline
@@ -128,7 +134,7 @@ Muscle & Main Functionality \\
 The target muscles were chosen as they contribute to a lot of the overall movements of the hand \& lower-arm.
 The muscles in table \ref{tab:muscletargets} are numbered, and the locations of the individual sensor with the corresponding muscle can be seen in figure \ref{fig:musclesensors}.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{muscletargets.png}
 \caption{Muscle diagram, containing the target sEMG locations. The numbering corresponds to the muscle names in table \ref{tab:muscletargets}. The left image shows the muscles on the rear of the arm, while the right shows the muscles on the front of the arm.}
@@ -152,7 +158,7 @@ An example of flexion with the capture glove can be seen in figure \ref{fig:glov
 
 
 \begin{center}
-\begin{figure}[h]
+\begin{figure}[H]
 \includegraphics[width=0.8\textwidth]{example-image-a}
 \caption{The positions of 3D markers on the capture glove, designed to be detectable using the  Motive Capture software \cite{motive}.}
 \label{fig:glove}
