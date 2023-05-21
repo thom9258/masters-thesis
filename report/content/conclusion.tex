@@ -15,27 +15,31 @@ This thesis tests two different areas of HMI interfaces, ML based lower-arm inte
 Different models in each area are tested and compared, based on reccomendations of state-of-the-art
 literature, in order to determine what models are ideal for the control of a prosthetic hand.
 % in debth of classification
-Several different ML models were trained and compared in section \ref{sec:ML}.
+Several different ML models were trained and compared in section \ref{sec:machine-learning}.
 All models were trained on feature-space converted sEMG data.
 Based on the tests and comparison of the classification accuracy table \ref{tab:classification_comparison}, it can be seen that the Linear Discriminant Analysis (LDA) performs best in average accuracy of $0.61\%$ and interquantile range of $0.679\%$.
 It can also be seen, and that QDA performs best in the interquantile median with a value of $0.803\%$.
 From this, the LDA machine learning algorithm is proposed to be best at intent classification of the lower-arm.
 % in debth of regression
-As an alternative to intent classification, different AI models designed to do regression of finger movements were trained and compared in section \ref{sec:AI}.
+As an alternative to intent classification, different AI models designed to do regression of finger movements were trained and compared in section \ref{sec:regression}.
 Based on the regression comparison in figure \ref{fig:regression_comparison}, it can be seen that Recurrent methods perform best compared to window based methods.
 This can be seen when comparing the average error in 50 tests, the CNN network has an average error of $0.17$ Radians per test, where the RNN network has a low average error of $0.01$ Radians.
 % in debth of dataset creation proposal
 The designed models are trained and tested using a freely available dataset \cite{kinmus}.
 This was done due to problems with the chosen Motive Motion Capture setup, these problems were reduced by the implementation of a rendering and cleaning software explained in section \ref{sec:motivecleaner}.
+%TODO: CREATE THIS SECTION
 Using this implemented software, it is possible to fixing wrong labels and removing labels all together, compared to the building functionality in Motive.
 %This software makes fixing wrong labels and removing labels all together possible, compared to the building functionality in Motive.
 With this implemented software, it was possible to clean a small subset of recorded data, but it was not possible to create a full dataset of multiple people.
 % with cleaning of data 
 
+
+% TODO: Take it further and go into detail on my goals and what worked and what didnt
+
 \newpage
 \subsection{Future Work}
 
-Due to the problems encountered with the chosen software in this thesis, some parts of the motivation goals in section \ref{sec:motivation} were not possible to explore.
+Due to the problems encountered with the chosen software in this thesis, some parts of the motivation goals in section \ref{sec:goals} were not possible to explore.
 Had it been easier to create a custom dataset, preferably with recordings from multiple people, it would have been possible to explore further combination of the created prosthetic and the trained models.
 
 Further testing, exploring, and controllability of a trained model in a simulated environment could also have been explored.
@@ -43,5 +47,6 @@ This could be done in real-time, where a trained model could be used to convert 
 The work done in this thesis mainly explores two different areas of prosthetic controllers, classification based and regression based.
 Had a large dataset created specificly for the purpose of this thesis been created, it would be ideal to test the applicability of combining methods and by doing so, explore possible controller schemes that combines the individual movement of regression models and the robustnes of intent classification.  
 
+% TODO: Go back to problem and create some pointers to what is applicable based on my work
 
 \end{document}

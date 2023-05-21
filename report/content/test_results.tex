@@ -16,8 +16,8 @@
 \section{Datasets}
 \subsection{Created Dataset}
 
-As explained in section \ref{sec:problems}, creation of a custom dataset to train and test models on proved to be difficult.
-The dataset created using the Motive Capture Software in section \ref{??} during the development of this thesis is not very large, and has no labeling for clasification.
+As explained in section \ref{sec:motiveproblems}, creation of a custom dataset to train and test models on proved to be difficult.
+The dataset created using the Motive Capture Software in section \ref{sec:motiveglove} during the development of this thesis is not very large, and has no labeling for clasification.
 Because of this, the dataset is not suitable for training in any of the methods.
 
 \begin{figure}[H]
@@ -27,10 +27,10 @@ Because of this, the dataset is not suitable for training in any of the methods.
 \label{fig:musclesensors}
 \end{center}
 \end{figure}
-%\subsection{sEMG Data Processing}
 
 \subsection{Implementation}
 
+Based on the literature review in Section \ref{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motorcontrol for a prosthetic.
 Raw sEMG data contains a lot of unwanted noise as explained in section \ref{sec:noise}.
 Some of the noise can be can be removed through signal processing using analog filters.
 Different filter types exists, and different filters are used to remove a specific frequency in the data. 
@@ -82,12 +82,13 @@ The main objective of these tests are to review and compare possible methods of 
 
 \newpage
 \section{Machine-Learning Intent Classification}
+\label{sec:machine-learning}
 
 Due to the dataset containing labels associated with movements of the hand, it is possible to use the dataset to train a intent prediction classifier.
-As mentioned in the papers \cite{??} \& \cite{??}, it is ideal to feature extract windows of the raw sEMG data.
+As mentioned in the papers \cite{Batzianoulis2018} \& \cite{Yuki2023}, it is ideal to feature extract windows of the raw sEMG data.
 The papers propose that the features \textit{Zero Crossing} \& \textit{Root Mean Square} are ideal for intent classifiers.
-Furthermore, the paper \cite{??} proposes that the Machine-Learning classifier LDA has the highest classification rate out of similar methods.
-Another paper \cite{??} proposes the use of the Support-Vector-Machine ML method for intent  classification.
+Furthermore, the paper \cite{YanchaoWang2022} proposes that the Machine-Learning classifier LDA has the highest classification rate out of similar methods.
+The paper \cite{Batzianoulis2018} proposes the use of the Support-Vector-Machine ML method for intent classification.
 Both types of classification will be explored and compared.
 
 \subsection{Implementation}
@@ -225,6 +226,7 @@ Zero crossing and MSE features can be used for the classifiers and provide insig
 
 \newpage
 \section{Neural Network Movement Regression}
+\label{sec:regression}
 
 \subsection{Windowed Convolusional Neural Network}
 
@@ -350,10 +352,11 @@ The average errors of each regression test is plotted, as can be seen in figure 
 \end{center}
 \end{figure}
 
+\newpage
 \subsection{Evaluation of Regression Methods}
 
 %As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a fairly low MSE loss.  
-The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly small error exists in the regressions, with a maximum regression error of ?? Radians.
+The errors of the 50 test regressions in with the different models can be seen in figure \ref{fig:regression_comp}.
 
 \begin{figure}[h]
 \begin{center}
@@ -403,6 +406,7 @@ Because of this, the tests propose that it is ideal to use a type of Recurrent N
 
 \newpage
 \section{Simulated Prosthetic Hand}
+\label{sec:simtest}
 
 \subsection{Useability of the Simulated Prosthetic Hand}
 %\subsection{Anatomical Assessment and Maneuverability}
@@ -424,7 +428,7 @@ In order to pose the simulated hand, the interface created in ROS2 was used to s
 
 The hand was posed into all 4 day-to-day grip configurations for visual assessement.
 The resulting configurations of the hand can be seen in figure  \ref{fig:hand_pose_test}.
-The software used to pose the hand simulation can be seen in appendix \ref{appendix:ros2impl} 
+The software used to pose the hand simulation can be seen in appendix \ref{appendix:roscontrol} 
 
 \begin{figure}
     \centering

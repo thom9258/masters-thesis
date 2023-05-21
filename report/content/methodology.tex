@@ -9,8 +9,10 @@
 \subsection{Brief of used Software}
 \label{sec:software}
 
-In order to design a simulated prosthetic device that facilitates the requirements stated in section \ref{sec:prost_sim}, an effective simulation software needs to be chosen.
-The software needs to be controllable from an external source, such as ROS, and because of this, software like Gazebo \cite{gazebo} or CoppeliaSim \cite{coppeliasim} is ideal.
+In order to design a simulated prosthetic device that facilitates the requirements stated in section \ref{sec:goals}, effective software solutions needs to be chosen.
+
+A simulation software needs to be chosen in order to create a dynamic and controllable prosthetic hand simulation.
+The software needs to be controllable from an external source, in this case ROS2 \cite{ros2}, and because of this, software like Gazebo \cite{gazebo} or CoppeliaSim \cite{coppeliasim} is ideal.
 Both simulation softwares allow for the creation of advanced dynamic-body simulations.
 CoppeliaSim \cite{coppeliasim} was chosen due to its intuitive development workflow.
 
@@ -31,8 +33,8 @@ It was chosen to use the Motive setup due to availablility and the additional be
 \subsection{Dataset Creation}
 \label{sec:dataset}
 
-In order to train a simulated hand prosthetic, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
-In order to create a dataset of the hand, it is important to choose a set of day-to-day movements the dataset should contain.
+In order to create a controller for a prosthetic hand, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
+For such a dataset to represent meaningful data, that can be used to train sofisticated controllers for prosthetics devices, it is important that the dataset is made up of the relevant day-to-day manipulation movements.
 The paper \cite{KeunTaeKim2021} proposes the ``Southampton Hand Assessment Procedure'' (SHAP) \cite{shap} as its main method of dataset creation, an alternative would be the ``Sollerman Hand  Function Test''  \cite{sollerman}.
 Both procedures are used in assessing the function and moveability of the human hand.
 By analyzing the most important gripping motions in both tests, it should be possible to denote a suitable set of grips that the dataset needs to contain.
@@ -49,7 +51,7 @@ This is done as a basis of creating a specialized dataset that would be easier t
 \begin{center}
 \begin{tabular}{ |l|l| } 
  \hline
- Grip Type & Finger Usage Description \\ 
+ Grip Type & Object Placement Description \\ 
  \hline
  Pulp pinch & Between thumb, index and middle finger \\ 
  Lateral pinch & Between thumb \& side of index finger \\ 
@@ -67,7 +69,8 @@ This is done as a basis of creating a specialized dataset that would be easier t
 
 In addition to creating a dataset for this thesis, it would be intresting to compare with an existing state-of-the-art dataset.
 The paper \cite{jarque2019} proposes the use of their dataset \cite{kinmusdataset}.
-The dataset contains a very large set of recordings, consisting of precise anatomical angles of the hand, with the assosicated muscle activity of the forearm.
+The dataset contains a very large set of recordings, with 3 different labeled states, consisting of precise anatomical angles of the hand, with the assosicated muscle activity of the forearm.
+This makes the dataset ideal for both classification and regression based models.
 The dataset consists of $572$ recordings from $22$ subjects, in both reaching, gripping \& releasing actions.
 Another dataset is explained in the paper \cite{ashirbad2022}, as an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
 The paper explains that the sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ bandpass buttersworth filter, and in order to remove powerline noise a $60Hz$ notch filter was used.
@@ -82,7 +85,7 @@ The dataset was created on $43$ participants.
 The hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
 The hand consists of 27 bones, 14 of these are called phalnages, and make up the 4 fingers and the thumb.
 These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ Degree-of-Freedom (DoF) of rotational motion along the joints of the bones \cite{anatomy}.
-The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand.
+The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand, and can be seen in figure \ref{fig:anatomy}.
 These bones are respectively called the proximal phalange, middle phalange and distal phalange.
 The different joints located in the hand are uniquely rotateable,
 the joints between the proximal and distal phalanges have 1 DoF of independent movement and are able to do \gls{flexion/extension} movement.
@@ -116,7 +119,7 @@ The chosen muscles to record with sEMG sensors can be seen in table \ref{tab:mus
 \hline
 Muscle & Main Functionality \\ 
 \hline
-(A) \textit{Flexor Digitorum Superficialis} & Flex of the 4 fingers \\
+(A) \textit{Flexor Digitorum Superficialis} & Flexion of the 4 fingers \\
 (B) \textit{Extensor Digitorum} & Extension of the fingers \\
 (C) \textit{Extensor Carpi Radialis Longus} & Wrist exstension \& hand abduction \\
 (D) \textit{Triceps Brachii (long head)} & Extension of the arm \\
@@ -143,13 +146,15 @@ The muscles in table \ref{tab:muscletargets} are numbered, and the locations of 
 \end{figure}
 %TODO: Image is not final, might require adjustments..
 
-It was chosen to split the amount of sensors evenly along the lower-arm and the rest of the body in order to asses how important the different muscles are in prediction of the hand.
+It was chosen to split the amount of sensors evenly along the lower-arm and the rest of the body in order to asses both direct control of the finger movement and intent based on upper-arm movements.
+%how important the different muscles are in prediction of the hand.
 
 \subsection{Design of a Motion Capture Glove}
+\label{sec:motiveglove}
 
-The motive capture system created by OptiTrack is a set of 8 high-quality cameras mounted to cover a target capture area.
+The motive capture system created by OptiTrack \cite{motive} is a set of 8 high-quality cameras mounted to cover a target capture area.
 %TODO: how many cameras were there?
-The capture system detects flouresent 3D markers in the given capture area, with the purpose of triangulating the markers and effectively calculate 3D poses for the markers in the scene down to an effective accuracy of $\pm 0.2mm$ \cite{motive}.
+The capture system detects flouresent 3D markers in the given capture area, with the purpose of triangulating the markers and effectively calculate 3D poses for the markers in the scene down to an effective accuracy of $\pm 0.2mm$ .
 In order to get precise recordings of the motion of the hand and fingers, flourecent 3D markers were placed on a glove.
 The pattern of the marker positions were closen in order to calculate the angles of the individual finger bones.
 The markers are used in sets of 3, this allows for the calculation of the triangle angles in 3D space.
@@ -161,7 +166,7 @@ An example of flexion with the capture glove can be seen in figure \ref{fig:minb
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \scalebox{-1}[1]{\includegraphics[height=8cm]{glovemarkers.png}}
-        \caption{Design of the motion capture glove.}
+        \caption{3D marker location design.}
         \label{fig:markerdesign}
     \end{subfigure}
     \hfill
@@ -239,8 +244,9 @@ The software created to fix unreliable labeling of markers can be seen in append
 \subsection{Design of a Simulated Prosthetic Hand}
 \label{sec:prost_sim}
 
-In order to design a state-of-the-art simulated prosthetic hand, a number of anatomical design choises needs to be considered.
-This thesis tries to create the most anatomically-correct hand simulation available, this will hopefully have a number of positive effects on prosthetics research.
+In order to design a state-of-the-art simulated prosthetic hand based on the goals in section \ref{sec:goals}, a number of anatomical design choises needs to be considered.
+%This thesis tries to create the most
+Designing the simulated prosthetic to as anatomically-correct as possible will hopefully have a number of positive effect on the resulting movement charactaristics of the hand, and make it easier to imitate the movements of its real life counterpart.
 By having access to an advanced simulation, it would in turn be able to test and visualize more advanced movement controllers that can facilitate more DoF than current commercial prosthetics. 
 By creating an anatomically correct prosthetic hand simulation, it is hoped that prosthetics users can have more advanced rehabilitation, and learn to have more natual control of their prosthetics. This would create a more natual usage experience, and decrease the percentage of users that reject the usage of their prosthetic alltogether.
 A set of requirements The simulated anatomically correct hand should be determined in order to create a state-of-the-art prosthetics simulation.
@@ -254,10 +260,13 @@ The simulated prosthetic should:
 
 The resulting prosthetic hand simulation can be seen in appendix \ref{appendix:handsim}.
 
+\newpage
 \subsubsection{Simulated Hand Articulation design}
 
 %TODO: see Yuki2023 (page 11) for how to properly show the dimensions of my hand!
-In order to translate the biology and anatomy of a real hand explained in \ref{sec:anatomy} into an robotics simulation, we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.
+In order to translate the biology and anatomy of a real hand explained in section \ref{sec:anatomy} into an robotics simulation, the relative lengths of the wrist bones and phalnages were used as refrence.
+The resulting hand model can be seen in figure \ref{fig:simdesignandimpl}.
+%we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.
 
 \begin{figure}[H]
     \centering
@@ -277,17 +286,15 @@ In order to translate the biology and anatomy of a real hand explained in \ref{s
     \label{fig:simdesignandimpl}
 \end{figure}
 
-The porpotions of the refrence is used to denote the bone lengths for the model.
-The model is implemented in Coppeliasim \cite{coppeliasim}, and can be seen in figure  \ref{fig:simdesignandimpl}, The model is created in a hierachy, the bones are created with cylinders and the joints are created using 1 DoF Revolute joints.
+%The porpotions of the refrence is used to denote the bone lengths for the model.
+The model is implemented in Coppeliasim \cite{coppeliasim}, and is based on cylinder shapes of anatomically accurate length and positions,
+The phalnages has been colored, with the distal phalnage being yellow, the middle phalnage being purple and the proximal phalnage being blue.
+%This colorscheme is chosen in order to make posing clearer.
+%The model is created in a hierachy, the bones are created with cylinders and the joints are created using 1 DoF Revolute joints.
 % Ref coppeliasim
 As specified in section \ref{sec:anatomy}, some joints of the human hand facilitates 2 DoF of rotation.
 This is needed in order for the wrist and finger base joints to be able to do \gls{abduction/adduction}.
-To simulate this, two 1 DoF revolute joints were placed in series, thus allowing 2 DoF.
-
-
-% \section{Implementation}
-
-Based on the literature review in Section \label{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motorcontrol for a prosthetic.
+To simulate this, two 1 DoF revolute joints were placed in series, thus allowing 2 DoF of motion in a single joint.
 
 %\subsection{Software Hand Design}
 
