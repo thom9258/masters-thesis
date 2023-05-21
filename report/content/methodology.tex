@@ -6,31 +6,6 @@
 
 \section{Methodology}
 
-\subsection{Anatomy of the Lower-Arm}
-\label{sec:anatomy}
-
-The hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
-The hand consists of 27 bones, 14 of these are called phalnages, and make up the 4 fingers and the thumb.
-These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ Degree-of-Freedom (DoF) of rotational motion along the joints of the bones \cite{anatomy}.
-The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand.
-These bones are respectively called the proximal phalange, middle phalange and distal phalange.
-The different joints located in the hand are uniquely rotateable,
-the joints between the proximal and distal phalanges have 1 DoF of independent movement and are able to do \gls{flexion/extension} movement.
-The base of the proximal phalnage has 2 DoF and are able to do \gls{flexion/extension} \& \gls{abduction/adduction} movement.
-Additionally, the joint between the middle and distal phalnage is passively moved relative to the proximal and distal phalnage, or in relation to joint constrains from gripped objects.
-The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion/extension} \& \gls{abduction/adduction} movement.
-
-%TODO: Fix this so we have something visual instead of boring text.
-%The anatomical muscle and joint structure of the hand/forearm can be seen in the figure \ref{fig:anatomy}.
-
-%   \begin{figure}[H]
-%   \begin{center}
-%   \includegraphics[width=0.8\textwidth]{example-image-a}
-%   \caption{A rendering of the anatomical muscle and joint strucutre of the lower-arm. The complexity of the muscles controlling the hand can be seen. Source \cite{???}}
-%   \label{fig:anatomy}
-%   \end{center}
-%   \end{figure}
-
 \subsection{Brief of used Software}
 \label{sec:software}
 
@@ -101,6 +76,31 @@ The dataset was created on $43$ participants.
 %The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
 %TODO: Present more formally and mention company names.
 
+\subsection{Anatomy of the Lower-Arm}
+\label{sec:anatomy}
+
+The hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
+The hand consists of 27 bones, 14 of these are called phalnages, and make up the 4 fingers and the thumb.
+These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ Degree-of-Freedom (DoF) of rotational motion along the joints of the bones \cite{anatomy}.
+The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand.
+These bones are respectively called the proximal phalange, middle phalange and distal phalange.
+The different joints located in the hand are uniquely rotateable,
+the joints between the proximal and distal phalanges have 1 DoF of independent movement and are able to do \gls{flexion/extension} movement.
+The base of the proximal phalnage has 2 DoF and are able to do \gls{flexion/extension} \& \gls{abduction/adduction} movement.
+Additionally, the joint between the middle and distal phalnage is passively moved relative to the proximal and distal phalnage, or in relation to joint constrains from gripped objects.
+The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion/extension} \& \gls{abduction/adduction} movement.
+
+%TODO: Fix this so we have something visual instead of boring text.
+%The anatomical muscle and joint structure of the hand/forearm can be seen in the figure \ref{fig:anatomy}.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.6\textwidth, angle=-90]{handjoints.png}
+\caption{A rendering of the anatomical joint strucutre of the hand. 2 DoF joints are coloured in green, 1 DoF joints are coloured in red, and passive 1 DoF joints are coloured in blue.}
+\label{fig:anatomy}
+\end{center}
+\end{figure}
+
 \subsubsection{sEMG Sensor Locations on the Body}
 
 To create a dataset that correlated muscle activity to the movements of the hand, it is important to choose a set of active muscles to record.
@@ -136,7 +136,7 @@ The muscles in table \ref{tab:muscletargets} are numbered, and the locations of 
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{muscletargets.png}
+\includegraphics[width=0.8\textwidth]{musclelocations.png}
 \caption{Muscle diagram, containing the target sEMG locations. The numbering corresponds to the muscle names in table \ref{tab:muscletargets}. The left image shows the muscles on the rear of the arm, while the right shows the muscles on the front of the arm.}
 \label{fig:musclesensors}
 \end{center}
@@ -145,7 +145,7 @@ The muscles in table \ref{tab:muscletargets} are numbered, and the locations of 
 
 It was chosen to split the amount of sensors evenly along the lower-arm and the rest of the body in order to asses how important the different muscles are in prediction of the hand.
 
-\subsubsection{Motion Capture Glove}
+\subsection{Design of a Motion Capture Glove}
 
 The motive capture system created by OptiTrack is a set of 8 high-quality cameras mounted to cover a target capture area.
 %TODO: how many cameras were there?
@@ -153,25 +153,52 @@ The capture system detects flouresent 3D markers in the given capture area, with
 In order to get precise recordings of the motion of the hand and fingers, flourecent 3D markers were placed on a glove.
 The pattern of the marker positions were closen in order to calculate the angles of the individual finger bones.
 The markers are used in sets of 3, this allows for the calculation of the triangle angles in 3D space.
-The positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:glove}.
-An example of flexion with the capture glove can be seen in figure \ref{fig:glove_flex}.
+The positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:markerdesign} \& \ref{fig:realmarkers}.
+An example of flexion with the capture glove can be seen in figure \ref{fig:minbend} \& \ref{fig:maxbend}.
 
-
-\begin{center}
-\begin{figure}[H]
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{The positions of 3D markers on the capture glove, designed to be detectable using the  Motive Capture software \cite{motive}.}
-\label{fig:glove}
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \scalebox{-1}[1]{\includegraphics[height=8cm]{glovemarkers.png}}
+        \caption{Design of the motion capture glove.}
+        \label{fig:markerdesign}
+    \end{subfigure}
+    \hfill
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[height=8cm]{realmarkerlocations_cropped.png}
+        \caption{Created motion capture glove.}
+        \label{fig:realmarkers}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[height=8cm]{motive_glove2_cropped.png}
+        \caption{minimum bend of the glove.}
+        \label{fig:minbend}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[height=8cm]{motive_glove3_cropped.png}
+        \caption{Maximum bend of the glove.}
+        \label{fig:maxbend}
+    \end{subfigure}
+    \caption{Design and purpose of the created 3D marker capture glove.}
 \end{figure}
-\end{center}
 
-\begin{center}
-\begin{figure}[h]
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{Flexion of the index finger and its transformation of the 3D markers on the capture glove.}
-\label{fig:glove_flex}
-\end{figure}
-\end{center}
+Due to the placements of the 3D markers, the joint angles are calculated by defining the two vectors and using the formula:
+
+\[
+\alpha = \cos^{-1}\left({\frac{\vec{a} \cdot \vec{b}}{ \norm{\vec{a}} \cdot \norm{\vec{b}} }}\right)
+\]
+
+%\[
+%A = \cos^{-1}\left({\frac{(x_2 - x_1) \cdot (x_3-x_1) +  (y_2 - y_1) \cdot (z_3-z_1)}
+%{(\sqrt{(x_2-x_1)^2 +(y_2-y_1)^2 +(z_2-z_1)^2}) \cdot (\sqrt{(x_3-x_1)^2 +(y_3-y_1)^2 +(z_3-z_1)^2}) }}\right)
+%\]
 
 \subsubsection{Problems with Motive Tacking Software \& Capture Glove}
 \label{sec:motiveproblems}
@@ -232,17 +259,26 @@ The resulting prosthetic hand simulation can be seen in appendix \ref{appendix:h
 %TODO: see Yuki2023 (page 11) for how to properly show the dimensions of my hand!
 In order to translate the biology and anatomy of a real hand explained in \ref{sec:anatomy} into an robotics simulation, we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.
 
-%TODO: IMAGE HERE OF HAND OR XRAY
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.8\textwidth]{example-image-a}
-\caption{Example figure text}
-\label{fig:handref}
-\end{center}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[height=8cm]{simhand.png}
+        %\caption{Design of the motion capture glove.}
+    \end{subfigure}
+    \hfill
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[height=8cm]{handjoints.png}
+        %\caption{Created motion capture glove.}
+    \end{subfigure}
+    \caption{Created \& anatomical refrence design for the created simulated prosthetic hand.}
+    \label{fig:simdesignandimpl}
 \end{figure}
 
 The porpotions of the refrence is used to denote the bone lengths for the model.
-The model is implemented in Coppeliasim \ref{???}, The model is created in a hierachy, the bones are created with cylinders and the joints are created using 1 DoF Revolute joints.
+The model is implemented in Coppeliasim \cite{coppeliasim}, and can be seen in figure  \ref{fig:simdesignandimpl}, The model is created in a hierachy, the bones are created with cylinders and the joints are created using 1 DoF Revolute joints.
 % Ref coppeliasim
 As specified in section \ref{sec:anatomy}, some joints of the human hand facilitates 2 DoF of rotation.
 This is needed in order for the wrist and finger base joints to be able to do \gls{abduction/adduction}.
