@@ -17,7 +17,7 @@
 \subsection{Created Dataset}
 
 As explained in section \ref{sec:motiveproblems}, creation of a custom dataset to train and test models on proved to be difficult.
-The dataset created using the Motive Capture Software in section \ref{sec:motiveglove} during the development of this thesis is not very large, and has no labeling for clasification.
+The dataset created using the Motive Capture Software in section \ref{sec:motiveglove} during the development of this thesis is not very large, and has no labeling for classification.
 Because of this, the dataset is not suitable for training in any of the methods.
 
 \begin{figure}[H]
@@ -30,12 +30,12 @@ Because of this, the dataset is not suitable for training in any of the methods.
 
 \subsection{Implementation}
 
-Based on the literature review in Section \ref{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motorcontrol for a prosthetic.
+Based on the literature review in Section \ref{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motor control for a prosthetic.
 Raw sEMG data contains a lot of unwanted noise as explained in section \ref{sec:noise}.
 Some of the noise can be can be removed through signal processing using analog filters.
 Different filter types exists, and different filters are used to remove a specific frequency in the data. 
 State-of-the-Art papers use a lot of different methods to reduce noise in sEMG data.
-The paper \cite{multdof} proposes the use of a $50Hz$ Notch filter, while papers \cite{graspintent} \& \cite{ashirbad2022} respectively chooses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$ band-pass Buttersworth filter, lastly the paper proposes a $60Hz$ notch filter in order to remove powerline noise.
+The paper \cite{multdof} proposes the use of a $50Hz$ Notch filter, while papers \cite{graspintent} \& \cite{ashirbad2022} respectively chooses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$  Buttersworth band-pass filter, lastly the paper proposes a $60Hz$ notch filter in order to remove power-line noise.
 Due to me many different filtering types used in state-of-the-art literature, it was determined that the use of a filter depends on the specific sEMG data and the purpose of what the paper tries to do.
 In order to determine what types of filters have a positive effect on the sEMG data recorded using the Motive Capture system, different types of state-of-the-art pre-processing filters were tested and compared.
 %And that the best filter for this thesis is to be determined through testing.
@@ -50,14 +50,14 @@ Different types of Buttersworth filters were tested, as can be seen in figure \r
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{lowpass.pdf}
-\caption{Comparison of Buttersworth lowpass filters of different cutoff frequencies and orders.}
+\caption{Comparison of Buttersworth low-pass filters of different cutoff frequencies and orders.}
 \label{fig:lowpass}
 \end{center}
 \end{figure}
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{bandpass.pdf}
-\caption{Comparison of Buttersworth bandpass filters of different cutoff frequencies, orders and the usage of a Notch filter.}
+\caption{Comparison of Buttersworth band-pass filters of different cutoff frequencies, orders and the usage of a Notch filter.}
 \label{fig:bandpass}
 \end{center}
 \end{figure}
@@ -77,7 +77,7 @@ Due to the problems with the Motive motion capture software explained in section
 The dataset contains sections of sEMG data and kinematic movements of the hand.
 These sections are labeled as either \textit{reaching}, \textit{manipulation} or \textit{releasing}.  
 Due to the dataset containing data for regression and classification, it is possible to explore multiple methods of HMI's. 
-The Pre-processing step is not covered for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order bandpass filter with a band of  $25$ to $500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
+The pre-processing step is not covered for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order band-pass filter with a band of  $25$ to $500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
 The main objective of these tests are to review and compare possible methods of regression \& Classification of sEMG data in order to determine the movements of the hand.
 
 \newpage
@@ -88,7 +88,7 @@ Due to the dataset containing labels associated with movements of the hand, it i
 As mentioned in the papers \cite{Batzianoulis2018} \& \cite{Yuki2023}, it is ideal to feature extract windows of the raw sEMG data.
 The papers propose that the features \textit{Zero Crossing} \& \textit{Root Mean Square} are ideal for intent classifiers.
 Furthermore, the paper \cite{YanchaoWang2022} proposes that the Machine-Learning classifier LDA has the highest classification rate out of similar methods.
-The paper \cite{Batzianoulis2018} proposes the use of the Support-Vector-Machine ML method for intent classification.
+The paper \cite{Batzianoulis2018} proposes the use of the \gls{SVM} \gls{ML} method for intent classification.
 Both types of classification will be explored and compared.
 
 \subsection{Implementation}
@@ -102,27 +102,27 @@ The feature-based inputs were extracted, and their movement labels were used as 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{MLClassifier.pdf}
-\caption{hi}
+\caption{The machine learning classifier setup with a feature extraction step.}
 \label{fig:mlclassifier}
 \end{center}
 \end{figure}
 
 The dataset of features and ground truths were then used as input for discriminant analysis, and SVM classifiers.
-The purpose of \textbf{Discriminant Analysis} is to classify inputs into groups.
-Discriminant analysis is a classical multivariate method of Supervised Learning, that takes a input set with their ground-thuth classes and tries to maximize seperation between these different classes.
-The models assumes that data follows a gaussian distribution. 
+The purpose of \textbf{discriminant analysis} is to classify inputs into groups.
+Discriminant analysis is a classical multivariate method of Supervised Learning, that takes a input set with their ground-truth classes and tries to maximize separation between these different classes.
+The models assumes that data follows a Gaussian distribution. 
 %TODO: True? Cite something for LDA QDA?
-For this ML method, two types of discriminant analysis were tested on the dataset, namely
-Linear Discriminant Analysis (LDA) \& Quadratic Discriminant Analysis (QDA).
+For this ML method, two types of discriminant analysis were tested on the dataset, namely \gls{LDA} \& \gls{QDA}.
+%Linear Discriminant Analysis (LDA) \& Quadratic Discriminant Analysis (QDA).
 The main difference between LDA and QDA is that LDA makes the assumption that the covariance matrices of the classes are the same.
-Equal covariance matrices will result in linear seperations between classes.
-QDA as an alternative does not assume this equal covariance, this results in a classifier that assumes quadratic seperations between classes.
+Equal covariance matrices will result in linear separations between classes.
+QDA as an alternative does not assume this equal covariance, this results in a classifier that assumes quadratic separations between classes.
 %The first method to test is the Linear Discriminant Analysis (LDA), and the second method was 
-Just as Discriminant Analysis \textbf{Support Vector Machine} based methods are used to seperate inputs into groups based on classes.
+Just as discriminant analysis, SVM based methods are used to separate inputs into groups based on classes.
 SVM is a robust supervised learning method that groups dataset classes.
 SVM tries to maximize the width between classes by converting the input to a higher dimensional feature vector, and using this vector, the SVM algorithm is able to efficiently calculate a non-linear classification.
-The feature space conversion is determined by the choise of SVM kernel in the algorithm.
-For this ML method, 3 types of SVM classifiers were tested, a SVM using a Radial Basis Function (RBF) kernel, a SVM using a Sigmoid Kernel and a NuSVM method with the RBF kernel and a parameter for the number of support vectors used.
+The feature space conversion is determined by the choice of SVM kernel in the algorithm.
+For this ML method, 3 types of SVM classifiers were tested, a SVM using a Radial Basis Function (RBF) kernel, a SVM using a sigmoid Kernel and a NuSVM method with the RBF kernel and a parameter for the number of support vectors used.
 
 \subsection{Tests \& Results}
 
@@ -132,13 +132,13 @@ The discriminant analysis methods can be seen in figure \ref{fig:lda_test}, with
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{lda_test.pdf}
-\caption{Comparison of Discriminant Analysis methods (LDA/QDA) over 50 tests.}
+\caption{Comparison of discriminant analysis methods (\gls{LDA}/\gls{QDA}) over 50 tests.}
 \label{fig:lda_test}
 \end{center}
 \end{figure}
 %TODO: Graphs does not show what bar is what type..
 
-The Support Vector Machine methods can be seen in figure \ref{fig:svm_test} , with the average accuracy of the methods respectively being $0.54\%$, $0.56\%$ \& $0.59\%$ over the 50 tests.
+The \gls{SVM} methods can be seen in figure \ref{fig:svm_test}, with the average accuracy of the methods respectively being $0.54\%$, $0.56\%$ \& $0.59\%$ over the 50 tests.
 
 \begin{figure}[H]
     \centering
@@ -152,7 +152,7 @@ The Support Vector Machine methods can be seen in figure \ref{fig:svm_test} , wi
         \centering
 \includegraphics[width=0.99\textwidth]{nusvm_test.pdf}
     \end{subfigure}
-    \caption{Comparison of Support Vector Machine Kernels \& parameters over 50 tests.}
+    \caption{Comparison of \gls{SVM} Kernels \& parameters over 50 tests.}
 \label{fig:svm_test}
 \end{figure}
 %TODO: Try another parameter for NuSVM so that the graph is more complete.
@@ -162,25 +162,25 @@ The Support Vector Machine methods can be seen in figure \ref{fig:svm_test} , wi
 %TODO: GO through the graphs and talk about the results
 The methods tested can be seen to have similar average accuracy of $\sim 0.6\%$ over 50 tests.
 Because of this, it is difficult to choose a superior method without further analysis.
-The choice of machine learning method depends on its overall classification rate over 50 tests, but it can also be important to rate the ML methods based on their Interquantile values.
+The choice of machine learning method depends on its overall classification rate over 50 tests, but it can also be important to rate the ML methods based on their inter-quantile values.
 A full comparison of the machine learning methods can be seen in figure \ref{fig:classification_comparison}.
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{classification_comparison.pdf}
-\caption{Boxplot comparison of chosen classification methods based on their 50 test accuracies.}
+\caption{Comparison of chosen classification methods based on accuracy over 50 tests.}
 \label{fig:classification_comparison}
 \end{center}
 \end{figure}
 
-It can be seen in the boxplot that most methods have a similar interquantile median, and fairly small wiskers.
+It can be seen in the boxplot that most methods have a similar inter-quantile median, and fairly small whiskers.
 In order to get a clearer comparison of methods, the relevant values have been compared in table \ref{tab:classification_comparison}.  
 
 \begin{table}[H]
 \begin{center}
 \begin{tabular}{ |l|c|c|c| } 
  \hline
- ML Method & avg-accuracy [\%] & Interquantile Median & Interquantile Range \\ 
+ ML Method & avg-accuracy [\%] & Inter-quantile Median & Inter-quantile Range \\ 
  \hline
  LDA & \textbf{0.61\%}           & 0.741705 & \textbf{0.679410} \\ 
  QDA & 0.55\%           & \textbf{0.803432} & 1.000000 \\ 
@@ -200,7 +200,7 @@ In order to get a clearer comparison of methods, the relevant values have been c
 % 3  SVM(Sigmoid)            0.0        0.000000  0.735050        0.955580            1.0
 % 4   NuSVM(0.12)            0.0        0.013333  0.749436        0.964048            1.0
 
-% Interquantile range
+% Inter-Quantile range
 % 0    0.679410
 % 1    1.000000
 % 2    0.895688
@@ -209,17 +209,17 @@ In order to get a clearer comparison of methods, the relevant values have been c
 
 The relevant parameters in the table makes it possible to identify the most suitable method for intent classification.
 It can be seen that LDA has the overall best accuracy of all the methods of $61\%$, and the overall worst performing method is SVM (RBF).
-By denoting the median and the range of the Interquantile section of the boxplots, we can further elaborate on the spread of accuracies.
+By denoting the median and the range of the inter-quantile section of the boxplots, we can further elaborate on the accuracy of the 50 tests.
 % LDA
-LDA has the best average accuracy, and it also has the smallest interquantile range, indicating that LDA perform well across tests with a robustness to outlier tests. 
+LDA has the best average accuracy, and it also has the smallest inter-quantile range, indicating that LDA perform well across tests with a robustness to outlier tests. 
 % QDA
-It can be seen that QDA performs best according to the interquantile median, but QDA is also the method that has the largest interquantile range indicating that QDA is not very robust to outlier tests.
+It can be seen that QDA performs best according to the inter-quantile median, but QDA is also the method that has the largest inter-quantile range indicating that QDA is not very robust to outlier tests.
 % NuSVM
 An alternative to the discriminant analysis methods, it can be seen that the NuSVM method with a number of support vectors denoted by $0.12$.
-NuSVM has the sceond best average accuracy, the second best interquantile median \& the third lowest interquantile range.
+NuSVM has the second best average accuracy, the second best inter-quantile median \& the third lowest inter-quantile range.
 % Conclusion:
-From the table \ref{tab:classification_comparison}, it becomes apparent that none of the methods have perfect performance, but that the LDA method is the best method for intent classification.
-This result is similar to the paper \cite{??} that has the same conclusion.
+From the table \ref{tab:classification_comparison}, it becomes apparent that none of the methods have ideal performance, but that the LDA method is the best method for intent classification.
+This result is similar to the conclusion in paper \cite{KeunTaeKim2021}.
 % Eval on feature extraction
 The resulting performance metrics of the ML methods are dependent on the chosen feature extraction techniques used.
 Zero crossing and MSE features can be used for the classifiers and provide insight into what parameters are important when working with sEMG data.
@@ -228,9 +228,9 @@ Zero crossing and MSE features can be used for the classifiers and provide insig
 \section{Neural Network Movement Regression}
 \label{sec:regression}
 
-\subsection{Windowed Convolusional Neural Network}
+\subsection{Windowed Convolutional Neural Network}
 
-As an alternative to intent classsification, the dataset could be used to train finger movement regression networks.
+As an alternative to intent classification, the dataset could be used to train finger movement regression networks.
 
 \subsubsection{Implementation}
 
@@ -239,19 +239,19 @@ The sEMG data used as input for regression networks is complex.
 The sequences of muscle activity needs to be understood by the proposed method and produced into a an output.
 A network type that is ideal to understand complex meaning in, 3-dimensionary inputs is a CNN network.
 %A CNN is an alternative to a MLP network that is similar in functionality is a Convoluted Neural Network (CNN).
-A CNN consists of a set of Convolutional Layers that deforms inputs to abstract convolution features.
-The structure is considered sparcely connected due to the convolution layers are only recieving a subset of the previous convolution features.
+A CNN consists of a set of Convolution Layers that deforms inputs to abstract convolution features.
+The structure is considered sparsely connected due to the convolution layers are only receiving a subset of the previous convolution features.
 The feature conversion is ideal when a network needs to become robust and needs to recognize larger concepts in the input.
 This functionality is especially used when the input data takes the shape of a matrix.
-Once the input is convoluted to a chosen feature abstraction, it is given to a MLP strucure trained to convert the convolution features into a useable output.
+Once the input is convoluted to a chosen feature abstraction, it is given to a MLP structure trained to convert the convolution features into a usable output.
 %TODO: needs sources for this stuff?
 %TODO: Go back and see what papers uses CNN's
-CNN networks have no buildin time-based functionality, they recieve a set of inputs and produce an output.
-It is possible however to represent time if the input is given in segments consisting of multiple timeframes.
+CNN networks have no build-in time-based functionality, they receive a set of inputs and produce an output.
+It is possible however to represent time if the input is given in segments consisting of multiple time-frames.
 Because of this, the sEMG muscle activity from the dataset is segmented into windows of a desired size, the output angles that the network should do regression towards are then chosen to be the first angle after the window.
 %TODO: Images of these for better clarity!!!!
 A CNN network can be used in the field of sEMG processing due to the convolution layer's ability to learn abstract formations of the sEMG data.
-The network would be able to identify patterns in sEMG data and correlate them to an appropoate output.
+The network would be able to identify patterns in sEMG data and correlate them to an appropriate output.
 %TODO: formations? another word?
 The CNN network structure seen in figure \ref{fig:cnn_structure}.
 
@@ -272,10 +272,10 @@ The convolution features are then flattened, to a size of $4480$, before being s
 %A CNN is trained on the network, using a window size of 40 samples were used.
 %TODO: Give example of a state-of-the-art paper CNN as an alternative to mine!!!
 
-The CNN network is trained to do regression of joint angles of the hand, because of this, the loss function is determined to be Mean Square Error (MSE) loss.
+The CNN network is trained to do regression of joint angles of the hand, because of this, the loss function is determined to be MSE loss.
 The network is trained using an Adam optimizer with a learning rate of $1\text{e}^{-4}$.
 A subset of the dataset is split into a test and a validation set, and windows are extracted correlating input and output.
-The output is normalized, and the input/output sets are shuffeled before training takes place.
+The output is normalized, and the input/output sets are shuffled before training takes place.
 
 \subsubsection{Tests \& Results}
 
@@ -290,7 +290,7 @@ In order to test the CNN network and assess its performance, the training MSE lo
 \end{center}
 \end{figure}
 
-The CNN network is trained with a batch size of 8 over 20 epocs, but as can be seen in the figure, the MSE loss settels at $\sim 34$ after just 3 epocs.
+The CNN network is trained with a batch size of 8 over 20 epochs, but as can be seen in the figure, the MSE loss settles at $\sim 34$ after just 3 epochs.
 
 50 sets of regressions that have not been trained on are taken from the dataset for testing.
 The errors of the dataset are plotted, as can be seen in figure \ref{fig:cnntest}.
@@ -320,9 +320,9 @@ The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fa
 
 Due to sEMG data being time-based, Recurrent network types are ideal for regression predictions.
 RNN networks are similar to MLP's with the main difference being that a RNN has hidden feedback  memory state that is derived from earlier inputs.
-This functionality makes RNN networks ideal for concurrent, time-based systems where a sequencial input distribution needs to be converted to a output regression.  
+This functionality makes RNN networks ideal for concurrent, time-based systems where a sequential input distribution needs to be converted to a output regression.  
 %TODO: Alternative to concurrent -> i want something that explains a set of data in a graph!
-Another use case of RNN-based regression systems are systems where responce time is critical.
+Another use case of RNN-based regression systems are systems where response time is critical.
 The RNN network does not use a window of data, it converts the input of the current time frame, and the feedback of the previous time frame into a prediction.
 Because of the hidden memory, a RNN network has a quicker response time than a window-based network.
 The RNN network structure designed to predict regression of finger movements from sEMG data can be seen in figure \ref{fig:rnn_structure}.
@@ -411,22 +411,22 @@ Because of this, the tests propose that it is ideal to use a type of Recurrent N
 \subsection{Useability of the Simulated Prosthetic Hand}
 %\subsection{Anatomical Assessment and Maneuverability}
 
-Access to existing prosthetic hand simulations proved to be impossible to access and use, as explained in section \ref{sec:hand_alternatives}. they are either unavailable because their associated products have been discontinued or locked behind a pay-to-acces barrier where you have to pay to recieve a real prosthetic.
+Access to existing prosthetic hand simulations proved to be impossible to access and use, as explained in section \ref{sec:hand_alternatives}. they are either unavailable because their associated products have been discontinued or locked behind a pay-to-access barrier where you have to pay to receive a real prosthetic.
 Due to non-availability of prosthetic hand simulations, it was chosen that through this thesis, a open source prosthetic hand needed to be created for testing of the algorithms developed as part of this project.
 The creation of a prosthetic hand simulation can be seen in section \ref{sec:prost_sim}.
 The prosthetic hand was designed to be as anatomically similar as a real hand as possible.
 This was done in order to accurately simulate the movement of a real hand, and because of it, allow users to test and validate control methods on a simulation before needing to construct a real prosthetic.
-The useability and moveability of the simulated prosthetic hand needs to be assessed.
-This is important because the useability of a prosthetic hand has a large impact on rehabilitation for the end-user.
+The usability and dynamic movement of the simulated prosthetic hand needs to be assessed.
+This is important because the usability of a prosthetic hand has a large impact on rehabilitation for the end-user.
 
 \subsection{Method}
-In order to test the useability and moveability of the simulated prosthetic hand, the hand was tasked with acheiving the end-poses of the most used day-to-day grips.
+In order to test the usability and dynamic movement of the simulated prosthetic hand, the hand was tasked with achieving the end-poses of the most used day-to-day grips.
 These grips were explained in section \ref{sec:dataset} table \ref{tab:grips}, namely the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}.
 In order to pose the simulated hand, the interface created in ROS2 was used to send kinematic configurations to the hand simulation.
 
 \subsection{Test \& Results}
 
-The hand was posed into all 4 day-to-day grip configurations for visual assessement.
+The hand was posed into all 4 day-to-day grip configurations for visual assessment.
 The resulting configurations of the hand can be seen in figure  \ref{fig:hand_pose_test}.
 The software used to pose the hand simulation can be seen in appendix \ref{appendix:roscontrol} 
 
@@ -475,15 +475,17 @@ The software used to pose the hand simulation can be seen in appendix \ref{appen
 
 \subsection{Evaluation}
 
-Based on a visual assessment of figure \ref{fig:hand_pose_test}, it can be concluded that the prosthetic hand is able to be posed similarly to the real-life refrence.
-The ROS2 interface created for the simulation allows for easy manipulation of the joint rotations, and because of this, acheiving different poses becomes easy to do.
-The hand simulation is able to acheive a wide range of motion because of its design and its ability to mimic the anatomy of the real hand.
-From this it can be concluded that the prosthetic hand is porpotionally correct and thus also allows for accurate posing, applicable in different day-to-day scenarios.
+Based on a visual assessment of figure \ref{fig:hand_pose_test}, it can be concluded that the prosthetic hand is able to be posed similarly to the real-life reference.
+The ROS2 interface created for the simulation allows for easy manipulation of the joint rotations, and because of this, achieving different poses becomes easy to do.
+The hand simulation is able to achieve a wide range of motion because of its design and its ability to mimic the anatomy of the real hand.
+From this it can be concluded that the prosthetic hand is proportionally correct and thus also allows for accurate posing, applicable in different day-to-day scenarios.
 
 %\newpage
 \subsection{Posing based on Network Output}
 
-As a result of testing different network types and their applicability for creating suitable motorcontrol output for a prosthetic hand, it would be ideal to test the network output on the prosthetic simulation.
+TODO: More here..
+
+As a result of testing different network types and their applicability for creating suitable motor control output for a prosthetic hand, it would be ideal to test the network output on the prosthetic simulation.
 For full video see appendix ??.
 %TODO: Insert appendix here
 

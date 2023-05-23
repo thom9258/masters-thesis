@@ -5,20 +5,20 @@
 \begin{document}
 \section{Conclusion}
 
-This thesis is developed with the purose of researching \& designing a state-of-the-art sEMG-based HMI for a simulated prosthetic hand.
+This thesis is developed with the purpose of researching \& designing a state-of-the-art sEMG-based HMI for a simulated prosthetic hand.
 % Chosen hardware stuff explained 
 During the development of this thesis, a controllable prosthetic hand was developed in the simulation tool CoppeliaSim \cite{coppeliasim}, that is able to be controlled by the commonly used robotics communication software ROS2 \cite{ros2}.
-The prosthetic hand is designed to have anatomically correct porpotions, with anatomically correct joints that allows the simulation to act and be controlled with similar movements as a real hand. 
-The simulation is created with the purpose of providing an easy-to-use, freely available, advanced prosthetics simulation for others to use, modify and develop with. 
-Another purpose of this thesis is to research and test state-of-the-art HMI techniques in the field of AI and ML, in order to compare and test different methods of converting sEMG based muscle activity into a useable controller scheme for a prosthetics device.
+The prosthetic hand is designed to have anatomically correct proportions, with anatomically correct joints that allows the simulation to act and be controlled with similar movements as a real hand. 
+The simulation is created with the purpose of providing an easy-to-use, freely available, advanced prosthesis simulation for others to use, modify and develop with. 
+Another purpose of this thesis is to research and test state-of-the-art HMI techniques in the field of AI and ML, in order to compare and test different methods of converting sEMG based muscle activity into a usable controller scheme for a prosthetic device.
 This thesis tests two different areas of HMI interfaces, ML based lower-arm intent classification and AI based finger movement regression.
-Different models in each area are tested and compared, based on reccomendations of state-of-the-art
+Different models in each area are tested and compared, based on recommendations of state-of-the-art
 literature, in order to determine what models are ideal for the control of a prosthetic hand.
 % in debth of classification
 Several different ML models were trained and compared in section \ref{sec:machine-learning}.
 All models were trained on feature-space converted sEMG data.
-Based on the tests and comparison of the classification accuracy table \ref{tab:classification_comparison}, it can be seen that the Linear Discriminant Analysis (LDA) performs best in average accuracy of $0.61\%$ and interquantile range of $0.679\%$.
-It can also be seen, and that QDA performs best in the interquantile median with a value of $0.803\%$.
+Based on the tests and comparison of the classification accuracy table \ref{tab:classification_comparison}, it can be seen that the Linear Discriminant Analysis (LDA) performs best in average accuracy of $0.61\%$ and inter-quantile range of $0.679\%$.
+It can also be seen, and that QDA performs best in the inter-quantile median with a value of $0.803\%$, but has the largest inter-quantile range.
 From this, the LDA machine learning algorithm is proposed to be best at intent classification of the lower-arm.
 % in debth of regression
 As an alternative to intent classification, different AI models designed to do regression of finger movements were trained and compared in section \ref{sec:regression}.
@@ -42,11 +42,13 @@ With this implemented software, it was possible to clean a small subset of recor
 Due to the problems encountered with the chosen software in this thesis, some parts of the motivation goals in section \ref{sec:goals} were not possible to explore.
 Had it been easier to create a custom dataset, preferably with recordings from multiple people, it would have been possible to explore further combination of the created prosthetic and the trained models.
 
-Further testing, exploring, and controllability of a trained model in a simulated environment could also have been explored.
-This could be done in real-time, where a trained model could be used to convert live sEMG recordings into movemements for the simulated prosthetic, allowing the test person to manipulate the simulated environment in real time.
+Further testing, of the dynamic control of a trained model in a simulated environment could also have been explored.
+This could be done in real-time, where a trained model could be used to convert live sEMG recordings into movements for the simulated prosthetic, allowing the test person to manipulate the simulated environment in real time.
 The work done in this thesis mainly explores two different areas of prosthetic controllers, classification based and regression based.
-Had a large dataset created specificly for the purpose of this thesis been created, it would be ideal to test the applicability of combining methods and by doing so, explore possible controller schemes that combines the individual movement of regression models and the robustnes of intent classification.  
+Had a large dataset created specifically for the purpose of this thesis been created, it would be ideal to test the applicability of combining methods and by doing so, explore possible controller schemes that combines the individual movement of regression models and the robustness of intent classification.  
 
+
+TODO: More here!
 % TODO: Go back to problem and create some pointers to what is applicable based on my work
 
 \end{document}

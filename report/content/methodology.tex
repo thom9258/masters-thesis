@@ -13,35 +13,35 @@ In order to design a simulated prosthetic device that facilitates the requiremen
 
 A simulation software needs to be chosen in order to create a dynamic and controllable prosthetic hand simulation.
 The software needs to be controllable from an external source, in this case ROS2 \cite{ros2}, and because of this, software like Gazebo \cite{gazebo} or CoppeliaSim \cite{coppeliasim} is ideal.
-Both simulation softwares allow for the creation of advanced dynamic-body simulations.
+Both simulation software solutions allow for the creation of advanced dynamic-body simulations.
 CoppeliaSim \cite{coppeliasim} was chosen due to its intuitive development workflow.
 
-In order to record the joint movements of the hand, while simultaneously record the sEMG activity of the body, products that support hardware-synchonization needs to be used.
+In order to record the joint movements of the hand, while simultaneously record the sEMG activity of the body, products that support hardware synchronization needs to be used.
 Products designed to capture sEMG data are widely spread.
-As mentioned in the paper \cite{Zhaolong2021}, the Myo armband \cite{myo} or the Delsys Trigno package \cite{emgworks} could be used.
-The Delsys Trigno \cite{emgworks} facilitates a hardware-synchonization recording mode out of the box, while the myo armband \cite{myo} does not.
+As mentioned in the paper \cite{Zhaolong2021}, the myo armband \cite{myo} or the Delsys Trigno package \cite{emgworks} could be used.
+The Delsys Trigno \cite{emgworks} facilitates a hardware synchronization recording mode out of the box, while the myo armband \cite{myo} does not.
 Because of availability, and synchronization capabilities it is ideal to use the Delsys Trigno as the sEMG recording device.
 
 Lastly, a product designed to capture the joint movements of the hand needs to be chosen.
 A simple solution to hand tracking would be to use a software like MediaPipe \cite{mediapipe}, a python based landmark tracker that can track the joint angles of the hand using Machine Learning from a video feed.
 An alternative is mentioned in the paper \cite{Zhaolong2021}, where a glove containing flex sensors could be used.
-This approach would provide relieable joint angle data without relying on a camera setup.
-Lastly, a capture glove could be fitted with 3D markers, detectable from a high-accuracy and high-framerate system such as the Motive motion capture setup \cite{optitrack} created by OptiTrack.
-It was chosen to use the Motive setup due to availablility and the additional benefit of having a hardware-synchnonization feature, that can be combined with the Delsys Trigno \cite{emgworks} setup.
+This approach would provide reliable joint angle data without relying on a camera setup.
+Lastly, a capture glove could be fitted with 3D markers, detectable from a high-accuracy and high frame-rate system such as the Motive motion capture setup \cite{optitrack} created by OptiTrack.
+It was chosen to use the Motive setup due to availability and the additional benefit of having a hardware synchronization feature, that can be combined with the Delsys Trigno \cite{emgworks} setup.
 
 
 \subsection{Anatomy of the Lower-Arm}
 \label{sec:anatomy}
 
 The hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
-The hand consists of 27 bones, 14 of these are called the \gls{proximal phalanx}, \gls{middle phalanx} \& \gls{distal phalanx} phalnages, and make up the 4 fingers and the thumb.
-These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ Degree-of-Freedom (DoF) of rotational motion along the joints of the bones \cite{anatomy}.
+The hand consists of 27 bones, 14 of these are called the \gls{phalanges}, and make up the 4 fingers and the thumb.
+These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ degree of freedom (DoF) of rotational motion along the joints of the bones \cite{anatomy}.
 The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand, and can be seen in figure \ref{fig:anatomy}.
-These bones are respectively called the proximal phalange, middle phalange and distal phalange.
-The different joints located in the hand are uniquely rotateable,
-the joints between the proximal and distal phalanges have 1 DoF of independent movement and are able to do \gls{flexion/extension} movement.
-The base of the proximal phalnage has 2 DoF and are able to do \gls{flexion/extension} \& \gls{abduction/adduction} movement.
-Additionally, the joint between the middle and distal phalnage is passively moved relative to the proximal and distal phalnage, or in relation to joint constrains from gripped objects.
+These bones are respectively called the \gls{proximal phalanx}, \gls{middle phalanx} \& \gls{distal phalanx}.
+The different joints located in the hand have unique rotation properties.
+The joints between the proximal and distal phalanges have 1 DoF of independent movement and are able to do \gls{flexion/extension} movement.
+The base of the proximal phalanx has 2 DoF and are able to do \gls{flexion/extension} \& \gls{abduction/adduction} movement.
+Additionally, the joint between the middle and distal phalanx is passively moved relative to the proximal and distal phalanx, or in relation to joint constrains from gripped objects.
 The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion/extension} \& \gls{abduction/adduction} movement.
 
 %TODO: Fix this so we have something visual instead of boring text.
@@ -50,7 +50,7 @@ The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.6\textwidth, angle=-90]{handjoints.png}
-\caption{A rendering of the anatomical joint strucutre of the hand. 2 DoF joints are coloured in green, 1 DoF joints are coloured in red, and passive 1 DoF joints are coloured in blue.}
+\caption{A rendering of the anatomical joint structure of the hand. 2 DoF joints are colored in green, 1 DoF joints are colored in red, and passive 1 DoF joints are colored in blue.}
 \label{fig:anatomy}
 \end{center}
 \end{figure}
@@ -73,7 +73,7 @@ Muscle & Main Functionality \\
 \hline
 (A) \textit{Flexor Digitorum Superficialis} & Flexion of the 4 fingers \\
 (B) \textit{Extensor Digitorum} & Extension of the fingers \\
-(C) \textit{Extensor Carpi Radialis Longus} & Wrist exstension \& hand abduction \\
+(C) \textit{Extensor Carpi Radialis Longus} & Wrist extension \& hand abduction \\
 (D) \textit{Triceps Brachii (long head)} & Extension of the arm \\
 (E) \textit{Biceps Brachii} & Flexion of the arm \\
 (F) \textit{Pectoralis Major / Frontal Deltoid} & Movement of the Arm \\
@@ -99,6 +99,7 @@ The muscles in table \ref{tab:muscletargets} are numbered, and the locations of 
 %TODO: Image is not final, might require adjustments..
 
 It was chosen to split the amount of sensors evenly along the lower-arm and the rest of the body in order to asses both direct control of the finger movement and intent based on upper-arm movements.
+Alternative muscles located on the back of the subject are mentioned in \cite{KeunTaeKim2021}, and are \textit{Trapezius} \& \textit{Latissimus Dorsi}.
 %how important the different muscles are in prediction of the hand.
 
 \subsection{Design of a Motion Capture Glove}
@@ -106,9 +107,9 @@ It was chosen to split the amount of sensors evenly along the lower-arm and the 
 
 The motive capture system created by OptiTrack \cite{motive} is a set of 8 high-quality cameras mounted to cover a target capture area.
 %TODO: how many cameras were there?
-The capture system detects flouresent 3D markers in the given capture area, with the purpose of triangulating the markers and effectively calculate 3D poses for the markers in the scene down to an effective accuracy of $\pm 0.2mm$ .
-In order to get precise recordings of the motion of the hand and fingers, flourecent 3D markers were placed on a glove.
-The pattern of the marker positions were closen in order to calculate the angles of the individual finger bones.
+The capture system detects fluorescent 3D markers in the given capture area, with the purpose of triangulating the markers and effectively calculate 3D poses for the markers in the scene down to an effective accuracy of $\pm 0.2mm$ .
+In order to get precise recordings of the motion of the hand and fingers, fluorescent 3D markers were placed on a glove.
+The pattern of the marker positions were chosen in order to calculate the angles of the individual finger bones.
 The markers are used in sets of 3, this allows for the calculation of the triangle angles in 3D space.
 The positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:markerdesign} \& \ref{fig:realmarkers}.
 An example of \gls{flexion/extension} movement of the capture glove can be seen in figure \ref{fig:minbend} \& \ref{fig:maxbend}.
@@ -163,17 +164,17 @@ Due to the placements of the 3D markers, the joint angles are calculated by defi
 \subsection{Dataset Creation}
 \label{sec:dataset}
 
-In order to create a controller for a prosthetic hand, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
-For such a dataset to represent meaningful data, that can be used to train sofisticated controllers for prosthetics devices, it is important that the dataset is made up of the relevant day-to-day manipulation movements.
-The paper \cite{KeunTaeKim2021} proposes the ``Southampton Hand Assessment Procedure'' (SHAP) \cite{shap} as its main method of dataset creation, an alternative would be the ``Sollerman Hand  Function Test''  \cite{sollerman}.
-Both procedures are used in assessing the function and moveability of the human hand.
+In order to create a controller for a prosthetic hand, a sophisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
+For such a dataset to represent meaningful data, that can be used to train sophisticated controllers for prosthetic devices, it is important that the dataset is made up of the relevant day-to-day manipulation movements.
+The paper \cite{KeunTaeKim2021} proposes the \gls{SHAP} \cite{shap} as its main method of dataset creation, an alternative would be the ``Sollerman Hand  Function Test''  \cite{sollerman}.
+Both procedures are used in assessing the function and mobility of the human hand.
 By analyzing the most important gripping motions in both tests, it should be possible to denote a suitable set of grips that the dataset needs to contain.
 The sollerman grip types are ranked based on their usage percentage in activities of daily living.
 From this, the most used grip types according to sollerman are the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}, see \cite{sollerman} for further details.
 SHAP also proposes a set of grip types that are used in day-to-day tasks, these are \textit{Spherical grip}, \textit{Tripod pinch}, \textit{Power grip} \& \textit{Lateral pinch}.
 In order to create a dataset mimics the movements of day-to-day tasks, the most important grips from \cite{sollerman} \& \cite{shap} has been chosen.
 The grip types that needs to be part of the dataset and their usage descriptions can be seen in table \ref{tab:grips}.
-A set of consise grip types has been chosen as an alternative to a larger set of general grips.
+A set of concise grip types has been chosen as an alternative to a larger set of general grips.
 This is done as a basis of creating a specialized dataset that would be easier to train and work with as a proof of concept.
 %The chosen grips are chosen as a basis for the creation of a dataset. creating 
 
@@ -195,15 +196,16 @@ This is done as a basis of creating a specialized dataset that would be easier t
 \end{table}
 
 
-\subsubsection{Existing datasets}
+\subsubsection{Existing Datasets}
 
-In addition to creating a dataset for this thesis, it would be intresting to compare with an existing state-of-the-art dataset.
+In addition to creating a dataset for this thesis, an existing state-of-the-art dataset will be used and compared with.
 The paper \cite{jarque2019} proposes the use of their dataset \cite{kinmusdataset}.
-The dataset contains a very large set of recordings, with 3 different labeled states, consisting of precise anatomical angles of the hand, with the assosicated muscle activity of the forearm.
+The dataset contains a very large set of recordings, with 3 different labeled states, consisting of precise anatomical angles of the hand, with the associated muscle activity of the forearm.
 This makes the dataset ideal for both classification and regression based models.
 The dataset consists of $572$ recordings from $22$ subjects, in both reaching, gripping \& releasing actions.
 Another dataset is explained in the paper \cite{ashirbad2022}, as an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
-The paper explains that the sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ bandpass buttersworth filter, and in order to remove powerline noise a $60Hz$ notch filter was used.
+The paper explains that the sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ Buttersworth bandpass filter, and in order to remove power-line noise a $60Hz$ notch filter was used.
+%TODO: What is powerline noise!
 The dataset was created on $43$ participants.
 
 %The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
@@ -216,24 +218,25 @@ During testing and the creation of the dataset, several problems with the captur
 These problem severely reduced the amount of time available to create and process a large dataset for this thesis.
 The Motive Motion Capture software \cite{motive} had a lot of difficulty with finding, recording and optimizing the 3D markers placed on the capture glove.
 
-The  Motive sofware used to generate the 3D poses is designed to detect 3D markers in the scene.
+The  Motive software used to generate the 3D poses is designed to detect 3D markers in the scene.
 Once the markers are found in the individual cameras, they are subject to an optimization algorithm that effectively tries to determine if the markers seen in 1 camera is the same as the markers in the other cameras.
-The first problem that occoured was specular reflection in the scene caused by shiny surfaces redirecting light in the target area.
+The first problem that occurred was \gls{specular reflection} in the scene caused by shiny surfaces redirecting light in the target area.
 This creates \textit{phantom} markers that can be seen in only a small set of frames.
 Another problem with the capture setup is the optimization algorithm.
-During recording of the dataset, it became apparent that it would not be possible to recort multiple fingers at the same time.
+During recording of the dataset, it became apparent that it would not be possible to record multiple fingers at the same time.
 3D markers very close to each other seemed to be connecting, and only become a single marker in the tracking software.
-This problem specifically occoured when the markers at the finger tips of the glove came in contact with each other causing marker data to be lost.
+%Another problem experienced during the creation of a dataset is the dissapearance and merging of markers.
+%This problem occurred when two markers had a small distance between them, 
+This problem specifically occurred when the markers at the finger tips of the glove came in contact with each other causing marker data to be lost.
 Furthermore, the Motive Capture software uses an auto-labeling system that is able to determine if the markers seen in one frame, are the same markers in the next frame.
-This system proved to only be semi-relieable, giving labeled marker sequences of less than $\sim 200$.
-During a sequence of 15 seconds of recording, a set of 7 markers in the scene became over $100$ labeled marker tracks. And the problem increased as 30 seconds of fotage could create up to 1000 marker labels.
+This system proved to not be reliable, giving $\sim 200$ labeled marker sequences, when only $7$ markers existed in the scene.
+%During a sequence of 15 seconds of recording, a set of 7 markers in the scene became over $100$ labeled marker tracks.
+The amount of markers increased as 30 seconds of footage became create $\sim 1000$ marker labels.
 The unreliable labeling of markers can be seen in appendix \ref{appendix:motivefixing}.
 
-%TODO: Mention that markers needs to be very close (2-3 cm) and this might not be intended for motive software.
-
-
-\subsection{Cleaning of Created Dataset}
+\subsection{Cleaning of Recorded Dataset}
 %\subsubsection{Reduction of Tracking Software Problems}
+
 TODO: This section could be expanded and images could be included.
 
 %In order to fix some of the problems, caused by the setup, software was written.
@@ -242,7 +245,7 @@ The large amount of problems observed using the Motive Motion Tracking software 
 The problems requires the user to manually combine labeled marker sections into larger labeled sections, in order to reduce changing labels on the tracked markers.
 It would be ideal if this functionality existed in the Motive software, but this was not the case.
 Because of a lack of functionality in Motive, software was created to replay the 3D markers in real-time, with their associated labels.
-Furthermore, software that was able to remove, merge and subsample markers was used to clean the labels.
+Furthermore, software that was able to remove, merge and sub-sample markers was used to clean the labels.
 The software created to fix unreliable labeling of markers can be seen in appendix \ref{appendix:motivefixing}.
 
 %TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
@@ -250,18 +253,19 @@ The software created to fix unreliable labeling of markers can be seen in append
 \subsection{Design of a Simulated Prosthetic Hand}
 \label{sec:prost_sim}
 
-In order to design a state-of-the-art simulated prosthetic hand based on the goals in section \ref{sec:goals}, a number of anatomical design choises needs to be considered.
+In order to design a state-of-the-art simulated prosthetic hand based on the goals in section \ref{sec:goals}, a number of anatomical design choices needs to be considered.
 %This thesis tries to create the most
-Designing the simulated prosthetic to as anatomically-correct as possible will hopefully have a number of positive effect on the resulting movement charactaristics of the hand, and make it easier to imitate the movements of its real life counterpart.
-By having access to an advanced simulation, it would in turn be able to test and visualize more advanced movement controllers that can facilitate more DoF than current commercial prosthetics. 
-By creating an anatomically correct prosthetic hand simulation, it is hoped that prosthetics users can have more advanced rehabilitation, and learn to have more natual control of their prosthetics. This would create a more natual usage experience, and decrease the percentage of users that reject the usage of their prosthetic alltogether.
-A set of requirements The simulated anatomically correct hand should be determined in order to create a state-of-the-art prosthetics simulation.
+Designing the simulated prosthetic to as anatomically-correct as possible will hopefully have a number of positive effect on the resulting movement characteristics of the hand, and make it easier to imitate the movements of its real life counterpart.
+By having access to an advanced simulation, it would in turn be able to test and visualize more advanced movement controllers that can facilitate more DoF than current commercial prosthetic hands. 
+By creating an anatomically correct prosthetic hand simulation, it is hoped that prosthesis users can have more advanced rehabilitation, and learn to have more natural control of their prosthetic devices.
+This would create a more natural usage experience, and decrease the percentage of users that reject the usage of their prosthetic all together.
+A set of requirements The simulated anatomically correct hand should be determined in order to create a state-of-the-art prosthesis simulation.
 The simulated prosthetic should:
 
 \begin{enumerate}
 \item Facilitate the same DoF as an anatomically correct hand.
-\item Have porpotions that closely resemble that of an anatomically correct hand.
-\item Be simulated and be controllable in a commonly used robotics software to increase accesability for researchers.
+\item Have proportions that closely resemble that of an anatomically correct hand.
+\item Be simulated and be controllable in a commonly used robotics software to increase accessibility for researchers.
 \end{enumerate}
 
 The resulting prosthetic hand simulation can be seen in appendix \ref{appendix:handsim}.
@@ -270,7 +274,7 @@ The resulting prosthetic hand simulation can be seen in appendix \ref{appendix:h
 \subsubsection{Simulated Hand Articulation design}
 
 %TODO: see Yuki2023 (page 11) for how to properly show the dimensions of my hand!
-In order to translate the biology and anatomy of a real hand explained in section \ref{sec:anatomy} into an robotics simulation, the relative lengths of the wrist bones and phalnages were used as refrence.
+In order to translate the biology and anatomy of a real hand explained in section \ref{sec:anatomy} into an robotics simulation, the relative lengths of the wrist bones and phalanges were used as reference.
 The resulting hand model can be seen in figure \ref{fig:simdesignandimpl}.
 %we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.
 
@@ -288,13 +292,13 @@ The resulting hand model can be seen in figure \ref{fig:simdesignandimpl}.
         \includegraphics[height=8cm]{handjoints.png}
         %\caption{Created motion capture glove.}
     \end{subfigure}
-    \caption{Created \& anatomical refrence design for the created simulated prosthetic hand.}
+    \caption{Created \& anatomical reference design for the created simulated prosthetic hand.}
     \label{fig:simdesignandimpl}
 \end{figure}
 
 %The porpotions of the refrence is used to denote the bone lengths for the model.
-The model is implemented in Coppeliasim \cite{coppeliasim}, and is based on cylinder shapes of anatomically accurate length and positions,
-The phalnages has been colored, with the distal phalnage being yellow, the middle phalnage being purple and the proximal phalnage being blue.
+The model is implemented in CoppeliaSim \cite{coppeliasim}, and is based on cylinder shapes of anatomically accurate length and positions,
+The phalanges has been colored, with the distal phalanx being yellow, the middle phalanx being purple and the proximal phalanx being blue.
 %This colorscheme is chosen in order to make posing clearer.
 %The model is created in a hierachy, the bones are created with cylinders and the joints are created using 1 DoF Revolute joints.
 % Ref coppeliasim
