@@ -22,10 +22,10 @@ It can also be seen, and that QDA performs best in the interquantile median with
 From this, the LDA machine learning algorithm is proposed to be best at intent classification of the lower-arm.
 % in debth of regression
 As an alternative to intent classification, different AI models designed to do regression of finger movements were trained and compared in section \ref{sec:regression}.
-Based on the regression comparison in figure \ref{fig:regression_comparison}, it can be seen that Recurrent methods perform best compared to window based methods.
+Based on the regression comparison in figure \ref{fig:regression_comp}, it can be seen that Recurrent methods perform best compared to window based methods.
 This can be seen when comparing the average error in 50 tests, the CNN network has an average error of $0.17$ Radians per test, where the RNN network has a low average error of $0.01$ Radians.
 % in debth of dataset creation proposal
-The designed models are trained and tested using a freely available dataset \cite{kinmus}.
+The designed models are trained and tested using a freely available dataset \cite{kinmusdataset}.
 This was done due to problems with the chosen Motive Motion Capture setup, these problems were reduced by the implementation of a rendering and cleaning software explained in section \ref{sec:motivecleaner}.
 %TODO: CREATE THIS SECTION
 Using this implemented software, it is possible to fixing wrong labels and removing labels all together, compared to the building functionality in Motive.

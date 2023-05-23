@@ -30,60 +30,11 @@ Lastly, a capture glove could be fitted with 3D markers, detectable from a high-
 It was chosen to use the Motive setup due to availablility and the additional benefit of having a hardware-synchnonization feature, that can be combined with the Delsys Trigno \cite{emgworks} setup.
 
 
-\subsection{Dataset Creation}
-\label{sec:dataset}
-
-In order to create a controller for a prosthetic hand, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
-For such a dataset to represent meaningful data, that can be used to train sofisticated controllers for prosthetics devices, it is important that the dataset is made up of the relevant day-to-day manipulation movements.
-The paper \cite{KeunTaeKim2021} proposes the ``Southampton Hand Assessment Procedure'' (SHAP) \cite{shap} as its main method of dataset creation, an alternative would be the ``Sollerman Hand  Function Test''  \cite{sollerman}.
-Both procedures are used in assessing the function and moveability of the human hand.
-By analyzing the most important gripping motions in both tests, it should be possible to denote a suitable set of grips that the dataset needs to contain.
-The sollerman grip types are ranked based on their usage percentage in activities of daily living.
-From this, the most used grip types according to sollerman are the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}, see \cite{sollerman} for further details.
-SHAP also proposes a set of grip types that are used in day-to-day tasks, these are \textit{Spherical grip}, \textit{Tripod pinch}, \textit{Power grip} \& \textit{Lateral pinch}.
-In order to create a dataset mimics the movements of day-to-day tasks, the most important grips from \cite{sollerman} \& \cite{shap} has been chosen.
-The grip types that needs to be part of the dataset and their usage descriptions can be seen in table \ref{tab:grips}.
-A set of consise grip types has been chosen as an alternative to a larger set of general grips.
-This is done as a basis of creating a specialized dataset that would be easier to train and work with as a proof of concept.
-%The chosen grips are chosen as a basis for the creation of a dataset. creating 
-
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{ |l|l| } 
- \hline
- Grip Type & Object Placement Description \\ 
- \hline
- Pulp pinch & Between thumb, index and middle finger \\ 
- Lateral pinch & Between thumb \& side of index finger \\ 
- Five-Finger pinch & Between thumb, and all four fingers \\ 
- Power grip & Between thumb, and all four fingers with contact to palm \\ 
- \hline
-\end{tabular}
-\caption{The most used hand grips in day-to-day tasks based on \textit{Southampton Hand Assessment Procedure} \cite{shap} \& \textit{Sollerman Hand Function Test} \cite{sollerman}.}
-\label{tab:grips}
-\end{center}
-\end{table}
-
-
-\subsubsection{Existing datasets}
-
-In addition to creating a dataset for this thesis, it would be intresting to compare with an existing state-of-the-art dataset.
-The paper \cite{jarque2019} proposes the use of their dataset \cite{kinmusdataset}.
-The dataset contains a very large set of recordings, with 3 different labeled states, consisting of precise anatomical angles of the hand, with the assosicated muscle activity of the forearm.
-This makes the dataset ideal for both classification and regression based models.
-The dataset consists of $572$ recordings from $22$ subjects, in both reaching, gripping \& releasing actions.
-Another dataset is explained in the paper \cite{ashirbad2022}, as an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
-The paper explains that the sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ bandpass buttersworth filter, and in order to remove powerline noise a $60Hz$ notch filter was used.
-The dataset was created on $43$ participants.
-
-%The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
-%TODO: Present more formally and mention company names.
-
 \subsection{Anatomy of the Lower-Arm}
 \label{sec:anatomy}
 
 The hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
-The hand consists of 27 bones, 14 of these are called phalnages, and make up the 4 fingers and the thumb.
+The hand consists of 27 bones, 14 of these are called the \gls{proximal phalanx}, \gls{middle phalanx} \& \gls{distal phalanx} phalnages, and make up the 4 fingers and the thumb.
 These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ Degree-of-Freedom (DoF) of rotational motion along the joints of the bones \cite{anatomy}.
 The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand, and can be seen in figure \ref{fig:anatomy}.
 These bones are respectively called the proximal phalange, middle phalange and distal phalange.
@@ -105,6 +56,7 @@ The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion
 \end{figure}
 
 \subsubsection{sEMG Sensor Locations on the Body}
+\label{sec:muscleplacements}
 
 To create a dataset that correlated muscle activity to the movements of the hand, it is important to choose a set of active muscles to record.
 $\sim 30$ muscles are used in total to control the hand, but it would not be possible to record all of them simultaneously.
@@ -159,9 +111,20 @@ In order to get precise recordings of the motion of the hand and fingers, floure
 The pattern of the marker positions were closen in order to calculate the angles of the individual finger bones.
 The markers are used in sets of 3, this allows for the calculation of the triangle angles in 3D space.
 The positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:markerdesign} \& \ref{fig:realmarkers}.
-An example of flexion with the capture glove can be seen in figure \ref{fig:minbend} \& \ref{fig:maxbend}.
+An example of \gls{flexion/extension} movement of the capture glove can be seen in figure \ref{fig:minbend} \& \ref{fig:maxbend}.
 
-\begin{figure}
+Due to the placements of the 3D markers, the joint angles are calculated by defining the two vectors and using the formula:
+
+\[
+\alpha = \cos^{-1}\left({\frac{\vec{a} \cdot \vec{b}}{ \norm{\vec{a}} \cdot \norm{\vec{b}} }}\right)
+\]
+
+%\[
+%A = \cos^{-1}\left({\frac{(x_2 - x_1) \cdot (x_3-x_1) +  (y_2 - y_1) \cdot (z_3-z_1)}
+%{(\sqrt{(x_2-x_1)^2 +(y_2-y_1)^2 +(z_2-z_1)^2}) \cdot (\sqrt{(x_3-x_1)^2 +(y_3-y_1)^2 +(z_3-z_1)^2}) }}\right)
+%\]
+
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
@@ -177,33 +140,74 @@ An example of flexion with the capture glove can be seen in figure \ref{fig:minb
         \caption{Created motion capture glove.}
         \label{fig:realmarkers}
     \end{subfigure}
-    \hfill
+    \caption{(a) Design and ideal 3D marker placements on the glove in order to calculate all the joint angles of the hand. (b) The created 3D marker glove with the chosen 3D marker locations. See section \ref{sec:motiveproblems} for detail.}
+\end{figure}
+
+\begin{figure}[H]
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[height=8cm]{motive_glove2_cropped.png}
-        \caption{minimum bend of the glove.}
+        \caption{minimum bend of the finger.}
         \label{fig:minbend}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[height=8cm]{motive_glove3_cropped.png}
-        \caption{Maximum bend of the glove.}
+        \caption{Maximum bend of the finger.}
         \label{fig:maxbend}
     \end{subfigure}
-    \caption{Design and purpose of the created 3D marker capture glove.}
+    \caption{Visualization of the joint angle retrieval process. (a) the minimum bend of the \gls{interphalangeal joint}, (b) the maximum bend, from this, the joint angle can be calculated from the 3D poses of the markers.}
 \end{figure}
 
-Due to the placements of the 3D markers, the joint angles are calculated by defining the two vectors and using the formula:
+\subsection{Dataset Creation}
+\label{sec:dataset}
 
-\[
-\alpha = \cos^{-1}\left({\frac{\vec{a} \cdot \vec{b}}{ \norm{\vec{a}} \cdot \norm{\vec{b}} }}\right)
-\]
+In order to create a controller for a prosthetic hand, a sofisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
+For such a dataset to represent meaningful data, that can be used to train sofisticated controllers for prosthetics devices, it is important that the dataset is made up of the relevant day-to-day manipulation movements.
+The paper \cite{KeunTaeKim2021} proposes the ``Southampton Hand Assessment Procedure'' (SHAP) \cite{shap} as its main method of dataset creation, an alternative would be the ``Sollerman Hand  Function Test''  \cite{sollerman}.
+Both procedures are used in assessing the function and moveability of the human hand.
+By analyzing the most important gripping motions in both tests, it should be possible to denote a suitable set of grips that the dataset needs to contain.
+The sollerman grip types are ranked based on their usage percentage in activities of daily living.
+From this, the most used grip types according to sollerman are the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}, see \cite{sollerman} for further details.
+SHAP also proposes a set of grip types that are used in day-to-day tasks, these are \textit{Spherical grip}, \textit{Tripod pinch}, \textit{Power grip} \& \textit{Lateral pinch}.
+In order to create a dataset mimics the movements of day-to-day tasks, the most important grips from \cite{sollerman} \& \cite{shap} has been chosen.
+The grip types that needs to be part of the dataset and their usage descriptions can be seen in table \ref{tab:grips}.
+A set of consise grip types has been chosen as an alternative to a larger set of general grips.
+This is done as a basis of creating a specialized dataset that would be easier to train and work with as a proof of concept.
+%The chosen grips are chosen as a basis for the creation of a dataset. creating 
 
-%\[
-%A = \cos^{-1}\left({\frac{(x_2 - x_1) \cdot (x_3-x_1) +  (y_2 - y_1) \cdot (z_3-z_1)}
-%{(\sqrt{(x_2-x_1)^2 +(y_2-y_1)^2 +(z_2-z_1)^2}) \cdot (\sqrt{(x_3-x_1)^2 +(y_3-y_1)^2 +(z_3-z_1)^2}) }}\right)
-%\]
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ |l|l| } 
+ \hline
+ Grip Type & Object Placement Description \\ 
+ \hline
+ Pulp pinch & Between thumb, index and middle finger \\ 
+ Lateral pinch & Between thumb \& side of index finger \\ 
+ Five-Finger pinch & Between thumb, and all four fingers \\ 
+ Power grip & Between thumb, and all four fingers with contact to palm \\ 
+ \hline
+\end{tabular}
+\caption{The most used hand grips in day-to-day tasks based on \textit{Southampton Hand Assessment Procedure} \cite{shap} \& \textit{Sollerman Hand Function Test} \cite{sollerman}.}
+\label{tab:grips}
+\end{center}
+\end{table}
+
+
+\subsubsection{Existing datasets}
+
+In addition to creating a dataset for this thesis, it would be intresting to compare with an existing state-of-the-art dataset.
+The paper \cite{jarque2019} proposes the use of their dataset \cite{kinmusdataset}.
+The dataset contains a very large set of recordings, with 3 different labeled states, consisting of precise anatomical angles of the hand, with the assosicated muscle activity of the forearm.
+This makes the dataset ideal for both classification and regression based models.
+The dataset consists of $572$ recordings from $22$ subjects, in both reaching, gripping \& releasing actions.
+Another dataset is explained in the paper \cite{ashirbad2022}, as an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
+The paper explains that the sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ bandpass buttersworth filter, and in order to remove powerline noise a $60Hz$ notch filter was used.
+The dataset was created on $43$ participants.
+
+%The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
+%TODO: Present more formally and mention company names.
 
 \subsubsection{Problems with Motive Tacking Software \& Capture Glove}
 \label{sec:motiveproblems}
@@ -228,7 +232,9 @@ The unreliable labeling of markers can be seen in appendix \ref{appendix:motivef
 %TODO: Mention that markers needs to be very close (2-3 cm) and this might not be intended for motive software.
 
 
-\subsubsection{Reduction of Tracking Software Problems}
+\subsection{Cleaning of Created Dataset}
+%\subsubsection{Reduction of Tracking Software Problems}
+TODO: This section could be expanded and images could be included.
 
 %In order to fix some of the problems, caused by the setup, software was written.
 %TODO: shitty starter
