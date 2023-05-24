@@ -6,7 +6,9 @@
 
 \section{Methodology}
 
-\subsection{Brief of used Software}
+\subsection{Research Approach}
+%\subsection{Introduction of used Software}
+%\subsection{Brief of used Software}
 \label{sec:software}
 
 In order to design a simulated prosthetic device that facilitates the requirements stated in section \ref{sec:goals}, effective software solutions needs to be chosen.
@@ -36,7 +38,7 @@ It was chosen to use the Motive setup due to availability and the additional ben
 The hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
 The hand consists of 27 bones, 14 of these are called the \gls{phalanges}, and make up the 4 fingers and the thumb.
 These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ degree of freedom (DoF) of rotational motion along the joints of the bones \cite{anatomy}.
-The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand, and can be seen in figure \ref{fig:anatomy}.
+The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand, and can be seen in Figure \ref{fig:anatomy}.
 These bones are respectively called the \gls{proximal phalanx}, \gls{middle phalanx} \& \gls{distal phalanx}.
 The different joints located in the hand have unique rotation properties.
 The joints between the proximal and distal phalanges have 1 DoF of independent movement and are able to do \gls{flexion/extension} movement.
@@ -63,7 +65,7 @@ $\sim 30$ muscles are used in total to control the hand, but it would not be pos
 6 sEMG sensors were available in the Delsys Trigno \cite{trigno} system, and these needed to be placed optimally in order to increase recording of the most important muscles.
 Target areas on the lower-arm for sEMG sensors are proposed by the paper \cite{jarque2019}.
 Additionally, target areas of the upper-arm \& upper-body were chosen based on the suggestions from the paper \cite{Batzianoulis2018}.
-The chosen muscles to record with sEMG sensors can be seen in table \ref{tab:muscletargets}.
+The chosen muscles to record with sEMG sensors can be seen in Table \ref{tab:muscletargets}.
 
 \begin{table}[H]
 \begin{center}
@@ -76,7 +78,7 @@ Muscle & Main Functionality \\
 (C) \textit{Extensor Carpi Radialis Longus} & Wrist extension \& hand abduction \\
 (D) \textit{Triceps Brachii (long head)} & Extension of the arm \\
 (E) \textit{Biceps Brachii} & Flexion of the arm \\
-(F) \textit{Pectoralis Major / Frontal Deltoid} & Movement of the Arm \\
+(F) \textit{Pectoralis Major + Frontal Deltoid} & Movement of the Arm \\
 \hline
 \end{tabular}
 \caption{The muscles targeted with the 6 available sEMG sensors, as recommended by the papers  \cite{jarque2019} \& \cite{Batzianoulis2018}.
@@ -87,19 +89,19 @@ Muscle & Main Functionality \\
 \end{table}
 
 The target muscles were chosen as they contribute to a lot of the overall movements of the hand \& lower-arm.
-The muscles in table \ref{tab:muscletargets} are numbered, and the locations of the individual sensor with the corresponding muscle can be seen in figure \ref{fig:musclesensors}.
+The muscles in Table \ref{tab:muscletargets} are numbered, and the locations of the individual sensor with the corresponding muscle can be seen in Figure \ref{fig:musclesensordiagram}.
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{musclelocations.png}
-\caption{Muscle diagram, containing the target sEMG locations. The numbering corresponds to the muscle names in table \ref{tab:muscletargets}. The left image shows the muscles on the rear of the arm, while the right shows the muscles on the front of the arm.}
-\label{fig:musclesensors}
+\caption{Muscle diagram, containing the target sEMG locations. The numbering corresponds to the muscle names in Table \ref{tab:muscletargets}. The left image shows the muscles on the rear of the arm, while the right shows the muscles on the front of the arm.}
+\label{fig:musclesensordiagram}
 \end{center}
 \end{figure}
 %TODO: Image is not final, might require adjustments..
 
 It was chosen to split the amount of sensors evenly along the lower-arm and the rest of the body in order to asses both direct control of the finger movement and intent based on upper-arm movements.
-Alternative muscles located on the back of the subject are mentioned in \cite{KeunTaeKim2021}, and are \textit{Trapezius} \& \textit{Latissimus Dorsi}.
+Alternative muscles that would be interesting to test are the back muscles, namely \textit{Trapezius} \& \textit{Latissimus Dorsi} as proposed in \cite{KeunTaeKim2021}.
 %how important the different muscles are in prediction of the hand.
 
 \subsection{Design of a Motion Capture Glove}
@@ -111,14 +113,15 @@ The capture system detects fluorescent 3D markers in the given capture area, wit
 In order to get precise recordings of the motion of the hand and fingers, fluorescent 3D markers were placed on a glove.
 The pattern of the marker positions were chosen in order to calculate the angles of the individual finger bones.
 The markers are used in sets of 3, this allows for the calculation of the triangle angles in 3D space.
-The positions of the 3D markers on the recorder glove can be seen in figure \ref{fig:markerdesign} \& \ref{fig:realmarkers}.
-An example of \gls{flexion/extension} movement of the capture glove can be seen in figure \ref{fig:minbend} \& \ref{fig:maxbend}.
+The positions of the 3D markers on the recorder glove can be seen in Figure \ref{fig:markerdesign} \& \ref{fig:realmarkers}.
+An example of \gls{flexion/extension} movement of the capture glove can be seen in Figure \ref{fig:minbend} \& \ref{fig:maxbend}.
 
-Due to the placements of the 3D markers, the joint angles are calculated by defining the two vectors and using the formula:
+Due to the placements of the 3D markers, the joint angles are calculated by defining two vectors from the target 3D marker and using Equation \eqref{eqn:angle}:
 
-\[
+\begin{equation}
+\label{eqn:angle}
 \alpha = \cos^{-1}\left({\frac{\vec{a} \cdot \vec{b}}{ \norm{\vec{a}} \cdot \norm{\vec{b}} }}\right)
-\]
+\end{equation}
 
 %\[
 %A = \cos^{-1}\left({\frac{(x_2 - x_1) \cdot (x_3-x_1) +  (y_2 - y_1) \cdot (z_3-z_1)}
@@ -158,7 +161,8 @@ Due to the placements of the 3D markers, the joint angles are calculated by defi
         \caption{Maximum bend of the finger.}
         \label{fig:maxbend}
     \end{subfigure}
-    \caption{Visualization of the joint angle retrieval process. (a) the minimum bend of the \gls{interphalangeal joint}, (b) the maximum bend, from this, the joint angle can be calculated from the 3D poses of the markers.}
+    \caption{Visualization of the joint angle retrieval process. (a) the minimum bend of the \gls{interphalangeal joint}, (b) the maximum bend. The joint angle can be calculated from the 3D markers by denoting vectors from the center marker to upper and lower markers, and using Equation \eqref{eqn:angle}.}
+
 \end{figure}
 
 \subsection{Dataset Creation}
@@ -173,7 +177,7 @@ The sollerman grip types are ranked based on their usage percentage in activitie
 From this, the most used grip types according to sollerman are the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}, see \cite{sollerman} for further details.
 SHAP also proposes a set of grip types that are used in day-to-day tasks, these are \textit{Spherical grip}, \textit{Tripod pinch}, \textit{Power grip} \& \textit{Lateral pinch}.
 In order to create a dataset mimics the movements of day-to-day tasks, the most important grips from \cite{sollerman} \& \cite{shap} has been chosen.
-The grip types that needs to be part of the dataset and their usage descriptions can be seen in table \ref{tab:grips}.
+The grip types that needs to be part of the dataset and their usage descriptions can be seen in Table \ref{tab:grips}.
 A set of concise grip types has been chosen as an alternative to a larger set of general grips.
 This is done as a basis of creating a specialized dataset that would be easier to train and work with as a proof of concept.
 %The chosen grips are chosen as a basis for the creation of a dataset. creating 
@@ -275,7 +279,7 @@ The resulting prosthetic hand simulation can be seen in appendix \ref{appendix:h
 
 %TODO: see Yuki2023 (page 11) for how to properly show the dimensions of my hand!
 In order to translate the biology and anatomy of a real hand explained in section \ref{sec:anatomy} into an robotics simulation, the relative lengths of the wrist bones and phalanges were used as reference.
-The resulting hand model can be seen in figure \ref{fig:simdesignandimpl}.
+The resulting hand model can be seen in Figure \ref{fig:simdesignandimpl}.
 %we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.
 
 \begin{figure}[H]

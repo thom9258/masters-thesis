@@ -18,6 +18,7 @@ Furthermore, setting up the controller of the prosthetic could be done using the
 %      having to make my own methods to clean data
 %      Unable to create a proper dataset with own methods
 %      Unable to have multiple people in the dataset due to extensive clearning
+
 Another problem had a large impact on the development of this thesis.
 In order to capture the movements of the fingers for the dataset, the product Motive Motion Capture Setup \cite{motive} was chosen, due to recommendation, availability and its use in state-of-the-art industry motion capture.
 The Motive setup consists of a camera rig designed to locate 3D markers in the scene.
@@ -28,7 +29,8 @@ The main problem is that the setup is designed to capture large objects such as 
 Because of this, the 3D optimization algorithms used by the cameras has a tendency to remove markers that are close. 
 This would cause the 3D markers of adjacent fingers to be combined into a single marker.
 The only way to solve this is to reduce the amount of markers on the glove.
-Furthermore, the 3D marker labeling is unreliable.
+
+In addition to no being able to have multiple fingers in the recording, the 3D marker labeling proved to be unreliable.
 The markers are shifting in labels if they disappear for a few frames at a time.
 This problem scaled with the length of the recording session, a 15 second recording of 7 markers would be recorded as $100+$ labels in the resulting tracker output.
 In addition to the tracking being unreliable, the Motive software is unable to provide an effective label correction tool.
@@ -44,7 +46,7 @@ Furthermore, it was not possible to fully test different pre-processing methods 
 \textbf{Classification Tests}\\
 % It would have been nice to test different types of feature extraction methods for classification.
 Multiple different machine learning methods is tested in section  \ref{sec:machine-learning}
-The data is converted to a feature space set consisting of zero-crossing and MSE, and is then used as input to a machine learning algorithm to create a lower-arm intent classifier.
+The data is converted to a feature space set consisting of \gls{ZC} and \gls{MSE}, and is then used as input to a machine learning algorithm to create a lower-arm intent classifier.
 The accuracy of the resulting classifiers could have been improved, if more types of feature extractions had been tested.
 Furthermore, different types of machine learning classifiers and network based classifiers could have been tested in order to improve classification accuracy.
 

@@ -14,19 +14,25 @@
 %\section{Tests \& Results}
 
 \section{Datasets}
+
 \subsection{Created Dataset}
 
-As explained in section \ref{sec:motiveproblems}, creation of a custom dataset to train and test models on proved to be difficult.
-The dataset created using the Motive Capture Software in section \ref{sec:motiveglove} during the development of this thesis is not very large, and has no labeling for classification.
-Because of this, the dataset is not suitable for training in any of the methods.
+The created capture glove for the Motive motion capture system and the sEMG sensors from the Delsys Trigno setup is placed on the target, with the sEMG sensors following the setup in \ref{tab:muscletargets}.
+The setup can be seen in Figure \ref{fig:musclesensorsonarm}.
+Objects of different sizes and weights is placed in front of the target for gripping. 
+This is done so that the chosen gripping sequence and environment is highly dynamic, and ideal for creating regression models.
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{sensors_on_arms_cropped.png}
 \caption{Capture glove and sEMG sensors placed on the recording target. The sEMG sensors are located based on the muscles from table \ref{tab:muscletargets}.}
-\label{fig:musclesensors}
+\label{fig:musclesensorsonarm}
 \end{center}
 \end{figure}
+
+As explained in section \ref{sec:motiveproblems}, creation of a custom dataset to train and test models on proved to be difficult.
+The dataset created using the Motive capture software in section \ref{sec:motiveglove} is not very large, and has no labeling for classification.
+Because of this, the dataset is not suitable for training in any of the methods.
 
 \subsection{Implementation}
 
@@ -70,6 +76,11 @@ Furthermore, it can be seen that the intent of the signal is kept when a filter 
 When comparing the two low-pass filters, it can be determined that using a cutoff frequency of $20Hz$ and a order of $5$ is a ideal for sEMG signals due to the amount of large frequencies in the recordings.
 Alternatively, Buttersworth band-pass filters are tested in figure \ref{fig:bandpass},
 
+\subsection{Cleaning of Motive Capture Data}
+\label{sec:implmotivecleaning}
+
+TODO: HERE I NEED TO GO ALL IN ON DATA CLEANING
+
 
 \subsection{Dataset used for Training}
 
@@ -80,7 +91,6 @@ Due to the dataset containing data for regression and classification, it is poss
 The pre-processing step is not covered for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order band-pass filter with a band of  $25$ to $500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
 The main objective of these tests are to review and compare possible methods of regression \& Classification of sEMG data in order to determine the movements of the hand.
 
-\newpage
 \section{Machine-Learning Intent Classification}
 \label{sec:machine-learning}
 
@@ -91,6 +101,8 @@ Furthermore, the paper \cite{YanchaoWang2022} proposes that the Machine-Learning
 The paper \cite{Batzianoulis2018} proposes the use of the \gls{SVM} \gls{ML} method for intent classification.
 Both types of classification will be explored and compared.
 
+TODO: Why these features?
+
 \subsection{Implementation}
 
 In order to classify intent from sEMG muscle data, the data needs to be converted to feature space before it can be used as input to a machine learning algorithm.
@@ -98,6 +110,7 @@ For this, it was chosen based on state-of-the-art literature, that the feature e
 The input channel for a single sEMG window was converted into a vector of zeros and ones for the zero-crossing features, where a one is set if the data crosses over the zero line.
 Furthermore, the RMS for a window was calculated, and inserted to the end of the input vector. This effectively converts the 6 sEMG channels of a window size of $N$ into a feature vector of size $N+1$.
 The feature-based inputs were extracted, and their movement labels were used as the target classification.
+The resulting classification structure can be seen in Figure \ref{fig:mlclassifier}.
 
 \begin{figure}[H]
 \begin{center}
@@ -112,7 +125,7 @@ The purpose of \textbf{discriminant analysis} is to classify inputs into groups.
 Discriminant analysis is a classical multivariate method of Supervised Learning, that takes a input set with their ground-truth classes and tries to maximize separation between these different classes.
 The models assumes that data follows a Gaussian distribution. 
 %TODO: True? Cite something for LDA QDA?
-For this ML method, two types of discriminant analysis were tested on the dataset, namely \gls{LDA} \& \gls{QDA}.
+For this ML method, two types of discriminant analysis were tested on the dataset, namely LDA \& \gls{QDA}.
 %Linear Discriminant Analysis (LDA) \& Quadratic Discriminant Analysis (QDA).
 The main difference between LDA and QDA is that LDA makes the assumption that the covariance matrices of the classes are the same.
 Equal covariance matrices will result in linear separations between classes.
@@ -127,7 +140,7 @@ For this ML method, 3 types of SVM classifiers were tested, a SVM using a Radial
 \subsection{Tests \& Results}
 
 The methods are tested on 50 sets of data that was not part of the training set.
-The discriminant analysis methods can be seen in figure \ref{fig:lda_test}, with the average accuracy of the methods respectively being $0.61\%$ \& $0.55\%$ over the 50 tests.
+The discriminant analysis methods can be seen in figure \ref{fig:lda_test}, with the average accuracy of the methods respectively being $61\%$ \& $55\%$ over the 50 tests.
 
 \begin{figure}[H]
 \begin{center}
@@ -138,7 +151,7 @@ The discriminant analysis methods can be seen in figure \ref{fig:lda_test}, with
 \end{figure}
 %TODO: Graphs does not show what bar is what type..
 
-The \gls{SVM} methods can be seen in figure \ref{fig:svm_test}, with the average accuracy of the methods respectively being $0.54\%$, $0.56\%$ \& $0.59\%$ over the 50 tests.
+The \gls{SVM} methods can be seen in figure \ref{fig:svm_test}, with the average accuracy of the methods respectively being $54\%$, $56\%$ \& $59\%$ over the 50 tests.
 
 \begin{figure}[H]
     \centering
@@ -160,7 +173,7 @@ The \gls{SVM} methods can be seen in figure \ref{fig:svm_test}, with the average
 \subsection{Evaluation}
 
 %TODO: GO through the graphs and talk about the results
-The methods tested can be seen to have similar average accuracy of $\sim 0.6\%$ over 50 tests.
+The methods tested can be seen to have similar average accuracy of $\sim 60\%$ over 50 tests.
 Because of this, it is difficult to choose a superior method without further analysis.
 The choice of machine learning method depends on its overall classification rate over 50 tests, but it can also be important to rate the ML methods based on their inter-quantile values.
 A full comparison of the machine learning methods can be seen in figure \ref{fig:classification_comparison}.
@@ -182,11 +195,11 @@ In order to get a clearer comparison of methods, the relevant values have been c
  \hline
  ML Method & avg-accuracy [\%] & Inter-quantile Median & Inter-quantile Range \\ 
  \hline
- LDA & \textbf{0.61\%}           & 0.741705 & \textbf{0.679410} \\ 
- QDA & 0.55\%           & \textbf{0.803432} & 1.000000 \\ 
- SVM (RBF) & 0.54\%     & 0.634426 & 0.895688 \\ 
- SVM (Sigmoid) & 0.56\% & 0.735050 & 0.955580 \\ 
- NuSVM (0.12) & 0.59\%  & 0.749436 & 0.950715 \\ 
+ LDA & \textbf{61\%}           & 0.741705 & \textbf{0.679410} \\ 
+ QDA & 55\%           & \textbf{0.803432} & 1.000000 \\ 
+ SVM (RBF) & 54\%     & 0.634426 & 0.895688 \\ 
+ SVM (Sigmoid) & 56\% & 0.735050 & 0.955580 \\ 
+ NuSVM (0.12) & 59\%  & 0.749436 & 0.950715 \\ 
  \hline
 \end{tabular}
 \caption{Comparison of relevant classification parameters for the chosen methods. The best performing parameters have been highlighted.}
@@ -224,7 +237,8 @@ This result is similar to the conclusion in paper \cite{KeunTaeKim2021}.
 The resulting performance metrics of the ML methods are dependent on the chosen feature extraction techniques used.
 Zero crossing and MSE features can be used for the classifiers and provide insight into what parameters are important when working with sEMG data.
 
-\newpage
+%\newpage
+%TODO: Experiment with no line breaks, is it bad?
 \section{Neural Network Movement Regression}
 \label{sec:regression}
 
@@ -254,6 +268,8 @@ A CNN network can be used in the field of sEMG processing due to the convolution
 The network would be able to identify patterns in sEMG data and correlate them to an appropriate output.
 %TODO: formations? another word?
 The CNN network structure seen in figure \ref{fig:cnn_structure}.
+
+TODO: Why did my network end up looking like this?
 
 \begin{figure}[H]
 \begin{center}
@@ -290,6 +306,8 @@ In order to test the CNN network and assess its performance, the training MSE lo
 \end{center}
 \end{figure}
 
+TODO: Maybe remove this
+
 The CNN network is trained with a batch size of 8 over 20 epochs, but as can be seen in the figure, the MSE loss settles at $\sim 34$ after just 3 epochs.
 
 50 sets of regressions that have not been trained on are taken from the dataset for testing.
@@ -309,7 +327,7 @@ The errors of the dataset are plotted, as can be seen in figure \ref{fig:cnntest
 
 \subsubsection{Evaluation}
 
-As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a validation set MSE loss of $0.34$.
+As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a validation set MSE loss of $34$.
 The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly large average regression error of $0.17$ Radians exists in the test regressions, and that the average error is skewed upwards due to some outlier tests having large average errors up to $0.3$ Radians.
 %TODO: Get the max error!
 
@@ -328,6 +346,8 @@ Because of the hidden memory, a RNN network has a quicker response time than a w
 The RNN network structure designed to predict regression of finger movements from sEMG data can be seen in figure \ref{fig:rnn_structure}.
 %TODO: This one sounds nice, can it be integrated?
 %The recurrent feedback loop correlates previous predictions with future predictions, allowing the network to approximate regressions per time frame.
+
+TODO: Why did my network end up looking like this?
 
 \begin{figure}[H]
 \begin{center}

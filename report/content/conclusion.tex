@@ -14,25 +14,27 @@ Another purpose of this thesis is to research and test state-of-the-art HMI tech
 This thesis tests two different areas of HMI interfaces, ML based lower-arm intent classification and AI based finger movement regression.
 Different models in each area are tested and compared, based on recommendations of state-of-the-art
 literature, in order to determine what models are ideal for the control of a prosthetic hand.
+
 % in debth of classification
 Several different ML models were trained and compared in section \ref{sec:machine-learning}.
 All models were trained on feature-space converted sEMG data.
-Based on the tests and comparison of the classification accuracy table \ref{tab:classification_comparison}, it can be seen that the Linear Discriminant Analysis (LDA) performs best in average accuracy of $0.61\%$ and inter-quantile range of $0.679\%$.
-It can also be seen, and that QDA performs best in the inter-quantile median with a value of $0.803\%$, but has the largest inter-quantile range.
+Based on the tests and comparison of the classification accuracy table \ref{tab:classification_comparison}, it can be seen that the Linear Discriminant Analysis (LDA) performs best with an accuracy of $61\%$ and inter-quantile range of $0.679$.
+It can also be seen, and that QDA performs best in the inter-quantile median with a value of $0.803$, but has the largest inter-quantile range.
 From this, the LDA machine learning algorithm is proposed to be best at intent classification of the lower-arm.
 % in debth of regression
 As an alternative to intent classification, different AI models designed to do regression of finger movements were trained and compared in section \ref{sec:regression}.
 Based on the regression comparison in figure \ref{fig:regression_comp}, it can be seen that Recurrent methods perform best compared to window based methods.
 This can be seen when comparing the average error in 50 tests, the CNN network has an average error of $0.17$ Radians per test, where the RNN network has a low average error of $0.01$ Radians.
 % in debth of dataset creation proposal
+
 The designed models are trained and tested using a freely available dataset \cite{kinmusdataset}.
-This was done due to problems with the chosen Motive Motion Capture setup, these problems were reduced by the implementation of a rendering and cleaning software explained in section \ref{sec:motivecleaner}.
-%TODO: CREATE THIS SECTION
+This was done due to problems with the chosen Motive Motion Capture setup, these problems were reduced by the implementation of a rendering and cleaning software explained in section \ref{sec:implmotivecleaning}.
 Using this implemented software, it is possible to fixing wrong labels and removing labels all together, compared to the building functionality in Motive.
 %This software makes fixing wrong labels and removing labels all together possible, compared to the building functionality in Motive.
 With this implemented software, it was possible to clean a small subset of recorded data, but it was not possible to create a full dataset of multiple people.
 % with cleaning of data 
 
+TODO: Emphasis on what the result of my thesis is! What specifically am i proposing to use in further research?
 
 % TODO: Take it further and go into detail on my goals and what worked and what didnt
 
