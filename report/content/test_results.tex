@@ -146,12 +146,11 @@ The main objective of these tests are to review and compare possible methods of 
 
 Due to the dataset containing labels associated with movements of the hand, it is possible to use the dataset to train a intent prediction classifier.
 As mentioned in the papers \cite{Batzianoulis2018} \& \cite{Yuki2023}, it is ideal to feature extract windows of the raw sEMG data.
-The papers propose that the features \textit{Zero Crossing} \& \textit{Root Mean Square} are ideal for intent classifiers.
+The features \textit{Zero Crossing} \& \textit{Root Mean Square} are chosen as the features to extract for an intent classifier based on their heavy use as explained in \cite{Tech2015}.
+Other features that could be chosen as an alternative would be variance \& mean-absolute-value.
 Furthermore, the paper \cite{YanchaoWang2022} proposes that the Machine-Learning classifier LDA has the highest classification rate out of similar methods.
 The paper \cite{Batzianoulis2018} proposes the use of the \gls{SVM} \gls{ML} method for intent classification.
 Both types of classification will be explored and compared.
-
-TODO: Why these features?
 
 \subsection{Implementation}
 
@@ -292,11 +291,14 @@ Zero crossing and MSE features can be used for the classifiers and provide insig
 \section{Neural Network Movement Regression}
 \label{sec:regression}
 
+As an alternative to intent classification, it was determined that the dataset would be ideal for regression of the joint angles of the fingers.
+Several methods is explored, both window and recurrent based networks are tested.
+
+
 \subsection{Windowed Convolutional Neural Network}
 
-As an alternative to intent classification, the dataset could be used to train finger movement regression networks.
-
 \subsubsection{Implementation}
+% TODO: Why did my network end up looking like this?
 
 %TODO: WHY CHOOSE A CNN? SELL IT LIKE A CAR!
 The sEMG data used as input for regression networks is complex.
@@ -319,8 +321,6 @@ The network would be able to identify patterns in sEMG data and correlate them t
 %TODO: formations? another word?
 The CNN network structure seen in figure \ref{fig:cnn_structure}.
 
-TODO: Why did my network end up looking like this?
-
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{cnnstructure.drawio.pdf}
@@ -331,35 +331,33 @@ TODO: Why did my network end up looking like this?
 %TODO: The 20 in this case refers to N samples! if i want something else than 20, change the image!
 
 As visualized in the figure, the CNN network consists of 3 Convolution layers followed by 3 MLP layers.
-The chosen CNN network structure is chosen to be simple due to the small input window of 7 muscle sensors and a window size of 20 samples.
-For this reason, no pooling was used between the convolution layers.
+The network is designed through manual hyper-parameter tuning based on validation error reduction of the model.
+The structure of the network is designed to be simple with a small amount of convolutions without pooling due to the small input size.
 The Convolution layers extract features up to a size of 32 using a convolution kernel with a size of [$3, 3$].
-The convolution features are then flattened, to a size of $4480$, before being subject to the MLP layers that convert the extracted features into a regression prediction. 
+The convolution features are then flattened, to a size of $4480$, and processed by 3 hidden layers convert the convolution output into a regression prediction.
 %A CNN is trained on the network, using a window size of 40 samples were used.
 %TODO: Give example of a state-of-the-art paper CNN as an alternative to mine!!!
-
 The CNN network is trained to do regression of joint angles of the hand, because of this, the loss function is determined to be MSE loss.
 The network is trained using an Adam optimizer with a learning rate of $1\text{e}^{-4}$.
 A subset of the dataset is split into a test and a validation set, and windows are extracted correlating input and output.
 The output is normalized, and the input/output sets are shuffled before training takes place.
 
+
 \subsubsection{Tests \& Results}
 
-In order to test the CNN network and assess its performance, the training MSE loss can be seen in figure \ref{fig:cnntrainvalid}.
+%In order to test the CNN network and assess its performance, the training MSE loss can be seen in figure \ref{fig:cnntrainvalid}.
 %TODO: Make sure this graph is explained properly and is the actual image
 
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=0.8\textwidth]{cnn_trainvalid.pdf}
-\caption{The Train and Validation MSE loss during training of the CNN network method.}
-\label{fig:cnntrainvalid}
-\end{center}
-\end{figure}
-
-TODO: Maybe remove this
-
-The CNN network is trained with a batch size of 8 over 20 epochs, but as can be seen in the figure, the MSE loss settles at $\sim 34$ after just 3 epochs.
-
+%\begin{figure}[H]
+%\begin{center}
+%\includegraphics[width=0.8\textwidth]{cnn_trainvalid.pdf}
+%\caption{The Train and Validation MSE loss during training of the CNN network method.}
+%\label{fig:cnntrainvalid}
+%\end{center}
+%\end{figure}
+%
+%TODO: Maybe remove this
+The CNN network is trained with a batch size of 8 over 20 epochs, with the resulting MSE loss settling at $\sim 34$ after 3 epochs.
 50 sets of regressions that have not been trained on are taken from the dataset for testing.
 The errors of the dataset are plotted, as can be seen in figure \ref{fig:cnntest}.
 
@@ -377,7 +375,7 @@ The errors of the dataset are plotted, as can be seen in figure \ref{fig:cnntest
 
 \subsubsection{Evaluation}
 
-As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a validation set MSE loss of $34$.
+The CNN network is able to be trained on the dataset with a validation set MSE loss of $34$.
 The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fairly large average regression error of $0.17$ Radians exists in the test regressions, and that the average error is skewed upwards due to some outlier tests having large average errors up to $0.3$ Radians.
 %TODO: Get the max error!
 
@@ -386,6 +384,7 @@ The errors of the 50 test regressions in figure \ref{fig:cnntest} show that a fa
 
 \subsection{Recurrent Neural Network Regression}
 
+%TODO: Why did my network end up looking like this?
 Due to sEMG data being time-based, Recurrent network types are ideal for regression predictions.
 RNN networks are similar to MLP's with the main difference being that a RNN has hidden feedback  memory state that is derived from earlier inputs.
 This functionality makes RNN networks ideal for concurrent, time-based systems where a sequential input distribution needs to be converted to a output regression.  
@@ -394,10 +393,11 @@ Another use case of RNN-based regression systems are systems where response time
 The RNN network does not use a window of data, it converts the input of the current time frame, and the feedback of the previous time frame into a prediction.
 Because of the hidden memory, a RNN network has a quicker response time than a window-based network.
 The RNN network structure designed to predict regression of finger movements from sEMG data can be seen in figure \ref{fig:rnn_structure}.
+The network is designed through manual hyper-parameter tuning based on validation error reduction of the model.
+
 %TODO: This one sounds nice, can it be integrated?
 %The recurrent feedback loop correlates previous predictions with future predictions, allowing the network to approximate regressions per time frame.
 
-TODO: Why did my network end up looking like this?
 
 \begin{figure}[H]
 \begin{center}
@@ -481,7 +481,8 @@ Because of this, the tests propose that it is ideal to use a type of Recurrent N
 \subsection{Useability of the Simulated Prosthetic Hand}
 %\subsection{Anatomical Assessment and Maneuverability}
 
-Access to existing prosthetic hand simulations proved to be impossible to access and use, as explained in section \ref{sec:hand_alternatives}. they are either unavailable because their associated products have been discontinued or locked behind a pay-to-access barrier where you have to pay to receive a real prosthetic.
+Access to existing prosthetic hand simulations proved to be impossible to access and use.
+they are either unavailable because their associated products have been discontinued or locked behind a pay-to-access barrier where you have to pay to receive a real prosthetic.
 Due to non-availability of prosthetic hand simulations, it was chosen that through this thesis, a open source prosthetic hand needed to be created for testing of the algorithms developed as part of this project.
 The creation of a prosthetic hand simulation can be seen in section \ref{sec:prost_sim}.
 The prosthetic hand was designed to be as anatomically similar as a real hand as possible.

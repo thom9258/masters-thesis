@@ -8,21 +8,23 @@
 \section{Literature Review}
 \label{sec:literature}
 
-As the capability of sensor technology increases, the possibilities in biological signal processing, becomes more important in state-of-the-art prosthesis development and research.
-There is a larger need for understanding and translating human-created sensor data into usable inputs for prosthesis and other \gls{HMI} devices.
+As the capability of sensor technology increases, the possibilities in biological signal processing becomes more important in development and research of state-of-the-art prosthetic devices.
+There is a larger need for understanding and translating sensor data from the human body into usable inputs for prosthesis and other \gls{HMI} devices.
 A lot of research has been done in this area, this research elaborates on different Machine learning or AI-based methods of understanding muscle-based sensor data.
 The pipeline for converting sEMG sensor recordings to usable input data often starts with a pre-processing step, where noise is removed from the recorded data, and cleaned of potential misreadings.
 %The pre-processing step can also contain feature extraction such as ...
 %TODO: Mention some example stuff like extracting features of raw data, i think RMS, and other spaces.
-The pre-processing step is followed by a processing step, this step encompasses the use of a Machine-learning algorithm or a Neural Network, designed to either Classify a grip type, or Regress the angle of the joints.
+The pre-processing step is followed by a decision making step, where the pre-processed data is converted into a control sequence for the device.
+If prosthetic devices are to become humanoid in design and dynamic control, a sophisticated controller needs to be designed.
+State-of-the-art methods in literature make great use of a Machine-learning algorithm or a Neural Network, designed to either Classify a grip type, or Regress the angle of the joints.
 After Classification or Regression a post-processing step can be added where the actual kinematic data is created, and used as input to the prosthetic controller. 
 Popular methods of processing sEMG signals will be researched, and elaborated upon, with the aim of identifying robust, effective and implementable methodologies.
 % that can be tested in the context of the thesis, and the dataset i create...
 %TODO: Can i do something like this?
 
 
-\subsection{Introduction to Literature}
-TODO: Something more general about control needs to be added so it isint all about noise!
+%\subsection{Introduction to Literature}
+%TODO: Something more general about control needs to be added so it isint all about noise!
 
 \gls{HMI}'s, are control systems that enables humans to interact and control a mechanical, software-based or robotic system.
 %Prosthetics have been developed to aid human behaviour 
@@ -102,6 +104,8 @@ The extracted features were used as input to a nonlinear \gls{NARX}, that consis
 % once the report is done, check up on abbrevations etc and make sure things are abbrevated once and then used!
 % TODO: Maybe give a link for further explanation?
 %TODO: Zhaolong2021 -> their results are so good i need to try their method!
+Alternative features that can be extracted are explained in \cite{Tech2015}, from these, variance \& mean-absolute-value are also highly used as alternatives.
+%\gls{kurtosis} are interesting alternatives.
 
 \subsection{Adaptive Grasping Methods}
 %\subsection{Adaptive grasping methods of sEMG based prosthetics}
