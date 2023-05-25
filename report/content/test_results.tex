@@ -15,7 +15,7 @@
 
 \section{Datasets}
 
-\subsection{Created Dataset}
+\subsection{Recording of a Dataset}
 
 The created capture glove for the Motive motion capture system and the sEMG sensors from the Delsys Trigno setup is placed on the target, with the sEMG sensors following the setup in \ref{tab:muscletargets}.
 The setup can be seen in Figure \ref{fig:musclesensorsonarm}.
@@ -34,7 +34,63 @@ As explained in section \ref{sec:motiveproblems}, creation of a custom dataset t
 The dataset created using the Motive capture software in section \ref{sec:motiveglove} is not very large, and has no labeling for classification.
 Because of this, the dataset is not suitable for training in any of the methods.
 
-\subsection{Implementation}
+\subsection{Labeling of Motive capture data}
+%\subsubsection{Cleaning of Motive Capture Data}
+\subsubsection{Implementation}
+\label{sec:motivecleaning}
+%\subsubsection{Reduction of Tracking Software Problems}
+
+%TODO: This section could be expanded and images could be included.
+%TODO: HERE I NEED TO GO ALL IN ON DATA CLEANING
+
+%In order to fix some of the problems, caused by the setup, software was written.
+%TODO: shitty starter
+The large amount of problems observed using the Motive motion tracking software makes it impossible to use the tracking output as training data.
+Markers are not tracked correctly and new labels are created every time tracking fails, this can be seen in Figure \ref{fig:motivelabels}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{motivemarkers1.png}
+    \end{subfigure}
+    \hfill
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{motivemarkers2.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{motivemarkers3.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{motivemarkers4.png}
+    \end{subfigure}
+    \caption{Motive tracking labels changes over time, in this case, the markers changed to new labels at $\sim 2$, $7$, $11$ \& $14$ seconds into the recording, with smaller changes throughout.}
+    \label{fig:motivelabels}
+\end{figure}
+
+As can be seen in the figure, a recording of 15 seconds creates $\sim 100$ individual labels.
+This causes great problems as it becomes impossible to relate one marker to another, and extract the kinematic data for training a model.
+The problem requires the user to manually remove and combine labeled marker sections into larger labeled sections, in order to eliminate all changing labels on the tracked markers.
+A feature designed to match up mislabeled markers and optimizing the movement paths of markers exists in Motive, but it did not fix the stated problems.
+In order to fix this problem and because of a lack of functionality in Motive, two software solutions is created.
+Rendering and replaying of the 3D markers in real-time, with their associated labels is handled in one of the created software solutions.
+Furthermore, the second software was designed to remove, merge and sub-sample 3D marker output files from Motive.
+
+\subsubsection{Evaluation}
+
+These software solutions are designed to work simultaneously, and is effective at cleaning the labels.
+The main problem is that this cleaning of 3D marker labels is a time consuming process, and results in not being able to use the recorded dataset for training a model.
+The software created to fix unreliable labeling of markers in the tracking data can be seen in appendix \ref{appendix:motivefixing}.
+
+\subsection{Filtering of Delsys Trigno muscle recordings}
+
+\subsubsection{Implementation}
 
 Based on the literature review in Section \ref{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motor control for a prosthetic.
 Raw sEMG data contains a lot of unwanted noise as explained in section \ref{sec:noise}.
@@ -48,7 +104,7 @@ In order to determine what types of filters have a positive effect on the sEMG d
 
 %TODO: Convert n sEMG angles into a image heat map kinda, and compare before and after different filters? the z dimension could be change in values?
 
-\subsection{Tests \& Results}
+\subsubsection{Test \& Results}
 
 A subset of the recorded sEMG data was used, and different filter types were tested in order to reduce noise in the raw recordings.
 Different types of Buttersworth filters were tested, as can be seen in figure \ref{fig:lowpass} \& \ref{fig:bandpass}.
@@ -68,19 +124,13 @@ Different types of Buttersworth filters were tested, as can be seen in figure \r
 \end{center}
 \end{figure}
 
-\subsection{Evaluation}
+\subsubsection{Evaluation}
 
 As can be seen in the figure, different configurations of pre-processing filters have a large impact on the resulting filtered sequence. 
 It can be seen in figure \ref{fig:lowpass} that most of the change in amplitude exists in the low frequencies, and these are removed due to using a low-pass filter.
 Furthermore, it can be seen that the intent of the signal is kept when a filter order of 5 is used, compared to a filter order of 10.
 When comparing the two low-pass filters, it can be determined that using a cutoff frequency of $20Hz$ and a order of $5$ is a ideal for sEMG signals due to the amount of large frequencies in the recordings.
 Alternatively, Buttersworth band-pass filters are tested in figure \ref{fig:bandpass},
-
-\subsection{Cleaning of Motive Capture Data}
-\label{sec:implmotivecleaning}
-
-TODO: HERE I NEED TO GO ALL IN ON DATA CLEANING
-
 
 \subsection{Dataset used for Training}
 

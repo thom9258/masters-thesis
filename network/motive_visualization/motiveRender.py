@@ -134,7 +134,7 @@ class boxPoseRender():
 
         frame_timer = 0
         frame = 0
-        index_textsize = 18
+        index_textsize = 26
         is_paused = False
         is_showing_help = False
         frameskip = 100

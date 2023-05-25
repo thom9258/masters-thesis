@@ -237,20 +237,7 @@ This system proved to not be reliable, giving $\sim 200$ labeled marker sequence
 %During a sequence of 15 seconds of recording, a set of 7 markers in the scene became over $100$ labeled marker tracks.
 The amount of markers increased as 30 seconds of footage became create $\sim 1000$ marker labels.
 The unreliable labeling of markers can be seen in appendix \ref{appendix:motivefixing}.
-
-\subsection{Cleaning of Recorded Dataset}
-%\subsubsection{Reduction of Tracking Software Problems}
-
-TODO: This section could be expanded and images could be included.
-
-%In order to fix some of the problems, caused by the setup, software was written.
-%TODO: shitty starter
-The large amount of problems observed using the Motive Motion Tracking software makes it impossible to use the tracking output as training data.
-The problems requires the user to manually combine labeled marker sections into larger labeled sections, in order to reduce changing labels on the tracked markers.
-It would be ideal if this functionality existed in the Motive software, but this was not the case.
-Because of a lack of functionality in Motive, software was created to replay the 3D markers in real-time, with their associated labels.
-Furthermore, software that was able to remove, merge and sub-sample markers was used to clean the labels.
-The software created to fix unreliable labeling of markers can be seen in appendix \ref{appendix:motivefixing}.
+The problems with the tracking data will be assessed in Section \ref{sec:motivecleaning}
 
 %TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
 %TODO: Bones of the hand: https://www.bidneedham.org/departments/orthopaedics/hand-program/anatomy-hand-and-wrist
