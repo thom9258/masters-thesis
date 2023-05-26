@@ -11,7 +11,7 @@
 %\subsection{Brief of used Software}
 \label{sec:software}
 
-In order to design a simulated prosthetic device that facilitates the requirements stated in Section \ref{sec:goals}, effective software solutions needs to be chosen.
+In order to design a simulated prosthetic device that facilitates the requirements stated in section \ref{sec:goals}, effective software solutions needs to be chosen.
 
 A simulation software needs to be chosen in order to create a dynamic and controllable prosthetic hand simulation.
 The software needs to be controllable from an external source, in this case ROS2 \cite{ros2}, and because of this, software like Gazebo \cite{gazebo} or CoppeliaSim \cite{coppeliasim} is ideal.
@@ -20,13 +20,13 @@ CoppeliaSim \cite{coppeliasim} was chosen due to its intuitive development workf
 
 In order to record the joint movements of the hand, while simultaneously record the sEMG activity of the body, products that support hardware synchronization needs to be used.
 Products designed to capture sEMG data are widely spread.
-As mentioned by Zhaolong Gao et al \cite{Zhaolong2021}, the myo armband \cite{myo} or the Delsys Trigno package \cite{emgworks} could be used.
+As mentioned in the paper \cite{Zhaolong2021}, the myo armband \cite{myo} or the Delsys Trigno package \cite{emgworks} could be used.
 The Delsys Trigno \cite{emgworks} facilitates a hardware synchronization recording mode out of the box, while the myo armband \cite{myo} does not.
 Because of availability, and synchronization capabilities it is ideal to use the Delsys Trigno as the sEMG recording device.
 
 Lastly, a product designed to capture the joint movements of the hand needs to be chosen.
 A simple solution to hand tracking would be to use a software like MediaPipe \cite{mediapipe}, a python based landmark tracker that can track the joint angles of the hand using Machine Learning from a video feed.
-An alternative is  also mentioned by Zhaolong Gao et al \cite{Zhaolong2021}, where a glove containing flex sensors could be used.
+An alternative is mentioned in the paper \cite{Zhaolong2021}, where a glove containing flex sensors could be used.
 This approach would provide reliable joint angle data without relying on a camera setup.
 Lastly, a capture glove could be fitted with 3D markers, detectable from a high-accuracy and high frame-rate system such as the Motive motion capture setup \cite{optitrack} created by OptiTrack.
 It was chosen to use the Motive setup due to availability and the additional benefit of having a hardware synchronization feature, that can be combined with the Delsys Trigno \cite{emgworks} setup.
@@ -35,9 +35,9 @@ It was chosen to use the Motive setup due to availability and the additional ben
 \subsection{Anatomy of the Lower-Arm}
 \label{sec:anatomy}
 
-Dr Arun Pal Singh \cite{anatomy} defines the hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
+The hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
 The hand consists of 27 bones, 14 of these are called the \gls{phalanges}, and make up the 4 fingers and the thumb.
-These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ degree of freedom (DoF) of rotational motion along the joints of the bones.
+These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ degree of freedom (DoF) of rotational motion along the joints of the bones \cite{anatomy}.
 The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand, and can be seen in Figure \ref{fig:anatomy}.
 These bones are respectively called the \gls{proximal phalanx}, \gls{middle phalanx} \& \gls{distal phalanx}.
 The different joints located in the hand have unique rotation properties.
@@ -63,8 +63,8 @@ The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion
 To create a dataset that correlated muscle activity to the movements of the hand, it is important to choose a set of active muscles to record.
 $\sim 30$ muscles are used in total to control the hand, but it would not be possible to record all of them simultaneously.
 6 sEMG sensors were available in the Delsys Trigno \cite{trigno} system, and these needed to be placed optimally in order to increase recording of the most important muscles.
-Target areas on the lower-arm for sEMG sensors are proposed by Nestor Jarque-Bou et al \cite{jarque2019}.
-Additionally, target areas of the upper-arm \& upper-body were chosen based on the suggestions from Iason Batzianoulis et al \cite{Batzianoulis2018}.
+Target areas on the lower-arm for sEMG sensors are proposed by the paper \cite{jarque2019}.
+Additionally, target areas of the upper-arm \& upper-body were chosen based on the suggestions from the paper \cite{Batzianoulis2018}.
 The chosen muscles to record with sEMG sensors can be seen in Table \ref{tab:muscletargets}.
 
 \begin{table}[H]
@@ -81,7 +81,7 @@ Muscle & Main Functionality \\
 (F) \textit{Pectoralis Major + Frontal Deltoid} & Movement of the Arm \\
 \hline
 \end{tabular}
-\caption{The muscles targeted with the 6 available sEMG sensors based on \cite{Batzianoulis2018} \& \cite{jarque2019}.
+\caption{The muscles targeted with the 6 available sEMG sensors, as recommended by the papers  \cite{jarque2019} \& \cite{Batzianoulis2018}.
  The targeted muscles contributes to a lot of the movements of hand \& lower-arm, and are ideal for the dataset.
 }
 \label{tab:muscletargets}
@@ -101,13 +101,13 @@ The muscles in Table \ref{tab:muscletargets} are numbered, and the locations of 
 %TODO: Image is not final, might require adjustments..
 
 It was chosen to split the amount of sensors evenly along the lower-arm and the rest of the body in order to asses both direct control of the finger movement and intent based on upper-arm movements.
-Alternative muscles that would be interesting to test are the back muscles, namely \textit{Trapezius} \& \textit{Latissimus Dorsi} as proposed by Keun-Tae Kim et al \cite{KeunTaeKim2021}.
+Alternative muscles that would be interesting to test are the back muscles, namely \textit{Trapezius} \& \textit{Latissimus Dorsi} as proposed in \cite{KeunTaeKim2021}.
 %how important the different muscles are in prediction of the hand.
 
 \subsection{Design of a Motion Capture Glove}
 \label{sec:motiveglove}
 
-The Motive capture system created by OptiTrack \cite{motive} is a set of 8 high-quality cameras mounted to cover a target capture area.
+The motive capture system created by OptiTrack \cite{motive} is a set of 8 high-quality cameras mounted to cover a target capture area.
 %TODO: how many cameras were there?
 The capture system detects fluorescent 3D markers in the given capture area, with the purpose of triangulating the markers and effectively calculate 3D poses for the markers in the scene down to an effective accuracy of $\pm 0.2mm$ .
 In order to get precise recordings of the motion of the hand and fingers, fluorescent 3D markers were placed on a glove.
@@ -144,7 +144,7 @@ Due to the placements of the 3D markers, the joint angles are calculated by defi
         \caption{Created motion capture glove.}
         \label{fig:realmarkers}
     \end{subfigure}
-    \caption{(a) Design and ideal 3D marker placements on the glove in order to calculate all the joint angles of the hand. (b) The created 3D marker glove with the chosen 3D marker locations. See Section \ref{sec:motiveproblems} for detail.}
+    \caption{(a) Design and ideal 3D marker placements on the glove in order to calculate all the joint angles of the hand. (b) The created 3D marker glove with the chosen 3D marker locations. See section \ref{sec:motiveproblems} for detail.}
 \end{figure}
 
 \begin{figure}[H]
@@ -170,8 +170,7 @@ Due to the placements of the 3D markers, the joint angles are calculated by defi
 
 In order to create a controller for a prosthetic hand, a sophisticated dataset containing the measured relation between muscle activity and the finger placements is needed.
 For such a dataset to represent meaningful data, that can be used to train sophisticated controllers for prosthetic devices, it is important that the dataset is made up of the relevant day-to-day manipulation movements.
-%The paper \cite{KeunTaeKim2021} proposes the
-\gls{SHAP} \cite{shap} \& ``Sollerman Hand  Function Test''  \cite{sollerman} are applicable procedures of creating a dataset.
+The paper \cite{KeunTaeKim2021} proposes the \gls{SHAP} \cite{shap} as its main method of dataset creation, an alternative would be the ``Sollerman Hand  Function Test''  \cite{sollerman}.
 Both procedures are used in assessing the function and mobility of the human hand.
 By analyzing the most important gripping motions in both tests, it should be possible to denote a suitable set of grips that the dataset needs to contain.
 The sollerman grip types are ranked based on their usage percentage in activities of daily living.
@@ -204,15 +203,14 @@ This is done as a basis of creating a specialized dataset that would be easier t
 \subsubsection{Existing Datasets}
 
 In addition to creating a dataset for this thesis, an existing state-of-the-art dataset will be used and compared with.
-Nestor Jarque-Bou et al \cite{jarque2019} proposes the use of their dataset \cite{kinmusdataset}.
+The paper \cite{jarque2019} proposes the use of their dataset \cite{kinmusdataset}.
 The dataset contains a very large set of recordings, with 3 different labeled states, consisting of precise anatomical angles of the hand, with the associated muscle activity of the forearm.
 This makes the dataset ideal for both classification and regression based models.
 The dataset consists of $572$ recordings from $22$ subjects, in both reaching, gripping \& releasing actions.
-Another dataset is referenced by Ashirbad et al \cite{ashirbad2022}, as an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
-%The paper explains that t
-The sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ Buttersworth band-pass filter, and in order to remove power-line noise a $60Hz$ notch filter was used.
+Another dataset is explained in the paper \cite{ashirbad2022}, as an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
+The paper explains that the sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ Buttersworth bandpass filter, and in order to remove power-line noise a $60Hz$ notch filter was used.
 %TODO: What is powerline noise!
-The dataset was created from recordings of $43$ participants.
+The dataset was created on $43$ participants.
 
 %The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
 %TODO: Present more formally and mention company names.
@@ -238,6 +236,7 @@ Furthermore, the Motive Capture software uses an auto-labeling system that is ab
 This system proved to not be reliable, giving $\sim 200$ labeled marker sequences, when only $7$ markers existed in the scene.
 %During a sequence of 15 seconds of recording, a set of 7 markers in the scene became over $100$ labeled marker tracks.
 The amount of markers increased as 30 seconds of footage became create $\sim 1000$ marker labels.
+The unreliable labeling of markers can be seen in appendix \ref{appendix:motivefixing}.
 The problems with the tracking data will be assessed in Section \ref{sec:motivecleaning}
 
 %TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
@@ -260,7 +259,7 @@ The simulated prosthetic should:
 \item Be simulated and be controllable in a commonly used robotics software to increase accessibility for researchers.
 \end{enumerate}
 
-The resulting prosthetic hand simulation can be seen in Appendix \ref{appendix:handsim}.
+The resulting prosthetic hand simulation can be seen in appendix \ref{appendix:handsim}.
 
 \newpage
 \subsubsection{Simulated Hand Articulation design}
@@ -297,7 +296,6 @@ The phalanges has been colored, with the distal phalanx being yellow, the middle
 As specified in section \ref{sec:anatomy}, some joints of the human hand facilitates 2 DoF of rotation.
 This is needed in order for the wrist and finger base joints to be able to do \gls{abduction/adduction}.
 To simulate this, two 1 DoF revolute joints were placed in series, thus allowing 2 DoF of motion in a single joint.
-The resulting simulation can be seen in Appendix \ref{appendix:handsim}.
 
 %\subsection{Software Hand Design}
 
