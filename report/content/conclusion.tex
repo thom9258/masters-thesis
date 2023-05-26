@@ -51,10 +51,12 @@ Further testing, of the dynamic control of a trained model in a simulated enviro
 This could be done in real-time, where a trained model could be used to convert live sEMG recordings into movements for the simulated prosthetic, allowing the test person to manipulate the simulated environment in real time.
 The work done in this thesis mainly explores two different areas of prosthetic controllers, classification based and regression based.
 Had a large dataset created specifically for the purpose of this thesis been created, it would be ideal to test the applicability of combining methods and by doing so, explore possible controller schemes that combines the individual movement of regression models and the robustness of intent classification.  
-
 Different network types could also have been tested, with further emphasis of translating the network models into robust controller information.
 This could have been done with a focus on testing different methods of connecting multiple network types into a single controller, or describing a set of base movement behaviors that a model can be integrated with to create movements that are dynamic, but also predictable to the user.  
 This could have been further expanded by experimenting with automatic grip methods, such as using sensor feed back to optimize gripping. 
+
+Lastly, it is apparent that using sEMG sensors as the interface between an amputee and their prosthetic device has limitations such as being highly dependent on the severity of the loss, and that prosthetic controllers relying primarily on sEMG data is unable to recreate all of the dynamic control of the real hand.
+Future research could be focused on exploring alternative methods, either by improving \gls{EEG} recording or exploring methods of reading neural activity directly from the upper-arm.
 
 % TODO: Go back to problem and create some pointers to what is applicable based on my work
 
