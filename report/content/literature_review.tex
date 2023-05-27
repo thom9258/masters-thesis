@@ -84,7 +84,7 @@ It can be seen as a form of EMG signal leak from muscles not actively being reco
 \subsection{sEMG Sensors for Prosthetic devices}
 
 The usage of sEMG sensors propose a lot of obstacles because of noise, but that does not stop sEMG sensors from being part of the state-of-the-art research in prosthetic devices.
-Keun-Tae Kim et al \cite{KeunTaeKim2021} proposes that the usage of sEMG sensors are of great importance in upper-limb classification for prosthetic devices.
+Keun-Tae Kim et al. \cite{KeunTaeKim2021} proposes that the usage of sEMG sensors are of great importance in upper-limb classification for prosthetic devices.
 The paper uses sEMG sensors to classify reaching-to-grasping tasks using a \gls{CNN} after pre-processing the signal with \gls{PCA} to reduce noise.
 %The processing combination method of PCA-CNN proved to show higher accuracy than \gls{ML} methods, such as \gls{SVM} with an accuracy of $70.1 \pm 9.8\%$ based on 9 subjects.
 The processing combination method of PCA-CNN is proposed as showing higher accuracy than \gls{ML} methods.
@@ -94,7 +94,7 @@ The \textit{\gls{SHAP}} \cite{shap} method was used to create a dataset in \cite
 %TODO: This is formulated wierdly..
 %TODO: explain that you USE the KeunTaeKim2021 Network as a baseline for one of your own networks!
 
-Zhaolong Gao et al \cite{Zhaolong2021} proposes the usage of different sEMG devices, two of those are the wearable product ``Myo Armband'', \cite{myo} a discontinued sEMG product consisting of 8 sensors that can be placed below the elbow joint, and the ``Delsys Trigno'' \cite{trigno}, a set of individual sEMG sensors that can be worn and record most muscle groups.
+Zhaolong Gao et al. \cite{Zhaolong2021} proposes the usage of different sEMG devices, two of those are the wearable product ``Myo Armband'', \cite{myo} a discontinued sEMG product consisting of 8 sensors that can be placed below the elbow joint, and the ``Delsys Trigno'' \cite{trigno}, a set of individual sEMG sensors that can be worn and record most muscle groups.
 %Zhaolong Gao et al \cite{Zhaolong2021}
 The recorded sEMG signals are pre-processed using a Notch filter of 50Hz.
 Furthermore, the target angles obtained as ground truth targets were reduced in dimensions through PCA, thus having the 6 dominant PC's be the targets.
@@ -116,7 +116,7 @@ are also highly used in implementations.
 %\subsection{Adaptiveness of sEMG based prosthetics}
 %TODO: Maybe section names should relate more directly to the explained papers?
 Most state-of-the-art methodologies consist of using sEMG data to predict grasp type classification or joint angle regression.
-Yuki Kuroda et al \cite{Yuki2023} proposes that this method becomes a burden for the HMI user, as the severity of the amputation increases and the loss of muscle recording areas become greater.
+Yuki Kuroda et al. \cite{Yuki2023} proposes that this method becomes a burden for the HMI user, as the severity of the amputation increases and the loss of muscle recording areas become greater.
 %\cite{Yuki2023}
 The paper takes inspiration from evolutionary robotics, and proposes the use of evolutionary computation to predict stable grasping methods based on touch sensor input.
 This is done by having a mapping between the touch sensor input of the fingers and the motor-control of the joints.
@@ -125,7 +125,7 @@ A simulation is used to train a \gls{RNN} network, this RNN takes sEMG sensor da
 It is possible to compute distance and height parameters of the object because grasping and training is done entirely in simulation, using a simulated target object, but that the method used would be realizable for prosthetic devices. 
 The paper concludes that alongside sEMG sensors, touch sensors could be used to appropriate joint motion could be predicted using contact states between hand and object.
 
-Yanchao Wang et al \cite{YanchaoWang2022} proposes a passive solution to adaptive grasping.
+Yanchao Wang et al. \cite{YanchaoWang2022} proposes a passive solution to adaptive grasping.
 Their method uses an under actuated, compliant linkage mechanism, where the joint rotation of the finger joints can be driven by a single motor.
 This allows the fingers to not rely on touch sensors, compared to the method used in \cite{Yuki2023}.
 %\cite{YanchaoWang2022}
@@ -139,7 +139,7 @@ The paper proposes that LDA showed the highest accuracy out of different Machine
 
 Another way of reducing the recording of lower-arm muscles when designing prosthetic hands would be to predict the intent of the user's actions based on upper-arm grasp prediction.
 %TODO: This sounds weird
-Iason Batzianoulis et al \cite{Batzianoulis2018} researches recording and classification of upper-arm.
+Iason Batzianoulis et al. \cite{Batzianoulis2018} researches recording and classification of upper-arm.
 The paper proposes a learning approach that decodes grasping intention during the reaching motion for upper-limb prosthesis.
 For pre-processing, a $30$-$350Hz$ band-pass filter is used on 12 muscles, 7 located in the upper-arm and 5 located in the lower-arm.
 These muscles are passed through a Buttersworth filter with cut-off at $20Hz$.
@@ -153,7 +153,7 @@ Additionally, the paper tests a recurrent network called a \gls{ESN} without win
 
 %Another area of
 Research of control interfaces for prosthetic devices expand into a multitude of areas.
-Zhen Ma et al \cite{fnins2016} proposes the use of a \gls{BCI} as an alternative to \gls{HMI}.
+Zhen Ma et al. \cite{fnins2016} proposes the use of a \gls{BCI} as an alternative to \gls{HMI}.
 BCI is a type of technology that uses brain activity and the brain's neural information to control machine interfaces such as computers, assistive technology \& prosthetic devices.
 BCI's have great benefit in areas where access to muscle tissue information such as sEMG is impossible due to loss of the muscles in the target recording area, or due to a patient being paralyzed and it becomes impossible for the patient to activate the targeted muscle groups.
 One dominant method of achieving a BCI interface is \gls{EEG}.
@@ -161,7 +161,7 @@ The purpose of \cite{fnins2016} is to detect individual finger control using EEG
 EEG functions similarly to EMG but with the focus on recording brain activity instead of muscle activity.
 %The methods of pre-processing, feature extraction and classification of the lower-arm activity in the paper \cite{fnins2016} are similar to the methods proposed by EMG-based papers.
 %TODO: We need some kind of example of eeg processing so we can confirm its similar to emg
-EEG is a non-invasive, portable and low-cost sensor type, that provides a high temporal resolution in comparison to other methods that detects brain activity, according to Maged S. AL-Quraishi et al \cite{quraishi2018}.
+EEG is a non-invasive, portable and low-cost sensor type, that provides a high temporal resolution in comparison to other methods that detects brain activity, according to Maged S. AL-Quraishi et al. \cite{quraishi2018}.
 %Thus indicating that ... methods are similar and we can maybe utilize more data as input if we had enough recording methods? i dont know
 %\cite{quraishi2018}
 The paper explains the great need for assisted rehabilitation and prosthetic devices, and that the need will increase in the future.

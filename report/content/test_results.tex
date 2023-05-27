@@ -17,10 +17,11 @@
 
 \subsection{Recording of a Dataset}
 
-The created capture glove for the Motive motion capture system and the sEMG sensors from the Delsys Trigno setup is placed on the target, with the sEMG sensors following the setup in \ref{tab:muscletargets}.
+The created capture glove for the Motive motion capture system and the sEMG sensors from the Delsys Trigno setup was placed on the target.
+The sEMG sensors were placed at their locations, following the setup in \ref{tab:muscletargets}.
 The setup can be seen in Figure \ref{fig:musclesensorsonarm}.
-Objects of different sizes and weights is placed in front of the target for gripping. 
-This is done so that the chosen gripping sequence and environment is highly dynamic, and ideal for creating regression models.
+Objects of different sizes and weights were placed in front of the target for gripping. 
+This was done so that the chosen gripping sequence and environment was highly dynamic, and ideal for creating regression models.
 
 \begin{figure}[H]
 \begin{center}
@@ -32,7 +33,7 @@ This is done so that the chosen gripping sequence and environment is highly dyna
 
 As explained in Section \ref{sec:motiveproblems}, creation of a custom dataset to train and test models on proved to be difficult.
 The dataset created using the Motive capture software in Section \ref{sec:motiveglove} is not very large, and has no labeling for classification.
-Because of this, the dataset is not suitable for training in any of the methods.
+Because of this, the dataset was not suitable for training in any of the methods.
 The recorded dataset can be seen in Appendix \ref{appendix:dataset}. 
 
 \subsection{Labeling of Motive capture data}
@@ -46,8 +47,8 @@ The recorded dataset can be seen in Appendix \ref{appendix:dataset}.
 
 %In order to fix some of the problems, caused by the setup, software was written.
 %TODO: shitty starter
-The large amount of problems observed using the Motive motion tracking software makes it impossible to use the tracking output as training data.
-Markers are not tracked correctly and new labels are created every time tracking fails, this can be seen in Figure \ref{fig:motivelabels}.
+The large amount of problems observed using the Motive motion tracking software made it impossible to use the tracking output as training data.
+Markers were not tracked correctly and new labels were created every time tracking fails, this can be seen in Figure \ref{fig:motivelabels}.
 
 \begin{figure}[H]
     \centering
@@ -75,18 +76,19 @@ Markers are not tracked correctly and new labels are created every time tracking
     \label{fig:motivelabels}
 \end{figure}
 
-A recording of 15 seconds creates $\sim 100$ individual labels.
-This causes great problems as it becomes impossible to relate one marker to another, and extract the kinematic data for training a model.
+A recording of 15 seconds created $\sim 100$ individual labels.
+This caused great problems as it becomes impossible to relate one marker to another, and extract the kinematic data for training a model.
 The problem requires the user to manually remove and combine labeled marker sections into larger labeled sections, in order to eliminate all changing labels on the tracked markers.
-A feature designed to match up mislabeled markers and optimizing the movement paths of markers exists in Motive, but it did not fix the stated problems.
-In order to fix this problem and because of a lack of functionality in Motive, two software solutions is created.
+A feature designed to match up mislabeled markers and optimizing the movement paths of markers exists in Motive, but it did not do as described.
+In order to fix the problems and because of a lack of functionality in Motive, two software solutions is created.
 Rendering and replaying of the 3D markers in real-time, with their associated labels is handled in one of the created software solutions.
 Furthermore, the second software was designed to remove, merge and sub-sample 3D marker output files from Motive.
 
 \subsubsection{Evaluation}
 
-These software solutions are designed to work simultaneously, and is effective at cleaning the labels.
-The main problem is that this cleaning of 3D marker labels is a time consuming process, and results in not being able to use the recorded dataset for training a model.
+These software solutions were designed to work simultaneously, and was effective at cleaning the labels.
+The main problem is that this cleaning of 3D marker labels was a time consuming process, and because of this, it was not possible to create a dataset large enough for use in the training of models.
+%in not being able to use the recorded dataset for training a model.
 The software created to fix unreliable labeling of markers in the tracking data can be seen in Appendix \ref{appendix:motivefixing}.
 
 \subsection{Filtering of Delsys Trigno muscle recordings}
@@ -96,9 +98,9 @@ The software created to fix unreliable labeling of markers in the tracking data 
 Based on the literature review in Section \ref{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motor control for a prosthetic.
 Raw sEMG data contains a lot of unwanted noise as explained in Section \ref{sec:noise}.
 Some of the noise can be can be removed through signal processing using analog filters.
-Different filter types exists, and different filters are used to remove a specific frequency in the data. 
+Different filter types exists, and different filters can be used to remove specific noise frequency in the data. 
 State-of-the-Art papers use a lot of different methods to reduce noise in sEMG data.
-Zhaolong Gao et al \cite{Zhaolong2021} uses a $50Hz$ Notch filter, while Iason Batzianoulis et al \cite{Batzianoulis2018} \& Ashirbad et al \cite{ashirbad2022} respectively uses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$  Buttersworth band-pass filter combined with a $60Hz$ Notch filter in order to remove power-line noise.
+Zhaolong Gao et al. \cite{Zhaolong2021} uses a $50Hz$ Notch filter, while Iason Batzianoulis et al. \cite{Batzianoulis2018} \& Ashirbad et al. \cite{ashirbad2022} respectively uses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$  Buttersworth band-pass filter combined with a $60Hz$ Notch filter in order to remove power-line noise.
 Due to me many different filtering types used in state-of-the-art literature, it was determined that the use of a filter depends on the specific sEMG data and the purpose of what the paper tries to do.
 In order to determine what types of filters have a positive effect on the sEMG data recorded using the Motive Capture system, different types of state-of-the-art pre-processing filters were tested and compared.
 %And that the best filter for this thesis is to be determined through testing.
@@ -135,7 +137,7 @@ Alternatively, Buttersworth band-pass filters are tested in Figure \ref{fig:band
 
 \subsection{Dataset used for Training}
 
-Due to the problems with the Motive motion capture software explained in Section \ref{sec:motiveproblems}, it was determined that the main dataset for training the chosen methods would be based on dataset \cite{kinmusdataset} proposed by Nestor Jarque-Bou et al \cite{jarque2019}.
+Due to the problems with the Motive motion capture software explained in Section \ref{sec:motiveproblems}, it was determined that the main dataset for training the chosen methods would be based on dataset \cite{kinmusdataset} proposed by Nestor Jarque-Bou et al. \cite{jarque2019}.
 The dataset contains sections of sEMG data and kinematic movements of the hand.
 These sections are labeled as either \textit{reaching}, \textit{manipulation} or \textit{releasing}.  
 Due to the dataset containing data for regression and classification, it is possible to explore multiple methods of HMI's. 
@@ -145,9 +147,9 @@ The main objective of these tests are to review and compare possible methods of 
 \section{Machine-Learning Intent Classification}
 \label{sec:machine-learning}
 
-Due to the dataset containing labels associated with movements of the hand, it is possible to use the dataset to train a intent prediction classifier.
+Due to the dataset containing labels associated with movements of the hand, it was possible to use the dataset to train a intent prediction classifier.
 based on \cite{Yuki2023} \& \cite{Batzianoulis2018}, it is ideal to feature extract windows of the raw sEMG data.
-The features \gls{ZC} \& \gls{RMS} are chosen as the features to extract for an intent classifier based on their heavy use in literature \cite{Tech2015}.
+The features \gls{ZC} \& \gls{RMS} were chosen as the features to extract for an intent classifier based on their heavy use in literature \cite{Tech2015}.
 Other features that could be chosen as an alternative would be variance \& mean-absolute-value.
 Furthermore, \cite{YanchaoWang2022} proposes that the Machine-Learning classifier LDA has the highest classification rate out of similar methods.
 The paper \cite{Batzianoulis2018} proposes the use of the \gls{SVM} \gls{ML} method for intent classification.
@@ -155,7 +157,7 @@ Both types of classification will be explored and compared.
 
 \subsection{Implementation}
 
-In order to classify intent from sEMG muscle data, the data needs to be converted to feature space before it can be used as input to a machine learning algorithm.
+In order to classify intent from sEMG muscle data, the data needed to be converted into the chosen features before it can be used as input to a machine learning algorithm.
 For this, it was chosen based on state-of-the-art literature, that the feature extraction methods would be \gls{ZC} \& \gls{RMS}.
 The input channel for a single sEMG window was converted into a vector of zeros and ones for the zero-crossing features, where a one is set if the data crosses over the zero line.
 Furthermore, the RMS for a window was calculated, and inserted to the end of the input vector. This effectively converts the 6 sEMG channels of a window size of $N$ into a feature vector of size $N+1$.
@@ -173,7 +175,7 @@ The resulting classification structure can be seen in Figure \ref{fig:mlclassifi
 The dataset of features and ground truths were then used as input for discriminant analysis, and SVM classifiers.
 The purpose of \textbf{discriminant analysis} is to classify inputs into groups.
 Discriminant analysis is a classical multivariate method of Supervised Learning, that takes a input set with their ground-truth classes and tries to maximize separation between these different classes.
-The models assumes that data follows a Gaussian distribution. 
+The models assumes data follows a Gaussian distribution. 
 %TODO: True? Cite something for LDA QDA?
 For this ML method, two types of discriminant analysis were tested on the dataset, namely LDA \& \gls{QDA}.
 %Linear Discriminant Analysis (LDA) \& Quadratic Discriminant Analysis (QDA).
@@ -189,7 +191,7 @@ For this ML method, 3 types of SVM classifiers were tested, a SVM using a Radial
 
 \subsection{Tests \& Results}
 
-The methods are tested on 50 sets of data that was not part of the training set.
+The methods were tested on 50 sets of data that was not part of the training set.
 The discriminant analysis methods can be seen in Figure \ref{fig:lda_test}, with the average accuracy of the methods respectively being $61\%$ \& $55\%$ over the 50 tests.
 
 \begin{figure}[H]
@@ -236,7 +238,8 @@ A full comparison of the machine learning methods can be seen in Figure \ref{fig
 \end{center}
 \end{figure}
 
-It can be seen in the boxplot that most methods have a similar inter-quantile median, and fairly small whiskers.
+%It can be seen in the boxplot that m
+Most of the tested methods have a similar inter-quantile median, and fairly small whiskers.
 In order to get a clearer comparison of methods, the relevant values have been compared in Table \ref{tab:classification_comparison}.  
 
 \begin{table}[H]
@@ -282,7 +285,7 @@ An alternative to the discriminant analysis methods, it can be seen that the NuS
 NuSVM has the second best average accuracy, the second best inter-quantile median \& the third lowest inter-quantile range.
 % Conclusion:
 From Table \ref{tab:classification_comparison}, it becomes apparent that none of the methods have ideal performance, but that the LDA method is the best method for intent classification.
-This result is similar to the conclusion of Keun-Tae Kim et al \cite{KeunTaeKim2021}.
+This result is similar to the conclusion of Keun-Tae Kim et al. \cite{KeunTaeKim2021}.
 % Eval on feature extraction
 The resulting performance metrics of the ML methods are dependent on the chosen feature extraction techniques used.
 \gls{ZC} and \gls{RMS} features can be used for the classifiers and provide insight into what parameters are important when working with sEMG data.
@@ -304,7 +307,7 @@ Several methods is explored, both window and recurrent based networks are tested
 
 %TODO: WHY CHOOSE A CNN? SELL IT LIKE A CAR!
 The sEMG data used as input for regression networks is complex.
-The sequences of muscle activity needs to be understood by the proposed method and produced into a an output.
+The sequences of muscle activity needed to be understood by the proposed method and produced into a an output.
 A network type that is ideal to understand complex meaning in, 3-dimensionary inputs is a CNN network.
 %A CNN is an alternative to a MLP network that is similar in functionality is a Convoluted Neural Network (CNN).
 A CNN consists of a set of Convolution Layers that deforms inputs to abstract convolution features.
@@ -336,13 +339,13 @@ The CNN network consists of 3 Convolution layers followed by 3 MLP layers.
 The network is designed through manual hyper-parameter tuning based on validation error reduction of the model.
 The structure of the network is designed to be simple with a small amount of convolutions without pooling due to the small input size.
 The Convolution layers extract features up to a size of 32 using a convolution kernel with a size of [$3, 3$].
-The convolution features are then flattened, to a size of $4480$, and processed by 3 hidden layers convert the convolution output into a regression prediction.
+The convolution features are flattened to a size of $4480$, and processed by 3 hidden layers convert the convolution output into a regression prediction.
 %A CNN is trained on the network, using a window size of 40 samples were used.
 %TODO: Give example of a state-of-the-art paper CNN as an alternative to mine!!!
-The CNN network is trained to do regression of joint angles of the hand, because of this, the loss function is determined to be MSE loss.
-The network is trained using an Adam optimizer with a learning rate of $1\text{e}^{-4}$.
-A subset of the dataset is split into a test and a validation set, and windows are extracted correlating input and output.
-The output is normalized, and the input/output sets are shuffled before training takes place.
+The CNN network was trained to do regression of joint angles of the hand, because of this, the loss function was determined to be MSE loss.
+The network was trained using an Adam optimizer with a learning rate of $1\text{e}^{-4}$.
+A subset of the dataset was split into a test and a validation set, and windows were extracted correlating input and output.
+The output was normalized, and the input/output sets were shuffled before training would take place.
 
 
 \subsubsection{Tests \& Results}
@@ -359,9 +362,9 @@ The output is normalized, and the input/output sets are shuffled before training
 %\end{figure}
 %
 %TODO: Maybe remove this
-The CNN network is trained with a batch size of 8 over 20 epochs, with the resulting MSE loss settling at $\sim 34$ after 3 epochs.
-50 sets of regressions that have not been trained on are taken from the dataset for testing.
-The errors of the dataset are plotted, as can be seen in Figure \ref{fig:cnntest}.
+The CNN network was trained with a batch size of 8 over 20 epochs, with the resulting MSE loss settling at $\sim 34$ after 3 epochs.
+50 sets of regressions that have not been trained on was taken from the dataset for testing.
+The errors of the dataset can be seen in Figure \ref{fig:cnntest}.
 
 \begin{figure}[H]
 \begin{center}
@@ -377,11 +380,12 @@ The errors of the dataset are plotted, as can be seen in Figure \ref{fig:cnntest
 
 \subsubsection{Evaluation}
 
-The CNN network is able to be trained on the dataset with a validation set MSE loss of $34$.
+The CNN network was able to be trained on the dataset with a validation set MSE loss of $34$.
 The errors of the 50 test regressions in Figure \ref{fig:cnntest} show that a fairly large average regression error of $0.17$ Radians exists in the test regressions, and that the average error is skewed upwards due to some outlier tests having large average errors up to $0.3$ Radians.
 %TODO: Get the max error!
 
 %TODO: Maybe do a average error boxplot too?
+
 
 
 \subsection{Recurrent Neural Network Regression}
@@ -411,10 +415,10 @@ The network is designed through manual hyper-parameter tuning based on validatio
 
 \subsubsection{Tests \& Results}
 
-The RNN network is trained on the dataset \cite{kinmusdataset}, in a similar way as the CNN network, with the purpose of approximating finger angle regressions per time frame.
-The RNN network is trained with a batch size of 8, with the  MSE loss function and the Adam optimizer with a learning rate of $1\text{e}^{-2}$.
-In order to test the network, a random set of 50 regressions that have not been trained on are taken from the dataset.
-The average errors of each regression test is plotted, as can be seen in Figure \ref{fig:rnntest}.
+The RNN network was trained on the dataset \cite{kinmusdataset}, in a similar way as the CNN network, with the purpose of approximating finger angle regressions per time frame.
+The RNN network was trained with a batch size of 8, with the loss function chosen as MSE loss and the Adam optimizer with a learning rate of $1\text{e}^{-2}$.
+In order to test the network, a random set of 50 regressions that have not been trained on were taken from the dataset.
+The average errors of each regression test can be seen in Figure \ref{fig:rnntest}.
 Additionally, the plotted regressions can be seen in Appendix \ref{appendix:rnnregression}.
 
 \begin{figure}[H]
@@ -486,7 +490,7 @@ The models created for regression can be seen in Appendix \ref{appendix:models}.
 %\subsection{Anatomical Assessment and Maneuverability}
 
 Access to existing prosthetic hand simulations proved to be impossible to access and use.
-they are either unavailable because their associated products have been discontinued or locked behind a pay-to-access barrier where you have to pay to receive a real prosthetic.
+they were either unavailable because their associated products have been discontinued or locked behind pay-to-access barriers where you would have to pay for access.
 Due to non-availability of prosthetic hand simulations, it was chosen that through this thesis, a open source prosthetic hand needed to be created for testing of the algorithms developed as part of this project.
 The creation of a prosthetic hand simulation can be seen in Section \ref{sec:prost_sim}.
 The prosthetic hand was designed to be as anatomically similar as a real hand as possible.
@@ -495,8 +499,9 @@ The usability and dynamic movement of the simulated prosthetic hand needs to be 
 This is important because the usability of a prosthetic hand has a large impact on rehabilitation for the end-user.
 
 \subsection{Method}
+
 In order to test the usability and dynamic movement of the simulated prosthetic hand, the hand was tasked with achieving the end-poses of the most used day-to-day grips.
-These grips were explained in Section \ref{sec:dataset} Table \ref{tab:grips}, namely the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}.
+These grips are explained in Section \ref{sec:dataset} Table \ref{tab:grips}, namely the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}.
 In order to pose the simulated hand, the interface created in ROS2 was used to send kinematic configurations to the hand simulation.
 
 \subsection{Test \& Results}
