@@ -3,16 +3,6 @@
 
 \begin{document}
 
-%\subsubsection{Machine-Learning Designs}
-
-%TODO: Some introduction and explanation of feature extraction, what types and papers that uses these.
-%TODO: Some introduction and explanation of SVM and LDA types of networks.
-%TODO: Go back and see what papers uses these.
-
-%\subsection{Software Hand Design}
-
-%\section{Tests \& Results}
-
 \section{Datasets}
 
 \subsection{Recording of a Dataset}
@@ -37,16 +27,10 @@ Because of this, the dataset was not suitable for training in any of the methods
 The recorded dataset can be seen in Appendix \ref{appendix:dataset}. 
 
 \subsection{Labeling of Motive capture data}
-%\subsubsection{Cleaning of Motive Capture Data}
+
 \subsubsection{Implementation}
 \label{sec:motivecleaning}
-%\subsubsection{Reduction of Tracking Software Problems}
 
-%TODO: This section could be expanded and images could be included.
-%TODO: HERE I NEED TO GO ALL IN ON DATA CLEANING
-
-%In order to fix some of the problems, caused by the setup, software was written.
-%TODO: shitty starter
 The large amount of problems observed using the Motive motion tracking software made it impossible to use the tracking output as training data.
 Markers were not tracked correctly and new labels were created every time tracking fails, this can be seen in Figure \ref{fig:motivelabels}.
 
@@ -141,18 +125,18 @@ Due to the problems with the Motive motion capture software explained in Section
 The dataset contains sections of sEMG data and kinematic movements of the hand.
 These sections are labeled as either \textit{reaching}, \textit{manipulation} or \textit{releasing}.  
 Due to the dataset containing data for regression and classification, it is possible to explore multiple methods of HMI's. 
-The pre-processing step is not covered for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order band-pass filter with a band of  $25$ to $500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
+The pre-processing step is not covered for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order band-pass filter with a band of  $25$-$500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
 The main objective of these tests are to review and compare possible methods of regression \& Classification of sEMG data in order to determine the movements of the hand.
 
 \section{Machine-Learning Intent Classification}
 \label{sec:machine-learning}
 
 Due to the dataset containing labels associated with movements of the hand, it was possible to use the dataset to train a intent prediction classifier.
-based on \cite{Yuki2023} \& \cite{Batzianoulis2018}, it is ideal to feature extract windows of the raw sEMG data.
-The features \gls{ZC} \& \gls{RMS} were chosen as the features to extract for an intent classifier based on their heavy use in literature \cite{Tech2015}.
+based on the statements of Yuki Kuroda et al. \cite{Yuki2023} \& Iason Batzianoulis et al.  \cite{Batzianoulis2018}, it is ideal to feature extract windows of the raw sEMG data.
+The features \gls{ZC} \& \gls{RMS} were chosen as the features to extract for an intent classifier based on their heavy use in literature as outlined by M. Tech \cite{Tech2015}.
 Other features that could be chosen as an alternative would be variance \& mean-absolute-value.
-Furthermore, \cite{YanchaoWang2022} proposes that the Machine-Learning classifier LDA has the highest classification rate out of similar methods.
-The paper \cite{Batzianoulis2018} proposes the use of the \gls{SVM} \gls{ML} method for intent classification.
+Furthermore, Yanchao Wang et al. \cite{YanchaoWang2022} proposes that the Machine-Learning classifier LDA has the highest classification rate out of similar methods.
+Iason Batzianoulis et al. \cite{Batzianoulis2018} proposes the use of the \gls{SVM} \gls{ML} method for intent classification.
 Both types of classification will be explored and compared.
 
 \subsection{Implementation}
@@ -160,7 +144,7 @@ Both types of classification will be explored and compared.
 In order to classify intent from sEMG muscle data, the data needed to be converted into the chosen features before it can be used as input to a machine learning algorithm.
 For this, it was chosen based on state-of-the-art literature, that the feature extraction methods would be \gls{ZC} \& \gls{RMS}.
 The input channel for a single sEMG window was converted into a vector of zeros and ones for the zero-crossing features, where a one is set if the data crosses over the zero line.
-Furthermore, the RMS for a window was calculated, and inserted to the end of the input vector. This effectively converts the 6 sEMG channels of a window size of $N$ into a feature vector of size $N+1$.
+Furthermore, the RMS for a window was calculated, and inserted to the end of the input vector. This effectively converts the 6 sEMG channels of a window size of $W$ into a feature vector of size $W+1$.
 The feature-based inputs were extracted, and their movement labels were used as the target classification.
 The resulting classification structure can be seen in Figure \ref{fig:mlclassifier}.
 
@@ -176,7 +160,6 @@ The dataset of features and ground truths were then used as input for discrimina
 The purpose of \textbf{discriminant analysis} is to classify inputs into groups.
 Discriminant analysis is a classical multivariate method of Supervised Learning, that takes a input set with their ground-truth classes and tries to maximize separation between these different classes.
 The models assumes data follows a Gaussian distribution. 
-%TODO: True? Cite something for LDA QDA?
 For this ML method, two types of discriminant analysis were tested on the dataset, namely LDA \& \gls{QDA}.
 %Linear Discriminant Analysis (LDA) \& Quadratic Discriminant Analysis (QDA).
 The main difference between LDA and QDA is that LDA makes the assumption that the covariance matrices of the classes are the same.
@@ -194,7 +177,6 @@ For this ML method, 3 types of SVM classifiers were tested, a SVM using a Radial
 The methods were tested on 50 sets of data that was not part of the training set.
 The discriminant analysis methods can be seen in Figure \ref{fig:lda_test}, with the average accuracy of the methods respectively being $61\%$ \& $55\%$ over the 50 tests.
 
-%TODO: I need to fix accuracy percentage in image!
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{lda_test.pdf}
@@ -202,7 +184,6 @@ The discriminant analysis methods can be seen in Figure \ref{fig:lda_test}, with
 \label{fig:lda_test}
 \end{center}
 \end{figure}
-%TODO: Graphs does not show what bar is what type..
 
 The \gls{SVM} methods can be seen in Figure \ref{fig:svm_test}, with the average accuracy of the methods respectively being $54\%$, $56\%$ \& $59\%$ over the 50 tests.
 
@@ -225,7 +206,6 @@ The \gls{SVM} methods can be seen in Figure \ref{fig:svm_test}, with the average
 
 \subsection{Evaluation}
 
-%TODO: GO through the graphs and talk about the results
 The methods tested can be seen to have similar average accuracy of $\sim 60\%$ over 50 tests.
 Because of this, it is difficult to choose a superior method without further analysis.
 The choice of machine learning method depends on its overall classification rate over 50 tests, but it can also be important to rate the ML methods based on their inter-quantile values.
@@ -293,7 +273,6 @@ The resulting performance metrics of the ML methods are dependent on the chosen 
 The models created for classification can be seen in Appendix \ref{appendix:models}.
 
 %\newpage
-%TODO: Experiment with no line breaks, is it bad?
 \section{Neural Network Movement Regression}
 \label{sec:regression}
 
@@ -304,27 +283,21 @@ Several methods is explored, both window and recurrent based networks are tested
 \subsection{Windowed Convolutional Neural Network}
 
 \subsubsection{Implementation}
-% TODO: Why did my network end up looking like this?
 
-%TODO: WHY CHOOSE A CNN? SELL IT LIKE A CAR!
 The sEMG data used as input for regression networks is complex.
 The sequences of muscle activity needed to be understood by the proposed method and produced into a an output.
-A network type that is ideal to understand complex meaning in, 3-dimensionary inputs is a CNN network.
+A network type that is ideal to understand complex meaning in 2 and 3D input is a CNN network.
 %A CNN is an alternative to a MLP network that is similar in functionality is a Convoluted Neural Network (CNN).
 A CNN consists of a set of Convolution Layers that deforms inputs to abstract convolution features.
 The structure is considered sparsely connected due to the convolution layers are only receiving a subset of the previous convolution features.
 The feature conversion is ideal when a network needs to become robust and needs to recognize larger concepts in the input.
 This functionality is especially used when the input data takes the shape of a matrix.
 Once the input is convoluted to a chosen feature abstraction, it is given to a MLP structure trained to convert the convolution features into a usable output.
-%TODO: needs sources for this stuff?
-%TODO: Go back and see what papers uses CNN's
 CNN networks have no build-in time-based functionality, they receive a set of inputs and produce an output.
 It is possible however to represent time if the input is given in segments consisting of multiple time-frames.
 Because of this, the sEMG muscle activity from the dataset is segmented into windows of a desired size, the output angles that the network should do regression towards are then chosen to be the first angle after the window.
-%TODO: Images of these for better clarity!!!!
-A CNN network can be used in the field of sEMG processing due to the convolution layer's ability to learn abstract formations of the sEMG data.
+A CNN network can be used in the field of sEMG processing due to the convolution layer's ability to learn abstract patterns of the sEMG data.
 The network would be able to identify patterns in sEMG data and correlate them to an appropriate output.
-%TODO: formations? another word?
 The CNN network structure seen in Figure \ref{fig:cnn_structure}.
 
 \begin{figure}[H]
@@ -334,7 +307,6 @@ The CNN network structure seen in Figure \ref{fig:cnn_structure}.
 \label{fig:cnn_structure}
 \end{center}
 \end{figure}
-%TODO: The 20 in this case refers to N samples! if i want something else than 20, change the image!
 
 The CNN network consists of 3 Convolution layers followed by 3 MLP layers.
 The network is designed through manual hyper-parameter tuning based on validation error reduction of the model.
@@ -351,19 +323,8 @@ The output was normalized, and the input/output sets were shuffled before traini
 
 \subsubsection{Tests \& Results}
 
-%In order to test the CNN network and assess its performance, the training MSE loss can be seen in figure \ref{fig:cnntrainvalid}.
-%TODO: Make sure this graph is explained properly and is the actual image
 
-%\begin{figure}[H]
-%\begin{center}
-%\includegraphics[width=0.8\textwidth]{cnn_trainvalid.pdf}
-%\caption{The Train and Validation MSE loss during training of the CNN network method.}
-%\label{fig:cnntrainvalid}
-%\end{center}
-%\end{figure}
-%
-%TODO: Maybe remove this
-The CNN network was trained with a batch size of 8 over 20 epochs, with the resulting MSE loss settling at $\sim 34$ after 3 epochs.
+The CNN network was trained with a batch size of 8 over 20 epochs, with the resulting MSE loss settling at $\sim 34$.
 50 sets of regressions that have not been trained on was taken from the dataset for testing.
 The errors of the dataset can be seen in Figure \ref{fig:cnntest}.
 
@@ -374,28 +335,17 @@ The errors of the dataset can be seen in Figure \ref{fig:cnntest}.
 \label{fig:cnntest}
 \end{center}
 \end{figure}
-%TODO: What i need to do:
-% Pull out 50 sets of data, do regression using my cnn model, plot their average errors in a barplot!
-% This method will be my main regression test!
-
 
 \subsubsection{Evaluation}
 
 The CNN network was able to be trained on the dataset with a validation set MSE loss of $34$.
 The errors of the 50 test regressions in Figure \ref{fig:cnntest} show that a fairly large average regression error of $0.17$ Radians exists in the test regressions, and that the average error is skewed upwards due to some outlier tests having large average errors up to $0.3$ Radians.
-%TODO: Get the max error!
-
-%TODO: Maybe do a average error boxplot too?
-
-
 
 \subsection{Recurrent Neural Network Regression}
 
-%TODO: Why did my network end up looking like this?
 Due to sEMG data being time-based, Recurrent network types are ideal for regression predictions.
 RNN networks are similar to MLP's with the main difference being that a RNN has hidden feedback  memory state that is derived from earlier inputs.
 This functionality makes RNN networks ideal for concurrent, time-based systems where a sequential input distribution needs to be converted to a output regression.  
-%TODO: Alternative to concurrent -> i want something that explains a set of data in a graph!
 Another use case of RNN-based regression systems are systems where response time is critical.
 The RNN network does not use a window of data, it converts the input of the current time frame, and the feedback of the previous time frame into a prediction.
 Because of the hidden memory, a RNN network has a quicker response time than a window-based network.
@@ -449,18 +399,13 @@ The CNN shows a average test error of $0.17$ Radians, while the RNN network has 
 The reason for the large error in the CNN network test is unclear.
 One of the reasons the CNN network is unable to accurately learn regression could be because of the pre-processing done in the dataset.
 Alternatively, the network is unable to learn because of the window size. This would make sense since the RNN network with a really low error is able to learn to do regression, as it is not limited by a arbitrary window of input.
+Additionally, the RNN tests show an outlier at test 44, this outlier has a similar error as the average error observed using the CNN network.
 
 It becomes apparent that teaching a neural network to do regression of finger joints is a complicated task.
 Because of this, the tests propose that it is ideal to use a type of Recurrent Network for regression.
 The models created for regression can be seen in Appendix \ref{appendix:models}.
 
-%TODO: Maybe do a average error boxplot too?
-
-%TODO: Some introduction and explanation of RNN and LSTM types of networks.
-%TODO: Go back and see what papers uses these.
-
 %\subsubsection{Long-Short-Term-Memory Recurrent Neural Networks}
-%TODO: Create this if you have the time..
 %A variant of a RNN can contain a special kind of hidden memory called Long Short Term Memory (LSTM).
 %a LSTM uses gates as a way of containing a memory.
 
@@ -477,11 +422,6 @@ The models created for regression can be seen in Appendix \ref{appendix:models}.
 %The MLP network could be used to predict the relation between muscle activity and finger movements.
 
 %In order to initially test the the dataset, a simple MLP network will be trained as a baseline for performance, and for testing the general applicability of window-based networks.
-
-
-%TODO: Explain the software i made to clearn motive!
-%TODO: Explain and showcase some pre-processing filters mentioned by other papers!
-%TODO: Maybe here, maybe in methodology: Show how the gt angles are calculated too..
 
 \newpage
 \section{Simulated Prosthetic Hand}
@@ -547,14 +487,6 @@ The software used to pose the hand simulation can be seen in Appendix \ref{appen
 \end{figure}
 
 
-%TODO: Needs to be a figure of figures!
-%\begin{figure}[h]
-%\begin{center}
-%\includegraphics[width=0.8\textwidth]{example-image-a}
-%\caption{Example figure text}
-%\end{center}
-%\end{figure}
-
 \subsection{Evaluation}
 
 Based on a visual assessment of Figure \ref{fig:hand_pose_test}, it can be concluded that the prosthetic hand is able to be posed similarly to the real-life reference.
@@ -569,18 +501,10 @@ The resulting controller code written to achieve the poses of Figure \ref{fig:ha
 % should i have a explanation for not doing it?
 %\subsection{Posing based on Network Output}
 %
-%%TODO: More here..
 %As a result of testing different network types and their applicability for creating suitable motor control output for a prosthetic hand, it would be ideal to test the network output on the prosthetic simulation.
 %For full video see appendix ??.
-%TODO: Insert appendix here
 
 
 
-%TODO: see Zhaolong2021 (page 10) for example of how to compare MSE for different neuron amounts, even for multiple subjects!
-
-
-
-%TODO: Show graphs of different filters!
-%TODO: Talk about what filters are and how they affect incoming signals, what type to use against what noise etc. 
 
 \end{document}

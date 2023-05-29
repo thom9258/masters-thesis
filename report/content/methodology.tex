@@ -46,9 +46,6 @@ The base of the proximal phalanx has 2 DoF and are able to do \gls{flexion/exten
 Additionally, the joint between the middle and distal phalanx is passively moved relative to the proximal and distal phalanx, or in relation to joint constrains from gripped objects.
 The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion/extension} \& \gls{abduction/adduction} movement.
 
-%TODO: Fix this so we have something visual instead of boring text.
-%The anatomical muscle and joint structure of the hand/forearm can be seen in the figure \ref{fig:anatomy}.
-
 \begin{figure}[H]
 \begin{center}
 %\includegraphics[width=0.6\textwidth, angle=-90]{handjoints.png}
@@ -99,7 +96,6 @@ The muscles in Table \ref{tab:muscletargets} are numbered, and the locations of 
 \label{fig:musclesensordiagram}
 \end{center}
 \end{figure}
-%TODO: Image is not final, might require adjustments..
 
 It was chosen to split the amount of sensors evenly along the lower-arm and the rest of the body in order to asses both direct control of the finger movement and intent based on upper-arm movements.
 Alternative muscles that would be interesting to test are the back muscles, namely \textit{Trapezius} \& \textit{Latissimus Dorsi} as proposed by Keun-Tae Kim et al. \cite{KeunTaeKim2021}.
@@ -108,9 +104,8 @@ Alternative muscles that would be interesting to test are the back muscles, name
 \subsection{Design of a Motion Capture Glove}
 \label{sec:motiveglove}
 
-The Motive capture system created by OptiTrack \cite{motive} is a set of 8 high-quality cameras mounted to cover a target capture area.
-%TODO: how many cameras were there?
-The capture system detects fluorescent 3D markers in the given capture area, with the purpose of triangulating the markers and effectively calculate 3D poses for the markers in the scene down to an effective accuracy of $\pm 0.2mm$ .
+The Motive capture system created by OptiTrack \cite{motive} is a set of high-quality cameras mounted to cover a target capture area.
+The capture system detects fluorescent 3D markers in the given capture area, with the purpose of triangulating the markers and effectively calculate 3D poses for the markers in the scene down to an effective accuracy of $\pm 0.2$mm.
 In order to get precise recordings of the motion of the hand and fingers, fluorescent 3D markers were placed on a glove.
 The pattern of the marker positions were chosen in order to calculate the angles of the individual finger bones.
 The markers are used in sets of 3, this allows for the calculation of the triangle angles in 3D space.
@@ -211,12 +206,8 @@ This makes the dataset ideal for both classification and regression based models
 The dataset consists of $572$ recordings from $22$ subjects, in both reaching, gripping \& releasing actions.
 Another dataset is referenced by Ashirbad et al. \cite{ashirbad2022}, as an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
 %The paper explains that t
-The sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ Buttersworth band-pass filter, and in order to remove power-line noise a $60Hz$ notch filter was used.
-%TODO: What is powerline noise!
+The sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ Buttersworth band-pass filter, and a $60Hz$ notch filter was used in order to remove electronics equipment noise.
 The dataset was created from recordings of $43$ participants.
-
-%The recording of the dataset is done using the software explained in section \ref{sec:software}, namely Motive \cite{motive} \& EMGworks \cite{emgworks}.
-%TODO: Present more formally and mention company names.
 
 \subsubsection{Problems with Motive Tacking Software \& Capture Glove}
 \label{sec:motiveproblems}
@@ -241,8 +232,6 @@ This system proved to not be reliable, giving $\sim 200$ labeled marker sequence
 The amount of markers increased as 30 seconds of footage became create $\sim 1000$ marker labels.
 The problems with the tracking data will be assessed in Section \ref{sec:motivecleaning}
 
-%TODO: Muscles of the hand: https://www.assh.org/handcare/safety/muscles
-%TODO: Bones of the hand: https://www.bidneedham.org/departments/orthopaedics/hand-program/anatomy-hand-and-wrist
 \subsection{Design of a Simulated Prosthetic Hand}
 \label{sec:prost_sim}
 
@@ -266,7 +255,6 @@ The resulting prosthetic hand simulation can be seen in Appendix \ref{appendix:h
 \newpage
 \subsubsection{Simulated Hand Articulation design}
 
-%TODO: see Yuki2023 (page 11) for how to properly show the dimensions of my hand!
 In order to translate the biology and anatomy of a real hand explained in section \ref{sec:anatomy} into an robotics simulation, the relative lengths of the wrist bones and phalanges were used as reference.
 The resulting hand model can be seen in Figure \ref{fig:simdesignandimpl}.
 %we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.

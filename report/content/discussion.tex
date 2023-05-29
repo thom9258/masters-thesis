@@ -13,11 +13,6 @@ The initial chosen simulation software was the Gazebo \cite{gazebo} due to its c
 After a lot of long-term problems and complications caused by the chosen software, a decision to switch to CoppeliaSim \cite{coppeliasim} was made.
 The change to CoppeliaSim solved a lot of the problems caused by Gazebo, the setup of the simulation and development of the kinematics became much clearer.
 Furthermore, setting up the controller of the prosthetic could be done using the build-in ROS2 communication.
-%TODO: Problems with motive
-%      Data unreliability
-%      having to make my own methods to clean data
-%      Unable to create a proper dataset with own methods
-%      Unable to have multiple people in the dataset due to extensive clearning
 
 Another problem had a large impact on the development of this thesis.
 In order to capture the movements of the fingers for the dataset, the product Motive Motion Capture Setup \cite{motive} was chosen, due to recommendation, availability and its use in state-of-the-art industry motion capture.
@@ -40,8 +35,6 @@ The time-consuming process of creating a simulated prosthetic and recording a da
 It was not possible to fully test the simulated prosthetic device with real-time predictions from a model. 
 % if i had the time: compared kinematic output with control of the sim hand.
 Furthermore, it was not possible to fully test different pre-processing methods and their differences when used for training a model.
-
-%TODO: Explain that actual angle calculation was not done for recorded markers.
 
 \textbf{Classification Tests}\\
 % It would have been nice to test different types of feature extraction methods for classification.
@@ -67,12 +60,6 @@ The main problem with the hand simulation is that it was not possible to test it
 This was not possible due to being unable to create a dataset with a large enough size to train the
 models on.
 
-%TODO: Explain why i never added any complex posing stuff based on network output
-
-
-
-
-%TODO: Tests not being too good, explain its due to dataset problems,
 % Explain more time could have been used on methods fine tuning and experimentation, if there had been no problems with dataset creation.
 
 %TODO: CNN network seems to approximate the median of all the ground truth regression angles.
