@@ -21,6 +21,7 @@ This was done so that the chosen gripping sequence and environment was highly dy
 \end{center}
 \end{figure}
 
+\newpage
 As explained in Section \ref{sec:motiveproblems}, creation of a custom dataset to train and test models on proved to be difficult.
 The dataset created using the Motive capture software \cite{motive} in Section \ref{sec:motiveglove} is not very large, and has no labeling for classification.
 Because of this, the dataset was not suitable for training in any of the methods.
@@ -66,7 +67,7 @@ The problem requires the user to manually remove and combine labeled marker sect
 A feature designed to match up mislabeled markers and optimizing the movement paths of markers exists in Motive \cite{motive}, but it did not do as described.
 In order to fix the problems and because of a lack of existing functionality in the program, two software solutions were created.
 Rendering and replaying of the 3D markers in real-time, with their associated labels is handled in one of the created software solutions.
-Furthermore, the second software was designed to remove, merge and sub-sample 3D marker output files from Motive.
+Furthermore, the second software was designed to remove, merge and sub-sample 3D marker output files from Motive \cite{motive}.
 
 \subsubsection{Evaluation}
 
@@ -86,7 +87,7 @@ Different filter types exists, and different filters can be used to remove speci
 State-of-the-Art papers use a lot of different methods to reduce noise in \gls{sEMG} data.
 Zhaolong Gao et al. \cite{Zhaolong2021} uses a $50Hz$ Notch filter, while Iason Batzianoulis et al. \cite{Batzianoulis2018} \& Ashirbad et al. \cite{ashirbad2022} respectively uses a $20Hz$ cutoff Buttersworth filter \& a $10$-$500Hz$  Buttersworth band-pass filter combined with a $60Hz$ Notch filter in order to remove electronics equipment noise.
 Due to the many different filtering types used in state-of-the-art literature, it was determined that the use of a filter depends on the specific \gls{sEMG} data and the purpose of what the paper tries to do.
-In order to determine what types of filters have a positive effect on the \gls{sEMG} data recorded using the Motive Capture system, different types of state-of-the-art pre-processing filters were tested and compared.
+In order to determine what types of filters have a positive effect on the \gls{sEMG} data recorded using the Motive motion capture system \cite{motive}, different types of state-of-the-art pre-processing filters were tested and compared.
 %And that the best filter for this thesis is to be determined through testing.
 
 %TODO: Convert n sEMG angles into a image heat map kinda, and compare before and after different filters? the z dimension could be change in values?
@@ -297,7 +298,7 @@ The sEMG data used as input for regression networks is complex.
 The sequences of muscle activity needed to be understood by the proposed method and produced into a an output.
 A network type that is ideal to understand complex meaning in 2 and 3D input is a \gls{CNN} network.
 %A CNN is an alternative to a MLP network that is similar in functionality is a Convoluted Neural Network (CNN).
-A \gls{CNN} consists of a set of Convolution Layers that deforms inputs to abstract convolution features.
+A \gls{CNN} consists of a set of convolution Layers that deforms inputs to abstract convolution features.
 The structure is considered sparsely connected due to the convolution layers are only receiving a subset of the previous convolution features.
 The feature conversion is ideal when a network needs to become robust and needs to recognize larger concepts in the input.
 This functionality is especially used when the input data takes the shape of a matrix.
@@ -312,15 +313,15 @@ The \gls{CNN} network structure seen in Figure \ref{fig:cnn_structure}.
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{cnnstructure_final.pdf}
-\caption{The chosen CNN network structure, consisting of 3 Convolution Layers and 3 Linear layers. Network input is a window of sEMG recordings, with the purpose of regression of a finger joint angle.}
+\caption{The chosen CNN network structure, consisting of 3 convolution layers and 3 linear layers. Network input is a window of sEMG recordings, with the purpose of regression of a finger joint angle.}
 \label{fig:cnn_structure}
 \end{center}
 \end{figure}
 
-The \gls{CNN} network consists of 3 Convolution layers followed by 3 \gls{MLP} layers.
+The \gls{CNN} network consists of 3 convolution layers followed by 3 \gls{MLP} layers.
 The network is designed through manual hyper-parameter tuning based on validation error reduction of the model.
 The structure of the network is designed to be simple with a small amount of convolutions without pooling due to the small input size.
-The Convolution layers extract features up to a size of 32 using a convolution kernel with a size of [$3, 3$].
+The convolution layers extract features up to a size of 32 using a convolution kernel with a size of [$3, 3$].
 The convolution features are flattened to a size of $4480$, and processed by 3 hidden layers convert the convolution output into a regression prediction.
 %A CNN is trained on the network, using a window size of 40 samples were used.
 %TODO: Give example of a state-of-the-art paper CNN as an alternative to mine!!!
@@ -353,7 +354,7 @@ The errors of the 50 test regressions in Figure \ref{fig:cnntest} show that a fa
 \newpage
 \subsection{Recurrent Neural Network Regression}
 
-Due to \gls{sEMG} data being time-based, Recurrent network types are ideal for regression predictions.
+Due to \gls{sEMG} data being time-based, recurrent network types are ideal for regression predictions.
 \gls{RNN} networks are similar to \gls{MLP}'s with the main difference being that a \gls{RNN} has hidden feedback  memory state that is derived from earlier inputs.
 This functionality makes \gls{RNN} networks ideal for concurrent, time-based systems where a sequential input distribution needs to be converted to a output regression.  
 Another use case of \gls{RNN}-based regression systems are systems where response time is critical.
@@ -453,7 +454,7 @@ This is important because the usability of a prosthetic hand has a large impact 
 \subsection{Method}
 
 In order to test the usability and dynamic movement of the simulated prosthetic hand, the hand was tasked with achieving the end-poses of the most used day-to-day grips.
-These grips are explained in Section \ref{sec:dataset} Table \ref{tab:grips}, namely the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}.
+These grips are explained in Section \ref{sec:dataset} Table \ref{tab:grips}, namely the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-finger pinch} \& \textit{Diagonal volar grip (Power grip)}.
 In order to pose the simulated hand, the interface created in ROS2 \cite{ros2} was used to send kinematic configurations to the hand simulation.
 
 \subsection{Test \& Results}
@@ -484,14 +485,14 @@ The software used to pose the hand simulation can be seen in Appendix \ref{appen
         \centering
         %\includegraphics[width=\textwidth]{fivefingerpinch_grip.png}
         \includegraphics[height=8cm]{fivefingerpinch_grip.png}
-        \caption{Five-Finger pinch}
+        \caption{Five-finger pinch}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         %\includegraphics[width=\textwidth]{power_grip.png}
         \includegraphics[height=8cm]{power_grip.png}
-        \caption{Diagonal Volar grip (Power grip)}
+        \caption{Diagonal volar grip (Power grip)}
     \end{subfigure}
     \caption{The four most used day-to-day poses, tested in a hand prosthetic simulation.}
     \label{fig:hand_pose_test}
