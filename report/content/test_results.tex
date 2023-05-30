@@ -7,8 +7,8 @@
 
 \subsection{Recording of a Dataset}
 
-The created capture glove for the Motive motion capture system and the sEMG sensors from the Delsys Trigno setup was placed on the target.
-The sEMG sensors were placed at their locations, following the setup in \ref{tab:muscletargets}.
+The created capture glove for the Motive motion capture system \cite{motive} and the sEMG sensors from the Delsys Trigno \cite{trigno} setup was placed on the target.
+The sEMG sensors were placed at their locations, following the setup in Table \ref{tab:muscletargets}.
 The setup can be seen in Figure \ref{fig:musclesensorsonarm}.
 Objects of different sizes and weights were placed in front of the target for gripping. 
 This was done so that the chosen gripping sequence and environment was highly dynamic, and ideal for creating regression models.
@@ -22,7 +22,7 @@ This was done so that the chosen gripping sequence and environment was highly dy
 \end{figure}
 
 As explained in Section \ref{sec:motiveproblems}, creation of a custom dataset to train and test models on proved to be difficult.
-The dataset created using the Motive capture software in Section \ref{sec:motiveglove} is not very large, and has no labeling for classification.
+The dataset created using the Motive capture software \cite{motive} in Section \ref{sec:motiveglove} is not very large, and has no labeling for classification.
 Because of this, the dataset was not suitable for training in any of the methods.
 The recorded dataset can be seen in Appendix \ref{appendix:dataset}. 
 
@@ -31,7 +31,7 @@ The recorded dataset can be seen in Appendix \ref{appendix:dataset}.
 \subsubsection{Implementation}
 \label{sec:motivecleaning}
 
-The large amount of problems observed using the Motive motion tracking software made it impossible to use the tracking output as training data.
+The large amount of problems observed using the Motive motion capture software \cite{motive} made it impossible to use the tracking output as training data.
 Markers were not tracked correctly and new labels were created every time tracking fails, this can be seen in Figure \ref{fig:motivelabels}.
 
 \begin{figure}[H]
@@ -63,8 +63,8 @@ Markers were not tracked correctly and new labels were created every time tracki
 A recording of 15 seconds created $\sim 100$ individual labels.
 This caused great problems as it becomes impossible to relate one marker to another, and extract the kinematic data for training a model.
 The problem requires the user to manually remove and combine labeled marker sections into larger labeled sections, in order to eliminate all changing labels on the tracked markers.
-A feature designed to match up mislabeled markers and optimizing the movement paths of markers exists in Motive, but it did not do as described.
-In order to fix the problems and because of a lack of functionality in Motive, two software solutions is created.
+A feature designed to match up mislabeled markers and optimizing the movement paths of markers exists in Motive \cite{motive}, but it did not do as described.
+In order to fix the problems and because of a lack of existing functionality in the program, two software solutions were created.
 Rendering and replaying of the 3D markers in real-time, with their associated labels is handled in one of the created software solutions.
 Furthermore, the second software was designed to remove, merge and sub-sample 3D marker output files from Motive.
 
@@ -75,7 +75,7 @@ The main problem is that this cleaning of 3D marker labels was a time consuming 
 %in not being able to use the recorded dataset for training a model.
 The software created to fix unreliable labeling of markers in the tracking data can be seen in Appendix \ref{appendix:motivefixing}.
 
-\subsection{Filtering of Delsys Trigno muscle recordings}
+\subsection{Filtering of Delsys Trigno Muscle Recordings}
 
 \subsubsection{Implementation}
 
@@ -84,8 +84,8 @@ Raw sEMG data contains a lot of unwanted noise as explained in Section \ref{sec:
 Some of the noise can be can be removed through signal processing using analog filters.
 Different filter types exists, and different filters can be used to remove specific noise frequency in the data. 
 State-of-the-Art papers use a lot of different methods to reduce noise in sEMG data.
-Zhaolong Gao et al. \cite{Zhaolong2021} uses a $50Hz$ Notch filter, while Iason Batzianoulis et al. \cite{Batzianoulis2018} \& Ashirbad et al. \cite{ashirbad2022} respectively uses a $20Hz$ cutoff Buttersworth filter \& a $10-500Hz$  Buttersworth band-pass filter combined with a $60Hz$ Notch filter in order to remove power-line noise.
-Due to me many different filtering types used in state-of-the-art literature, it was determined that the use of a filter depends on the specific sEMG data and the purpose of what the paper tries to do.
+Zhaolong Gao et al. \cite{Zhaolong2021} uses a $50Hz$ Notch filter, while Iason Batzianoulis et al. \cite{Batzianoulis2018} \& Ashirbad et al. \cite{ashirbad2022} respectively uses a $20Hz$ cutoff Buttersworth filter \& a $10$-$500Hz$  Buttersworth band-pass filter combined with a $60Hz$ Notch filter in order to remove power-line noise.
+Due to the many different filtering types used in state-of-the-art literature, it was determined that the use of a filter depends on the specific sEMG data and the purpose of what the paper tries to do.
 In order to determine what types of filters have a positive effect on the sEMG data recorded using the Motive Capture system, different types of state-of-the-art pre-processing filters were tested and compared.
 %And that the best filter for this thesis is to be determined through testing.
 
@@ -121,21 +121,21 @@ Alternatively, Buttersworth band-pass filters are tested in Figure \ref{fig:band
 
 \subsection{Dataset used for Training}
 
-Due to the problems with the Motive motion capture software explained in Section \ref{sec:motiveproblems}, it was determined that the main dataset for training the chosen methods would be based on dataset \cite{kinmusdataset} proposed by Nestor Jarque-Bou et al. \cite{jarque2019}.
+Due to the problems with the Motive motion capture software \cite{motive} explained in Section \ref{sec:motiveproblems}, it was determined that the main dataset for training the chosen methods would be based on dataset \cite{kinmusdataset} proposed by Nestor Jarque-Bou et al. \cite{jarque2019}.
 The dataset contains sections of sEMG data and kinematic movements of the hand.
 These sections are labeled as either \textit{reaching}, \textit{manipulation} or \textit{releasing}.  
-Due to the dataset containing data for regression and classification, it is possible to explore multiple methods of HMI's. 
-The pre-processing step is not covered for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order band-pass filter with a band of  $25$-$500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
+Due to the dataset containing data for regression and classification, it is possible to explore multiple methods of \gls{HMI}'s. 
+The pre-processing step is not implemented for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order band-pass filter with a band of  $25$-$500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
 The main objective of these tests are to review and compare possible methods of regression \& Classification of sEMG data in order to determine the movements of the hand.
 
 \section{Machine-Learning Intent Classification}
 \label{sec:machine-learning}
 
 Due to the dataset containing labels associated with movements of the hand, it was possible to use the dataset to train a intent prediction classifier.
-based on the statements of Yuki Kuroda et al. \cite{Yuki2023} \& Iason Batzianoulis et al.  \cite{Batzianoulis2018}, it is ideal to feature extract windows of the raw sEMG data.
+based on the statements of Yuki Kuroda et al. \cite{Yuki2023} \& Iason Batzianoulis et al.  \cite{Batzianoulis2018}, it is ideal to feature extract windows of the sEMG data.
 The features \gls{ZC} \& \gls{RMS} were chosen as the features to extract for an intent classifier based on their heavy use in literature as outlined by M. Tech \cite{Tech2015}.
 Other features that could be chosen as an alternative would be variance \& mean-absolute-value.
-Furthermore, Yanchao Wang et al. \cite{YanchaoWang2022} proposes that the Machine-Learning classifier LDA has the highest classification rate out of similar methods.
+Furthermore, Yanchao Wang et al. \cite{YanchaoWang2022} proposes that the \gls{ML} technique \gls{LDA} has the highest classification rate out of similar methods.
 Iason Batzianoulis et al. \cite{Batzianoulis2018} proposes the use of the \gls{SVM} \gls{ML} method for intent classification.
 Both types of classification will be explored and compared.
 

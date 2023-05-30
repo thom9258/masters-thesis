@@ -10,14 +10,14 @@
 
 As the capability of sensor technology increases, the possibilities in biological signal processing becomes more important in development and research of state-of-the-art prosthetic devices.
 There is a larger need for understanding and translating sensor data from the human body into usable inputs for prosthesis and other \gls{HMI} devices.
-A lot of research has been done in this area, this research elaborates on different Machine learning or AI-based methods of understanding muscle-based sensor data.
-The pipeline for converting sEMG sensor recordings to usable input data often starts with a pre-processing step, where noise is removed from the recorded data, and cleaned of potential misreadings.
+A lot of research has been done in this area, this research elaborates on different \gls{ML} or \gls{AI} based methods of understanding muscle-based sensor data.
+The pipeline for converting \gls{sEMG} sensor recordings to usable input data often starts with a pre-processing step, where noise is removed from the recorded data, and cleaned of potential misreadings.
 %The pre-processing step can also contain feature extraction such as ...
 %TODO: Mention some example stuff like extracting features of raw data, i think RMS, and other spaces.
 The pre-processing step is followed by a decision making step, where the pre-processed data is converted into a control sequence for the device.
-If prosthetic devices are to become humanoid in design and dynamic control, a sophisticated controller needs to be designed.
-State-of-the-art methods in literature make great use of a Machine-learning algorithm or a Neural Network, designed to either Classify a grip type, or Regress the angle of the joints.
-After Classification or Regression a post-processing step can be added where the actual kinematic data is created, and used as input to the prosthetic controller. 
+If prosthetic devices are to become humanoid in design and be able to provide dynamic control, a sophisticated controller needs to be designed.
+State-of-the-art methods in literature make great use of a \gls{ML} \& \gls{AI} methods designed to either classify a grip type, or regress the angle of the joints.
+After classification or regression a post-processing step can be added where the actual kinematic control data is created, and used as input to the prosthetic controller. 
 Popular methods of processing sEMG signals will be researched, and elaborated upon, with the aim of identifying robust, effective and implementable methodologies.
 % that can be tested in the context of the thesis, and the dataset i create...
 %TODO: Can i do something like this?
@@ -32,49 +32,50 @@ Popular methods of processing sEMG signals will be researched, and elaborated up
 M. Tech \cite{Tech2015} states that researchers and prosthesis developers have been developing robotic prosthetic devices for many years.
 %One example of such devices would be the ankle-foot-orthoses, a support device strapped to the angle, used to relieably adjust the pressure applied by the body while walking, to help impared individuals with walking in a more natural way.
 %\cite{Tech2015}
-%The paper proposes that
 \gls{EMG} signal based control research are a ongoing topic in rehabilitation and prosthesis research.
 Generally, \gls{EMG}-based methods are split into two groups, namely \gls{sEMG} \& \gls{iEMG}.
 Where \gls{sEMG} recording is the practice of non-invasive recording muscle activity from the surface of the skin on top of the muscle and \gls{iEMG} uses invasive embedded electrodes to record activity from the inside of the muscle.
-Non invasive \gls{sEMG} sensors provide much less discomfort and propose no risk of infection to the amputee, but the recorded data has a larger \gls{SNR}.
+Non-invasive \gls{sEMG} sensors provide much less discomfort and propose no risk of infection to the amputee, but the recorded data has a larger \gls{SNR}.
 %contains more at the cost of having an increased SNR. 
 %These polarization changes can be detected using \gls{EMG} technology, either through non-invasive or invasive techniques.
 %evaluating recorded electrical signals from the target muscles, either through insertion of .
 %Specifically, \gls{EMG} signals are generated from the excitability of muscle fibers through neural control.
 %Action potentials cause depolarization and re-polarization of the muscle membrane.
 %Invasive EMG signal recording requires the use of a penetrating needle electrode to be placed in the muscle tissue, this method reduces the signal-to-noise ratio (SNR) but can be a cause of discomfort and infection.
-The muscle fiber membrane has a resting potential of $-90$ to $-90 mV$ when resting. The paper also explains that the amplitude of sEMG signals have a voltage range from $0$ to $10 mV$, and a frequency range from $10$ to $500 Hz$.
+The muscle fiber membrane has a resting potential of $-90$ to $-90 mV$ when resting.
+The amplitude of sEMG signals have a voltage range from $0$ to $10 mV$, and a frequency range from $10$ to $500 Hz$.
 %\cite{Tech2015}.
 
 \subsection{Noise in EMG signals}
 \label{sec:noise}
 
-According to M. Tech \cite{Tech2015}, different noise types that contaminates EMG signals, these noises are defined as electrical signals that are not part of the desired EMG signal.
+According to M. Tech \cite{Tech2015}, different noise types that contaminates \gls{EMG} signals, this noise is defined as electrical signals that are not part of the desired EMG signal.
 %TODO: maybe find the paper that Tech2015 refers to and insert it here for variety its number [8]
 The different noise types that combined contributes to most of the \gls{SNR} in EMG signals are
 \begin{itemize}
-\item Inherent Noise in Electronics Equipment,
-\item Ambient Noise,
-\item Motion Artifacts,
-\item Inherent Signal Instability,
-\item \gls{ECG} Artifacts,
-\item \& Cross Talking.
+\item inherent noise in electronics equipment,
+\item ambient noise,
+\item motion artifacts,
+\item inherent signal instability,
+\item \gls{ECG} artifacts,
+\item \& cross talking.
 \end{itemize}
 
 %TODO: Adjust the texts for noise signals to be coherent to be coherent
 %These noise types are all
-\textbf{Noise in Electronics Equipment} exists in all electronic devices, this noise has been proved to be reduced by using electrodes made of silver.
+\textbf{Noise in electronics equipment} exists in all electronic devices, this noise has been proved to be reduced by using electrodes made of silver.
 %TODO: ref on this!
-\textbf{Motion Artifacts} affects EMG signals when the skin and electrodes move in relation to the movement of the underlying muscle.
+\textbf{Motion artifacts} affects EMG signals when the skin and electrodes move in relation to the movement of the underlying muscle.
 This can cause artifacts due to inconsistent displacement.
 %the length of the muscle decreases when muscles are activated. Muscle, skin and electrodes also move in relation to each other. 
-\textbf{Inherent Signal Instability}, The amplitude of EMG signals are quasi-random. Frequency components less than 20 Hz are unstable and affected by firing rate of the motor units. This range is considered unwanted noise. Muscles change based on their active motor units, therefore the EMG signal changes too.
-\textbf{ECG Artifacts} is the electrical activity of the human heart is a huge interference component of EMG signals recorded from the Shoulder Girdle (Shoulder muscle groups).
+\textbf{Inherent signal instability}, The amplitude of EMG signals are quasi-random.
+Frequency components less than 20 Hz are unstable and affected by firing rate of the motor units. This range is considered unwanted noise. Muscles change based on their active motor units, therefore the EMG signal changes too.
+\textbf{ECG artifacts} is the electrical activity of the human heart is a huge interference component of EMG signals recorded from the Shoulder Girdle (Shoulder muscle groups).
 %this is called ECG Artifacts.
 %this contaminated EMG signals, especially "trunk EMG"
 It is very hard to remove ECG artifacts from EMG signals, due to their relative characteristics in the frequency spectrum!
 % TODO trunk muscles EMG
-\textbf{Cross Talk} is undesired EMG signals from muscle groups not commonly monitored.
+\textbf{Cross talk} is undesired EMG signals from muscle groups not commonly monitored.
 It can be seen as a form of EMG signal leak from muscles not actively being recorded from.
 
 %People with lower-leg amputation able to recive mechanical prosthetics. The need to introduce robotic prosthetics in this area  Due to the  limited mechanical movement and control of the human ankle/foot, p
@@ -88,20 +89,23 @@ Keun-Tae Kim et al. \cite{KeunTaeKim2021} proposes that the usage of sEMG sensor
 The paper uses sEMG sensors to classify reaching-to-grasping tasks using a \gls{CNN} after pre-processing the signal with \gls{PCA} to reduce noise.
 %The processing combination method of PCA-CNN proved to show higher accuracy than \gls{ML} methods, such as \gls{SVM} with an accuracy of $70.1 \pm 9.8\%$ based on 9 subjects.
 The processing combination method of PCA-CNN is proposed as showing higher accuracy than \gls{ML} methods.
-The paper proposes that the sEMG sensors are placed on the upper-body in combination with the upper-arm for grasping intention classification, specifically, the muscles \textit{Pectoralis}, \textit{Trapezius}, \textit{Latissimus Dorsi} \& the \textit{Biceps \& Triceps}, these are considered in Section \ref{sec:muscleplacements} as potential target muscles for recording.
-The \textit{\gls{SHAP}} \cite{shap} method was used to create a dataset in \cite{KeunTaeKim2021}.
+The sEMG sensors are placed on the upper-body in combination with the upper-arm for grasping intention classification, specifically, the muscles \textit{Pectoralis}, \textit{Trapezius}, \textit{Latissimus Dorsi} \& the \textit{Biceps \& Triceps}, these are considered in Section \ref{sec:muscleplacements} as potential target muscles for recording.
+The \textit{\gls{SHAP}} \cite{shap} method was used to create the dataset in \cite{KeunTaeKim2021}.
 \gls{SHAP} is designed for the assessment of musculoskeletal health and neurological conditions, and can be used to test the control and effectiveness of prosthetic devices.
 %TODO: This is formulated wierdly..
 %TODO: explain that you USE the KeunTaeKim2021 Network as a baseline for one of your own networks!
 
-Zhaolong Gao et al. \cite{Zhaolong2021} proposes the usage of different sEMG devices, two of those are the wearable product ``Myo Armband'', \cite{myo} a discontinued sEMG product consisting of 8 sensors that can be placed below the elbow joint, and the ``Delsys Trigno'' \cite{trigno}, a set of individual sEMG sensors that can be worn and record most muscle groups.
+Zhaolong Gao et al. \cite{Zhaolong2021} proposes the usage of different sEMG devices, two of those are the wearable product ``Myo Armband'' \cite{myo} a discontinued sEMG product consisting of 8 sensors that can be placed below the elbow joint, and the ``Delsys Trigno'' \cite{trigno}, a set of individual sEMG sensors that can be worn and record most muscle groups.
 %Zhaolong Gao et al \cite{Zhaolong2021}
 The recorded sEMG signals are pre-processed using a Notch filter of 50Hz.
 Furthermore, the target angles obtained as ground truth targets were reduced in dimensions through PCA, thus having the 6 dominant PC's be the targets.
 Then, using an ``Inverse PCA algorithm'', they compute the final control output for the prosthetic.
 In order to process the sEMG data, \cite{Zhaolong2021} uses a time window of $200ms$, with feature extraction for \gls{RMS} \& \gls{ZC}.
 %TODO: If i use this myself, i need to write the equations from this paper!
-The extracted features were used as input to a nonlinear \gls{NARX}, that consists of \gls{MLP}   layers combined with a \gls{RNN}. 
+The extracted features were used as input to a nonlinear \gls{NARX}, that consists of
+fully-connected hidden layers
+%MLP
+combined with a \gls{RNN}. 
 % once the report is done, check up on abbrevations etc and make sure things are abbrevated once and then used!
 % TODO: Maybe give a link for further explanation?
 %TODO: Zhaolong2021 -> their results are so good i need to try their method!
@@ -116,23 +120,22 @@ are also highly used in implementations.
 %\subsection{Adaptiveness of sEMG based prosthetics}
 %TODO: Maybe section names should relate more directly to the explained papers?
 Most state-of-the-art methodologies consist of using sEMG data to predict grasp type classification or joint angle regression.
-Yuki Kuroda et al. \cite{Yuki2023} proposes that this method becomes a burden for the HMI user, as the severity of the amputation increases and the loss of muscle recording areas become greater.
+Yuki Kuroda et al. \cite{Yuki2023} proposes that this method becomes a burden for the \gls{HMI} user, as the severity of the amputation increases and the loss of muscle recording areas become greater.
 %\cite{Yuki2023}
 The paper takes inspiration from evolutionary robotics, and proposes the use of evolutionary computation to predict stable grasping methods based on touch sensor input.
 This is done by having a mapping between the touch sensor input of the fingers and the motor-control of the joints.
 %\cite{Yuki2023} uses
-A simulation is used to train a \gls{RNN} network, this RNN takes sEMG sensor data, Touch sensor data, distance to the object \& object height into account.
+A simulation is used to train a \gls{RNN} network that takes sEMG sensor data, Touch sensor data, distance to the object \& object height into account.
 It is possible to compute distance and height parameters of the object because grasping and training is done entirely in simulation, using a simulated target object, but that the method used would be realizable for prosthetic devices. 
-The paper concludes that alongside sEMG sensors, touch sensors could be used to appropriate joint motion could be predicted using contact states between hand and object.
+Yuki Kuroda et al. \cite{Yuki2023} concludes that alongside sEMG sensors, touch sensors could be used to appropriate joint motion could be predicted using contact states between hand and object.
 
 Yanchao Wang et al. \cite{YanchaoWang2022} proposes a passive solution to adaptive grasping.
 Their method uses an under actuated, compliant linkage mechanism, where the joint rotation of the finger joints can be driven by a single motor.
 This allows the fingers to not rely on touch sensors, compared to the method used in \cite{Yuki2023}.
 %\cite{YanchaoWang2022}
-The paper proposes the use of a sliding window with a size of $250ms$.
-The window is then processed using feature extraction of \gls{iRMS}, \gls{RMS}, \gls{MAV} \& \gls{ZC} with a threshold to eliminate low signal fluctuation from noise.
+A sliding window with a size of $250ms$ is processed using feature extraction of \gls{iRMS}, \gls{RMS}, \gls{MAV} \& \gls{ZC} with a threshold to eliminate low signal fluctuation from noise.
 The extracted features are used for \gls{LDA} to classify grasping intent. 
-The paper proposes that LDA showed the highest accuracy out of different Machine Learning methods.
+LDA has the highest accuracy out of the different Machine Learning methods tested.
 %TODO: Is last sentence vague?
 
 \subsection{Grasping Intention from the Upper-arm}
@@ -140,12 +143,12 @@ The paper proposes that LDA showed the highest accuracy out of different Machine
 Another way of reducing the recording of lower-arm muscles when designing prosthetic hands would be to predict the intent of the user's actions based on upper-arm grasp prediction.
 %TODO: This sounds weird
 Iason Batzianoulis et al. \cite{Batzianoulis2018} researches recording and classification of upper-arm.
-The paper proposes a learning approach that decodes grasping intention during the reaching motion for upper-limb prosthesis.
+Iason Batzianoulis et al. proposes a learning approach that decodes grasping intention during the reaching motion for upper-limb prosthesis.
 For pre-processing, a $30$-$350Hz$ band-pass filter is used on 12 muscles, 7 located in the upper-arm and 5 located in the lower-arm.
 These muscles are passed through a Buttersworth filter with cut-off at $20Hz$.
 Furthermore, the elbow joint angle was measured using a \gls{goniometer}.
 %\cite{Batzianoulis2018}
-The paper proposes that a sliding window of $150ms$ should be used, and they use no dimension reduction method such as \gls{PCA}.
+A sliding window of $150ms$ should be used without a dimension reduction method such as \gls{PCA}.
 The paper tests 2 different machine-learning methods, \gls{LDA} and \gls{SVM}, that utilize feature extraction of the average activation, waveform length and the number of slope changes for each window.
 Additionally, the paper tests a recurrent network called a \gls{ESN} without windowing and feature extraction.
 
@@ -153,7 +156,7 @@ Additionally, the paper tests a recurrent network called a \gls{ESN} without win
 
 %Another area of
 Research of control interfaces for prosthetic devices expand into a multitude of areas.
-Zhen Ma et al. \cite{fnins2016} proposes the use of a \gls{BCI} as an alternative to \gls{HMI}.
+Zhen Ma et al. \cite{fnins2016} proposes the use of a \gls{BCI} as an alternative to muscle based interfaces.
 BCI is a type of technology that uses brain activity and the brain's neural information to control machine interfaces such as computers, assistive technology \& prosthetic devices.
 BCI's have great benefit in areas where access to muscle tissue information such as sEMG is impossible due to loss of the muscles in the target recording area, or due to a patient being paralyzed and it becomes impossible for the patient to activate the targeted muscle groups.
 One dominant method of achieving a BCI interface is \gls{EEG}.
@@ -161,13 +164,14 @@ The purpose of \cite{fnins2016} is to detect individual finger control using EEG
 EEG functions similarly to EMG but with the focus on recording brain activity instead of muscle activity.
 %The methods of pre-processing, feature extraction and classification of the lower-arm activity in the paper \cite{fnins2016} are similar to the methods proposed by EMG-based papers.
 %TODO: We need some kind of example of eeg processing so we can confirm its similar to emg
+
 EEG is a non-invasive, portable and low-cost sensor type, that provides a high temporal resolution in comparison to other methods that detects brain activity, according to Maged S. AL-Quraishi et al. \cite{quraishi2018}.
 %Thus indicating that ... methods are similar and we can maybe utilize more data as input if we had enough recording methods? i dont know
 %\cite{quraishi2018}
-The paper explains the great need for assisted rehabilitation and prosthetic devices, and that the need will increase in the future.
+The great need for assisted rehabilitation and prosthetic devices will increase in the future.
 Brain Computer Interfaces using EEG sensors needs to be further researched to increase overall performance of the system.
 %\cite{quraishi2018}
-The paper proposes that the most used method of controlling a prosthesis or a rehabilitation device using EEG is to pre-process and filter the recorded data before segmenting it using a sliding window.
+The most used method of controlling a prosthesis or a rehabilitation device using EEG is to pre-process and filter the recorded data before segmenting it using a sliding window.
 Using the windows, feature extraction in both time \& frequency domains are used as input to a feature reduction algorithm.
 These features are then subject to a classification network in order to transform the EEG data into motor control for the BCI.
 It can be noted that the EEG sensor contains artifacts from other parts of the brain, such as eye movement, cardiac activity or contraction of the scalp muscles. 
@@ -187,20 +191,21 @@ Furthermore, the setup for EEG recording is more complicated than EMG methods.
 
 %TODO: Check out all the papers on your phone and see if they can be used.
 
+\newpage
 \subsection{Summary of Literature}
 
-The state-of-the-art literature spans different methods of creating human machine interfaces.
+The state-of-the-art literature spans different methods of creating \gls{HMI}'s.
 The main areas of creating interfaces are Muscle-/neuron-based recording and brain-based recording.
 Due to the large amount of cross-talk noise from brain-based sensors, it is apparent that to increase overall dynamic control, and robustness of a prosthetic device, the device is required to use EMG based sensor for its controller.
 %TODO: This statement is not concluding or explained
-By reviewing the state-of-the-art literature in sEMG-based prosthetic hands, it is apparent that if a \gls{ML} \& neural network method, are to be used, we need to use a sliding window technique with a size of $150ms$ to $250ms$.
+By reviewing the state-of-the-art literature in \gls{sEMG}-based prosthetic hands, it is apparent that if a \gls{ML} or \gls{AI} based network is to be used, a sliding window technique with a size of $150ms$ to $250ms$ is ideal.
 It can be noticed that all methods use a pre-processing filter step on the raw EMG data, but that the choice of filter varies greatly.
 Among the most used filters are Buttersworth low-pass \& band-pass filters with different frequency responses.
 3 different methods of classification/regression of sEMG data are used: Machine Learning, Window-Based Neural Networks, Recurrent Neural Networks.
 %TODO: Brief of these?
-The most common \gls{ML} methods used in literature is \gls{LDA}, \gls{SVM} \& \gls{PCA-CNN}.
+The most common \gls{ML} methods used in literature is \gls{LDA}, \gls{SVM} \& PCA-CNN.
 %TODO: get more ML methods?
-As an alternative to ML, most literature proposes the use of window based Neural Networks \& \gls{RNN}.
+As an alternative to ML, most literature proposes the use of window based \gls{AI} networks \& \gls{RNN} networks.
 %Alternatively, methods not using a sliding window are recurrent networks, such as the \gls{ESN}.
 %\gls{ESN}
 %or the \gls{NARX} network.

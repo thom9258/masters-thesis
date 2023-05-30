@@ -21,7 +21,7 @@ CoppeliaSim \cite{coppeliasim} was chosen due to its intuitive development workf
 In order to record the joint movements of the hand, while simultaneously record the sEMG activity of the body, products that support hardware synchronization needs to be used.
 Products designed to capture sEMG data are widely spread.
 As mentioned by Zhaolong Gao et al. \cite{Zhaolong2021}, the myo armband \cite{myo} or the Delsys Trigno package \cite{emgworks} could be used.
-The Delsys Trigno \cite{emgworks} facilitates a hardware synchronization recording mode out of the box, while the myo armband \cite{myo} does not.
+The Delsys Trigno \cite{emgworks} facilitates a hardware synchronization recording mode, while the myo armband \cite{myo} does not.
 Because of availability, and synchronization capabilities it is ideal to use the Delsys Trigno as the sEMG recording device.
 
 Lastly, a product designed to capture the joint movements of the hand needs to be chosen.
@@ -29,7 +29,7 @@ A simple solution to hand tracking would be to use a software like MediaPipe \ci
 An alternative is  also mentioned by Zhaolong Gao et al. \cite{Zhaolong2021}, where a glove containing flex sensors could be used.
 This approach would provide reliable joint angle data without relying on a camera setup.
 Lastly, a capture glove could be fitted with 3D markers, detectable from a high-accuracy and high frame-rate system such as the Motive motion capture setup \cite{optitrack} created by OptiTrack.
-It was chosen to use the Motive setup due to availability and the additional benefit of having a hardware synchronization feature, that can be combined with the Delsys Trigno \cite{emgworks} setup.
+It was decided that the the Motive product would be used due to availability and the additional benefit of having a hardware synchronization feature, that can interface with the Delsys Trigno \cite{emgworks} setup.
 
 
 \subsection{Anatomy of the Lower-Arm}
@@ -58,7 +58,7 @@ The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion
 \subsubsection{sEMG Sensor Locations on the Body}
 \label{sec:muscleplacements}
 
-To create a dataset that correlated muscle activity to the movements of the hand, it is important to choose a set of active muscles to record.
+To create a dataset that correlates muscle activity to the movements of the hand, it is important to choose a set of active muscles to record.
 $\sim 30$ muscles are used in total to control the hand, but it would not be possible to record all of them simultaneously.
 6 sEMG sensors were available in the Delsys Trigno \cite{trigno} system, and these needed to be placed optimally in order to increase recording of the most important muscles.
 Target areas on the lower-arm for sEMG sensors are proposed by Nestor Jarque-Bou et al. \cite{jarque2019}.
@@ -92,32 +92,25 @@ The muscles in Table \ref{tab:muscletargets} are numbered, and the locations of 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{musclelocations.png}
-\caption{Muscle diagram, containing the target sEMG locations. The numbering corresponds to the muscle names in Table \ref{tab:muscletargets}. The left image shows the muscles on the rear of the arm, while the right shows the muscles on the front of the arm.}
+\caption{Muscle diagram, containing the target sEMG locations. The labeling corresponds to the muscle names in Table \ref{tab:muscletargets}. The left image shows the muscles on the rear of the arm, while the right shows the muscles on the front of the arm.}
 \label{fig:musclesensordiagram}
 \end{center}
 \end{figure}
 
 It was chosen to split the amount of sensors evenly along the lower-arm and the rest of the body in order to asses both direct control of the finger movement and intent based on upper-arm movements.
-Alternative muscles that would be interesting to test are the back muscles, namely \textit{Trapezius} \& \textit{Latissimus Dorsi} as proposed by Keun-Tae Kim et al. \cite{KeunTaeKim2021}.
+Alternative muscles that would be interesting to assess are the back muscles, namely \textit{Trapezius} \& \textit{Latissimus Dorsi} as proposed by Keun-Tae Kim et al. \cite{KeunTaeKim2021}.
 %how important the different muscles are in prediction of the hand.
 
 \subsection{Design of a Motion Capture Glove}
 \label{sec:motiveglove}
 
-The Motive capture system created by OptiTrack \cite{motive} is a set of high-quality cameras mounted to cover a target capture area.
+The Motive capture system created by OptiTrack \cite{motive} is a set of high quality cameras mounted above a target capture area.
 The capture system detects fluorescent 3D markers in the given capture area, with the purpose of triangulating the markers and effectively calculate 3D poses for the markers in the scene down to an effective accuracy of $\pm 0.2$mm.
 In order to get precise recordings of the motion of the hand and fingers, fluorescent 3D markers were placed on a glove.
 The pattern of the marker positions were chosen in order to calculate the angles of the individual finger bones.
 The markers are used in sets of 3, this allows for the calculation of the triangle angles in 3D space.
 The positions of the 3D markers on the recorder glove can be seen in Figure \ref{fig:markerdesign} \& \ref{fig:realmarkers}.
 An example of \gls{flexion/extension} movement of the capture glove can be seen in Figure \ref{fig:minbend} \& \ref{fig:maxbend}.
-
-Due to the placements of the 3D markers, the joint angles are calculated by defining two vectors from the target 3D marker and using Equation \eqref{eqn:angle}:
-
-\begin{equation}
-\label{eqn:angle}
-\alpha = \cos^{-1}\left({\frac{\vec{a} \cdot \vec{b}}{ \norm{\vec{a}} \cdot \norm{\vec{b}} }}\right)
-\end{equation}
 
 %\[
 %A = \cos^{-1}\left({\frac{(x_2 - x_1) \cdot (x_3-x_1) +  (y_2 - y_1) \cdot (z_3-z_1)}
@@ -142,6 +135,14 @@ Due to the placements of the 3D markers, the joint angles are calculated by defi
     \end{subfigure}
     \caption{(a) Design and ideal 3D marker placements on the glove in order to calculate all the joint angles of the hand. (b) The created 3D marker glove with the chosen 3D marker locations. See Section \ref{sec:motiveproblems} for detail.}
 \end{figure}
+
+Due to the placements of the 3D markers, the joint angles are calculated by defining two vectors from the target 3D marker and using Equation \eqref{eqn:angle}:
+
+\begin{equation}
+\label{eqn:angle}
+\alpha = \cos^{-1}\left({\frac{\vec{a} \cdot \vec{b}}{ \norm{\vec{a}} \cdot \norm{\vec{b}} }}\right)
+\end{equation}
+
 
 \begin{figure}[H]
     \begin{subfigure}[b]{0.49\textwidth}
@@ -199,7 +200,7 @@ This is done as a basis of creating a specialized dataset that would be easier t
 
 \subsubsection{Existing Datasets}
 
-In addition to creating a dataset for this thesis, an existing state-of-the-art dataset will be used and compared with.
+In addition to creating a dataset for this thesis, an existing state-of-the-art dataset is needed.
 Nestor Jarque-Bou et al. \cite{jarque2019} proposes the use of their dataset \cite{kinmusdataset}.
 The dataset contains a very large set of recordings, with 3 different labeled states, consisting of precise anatomical angles of the hand, with the associated muscle activity of the forearm.
 This makes the dataset ideal for both classification and regression based models.
@@ -219,7 +220,7 @@ The Motive Motion Capture software \cite{motive} had a lot of difficulty with fi
 The  Motive software used to generate the 3D poses is designed to detect 3D markers in the scene.
 Once the markers are found in the individual cameras, they are subject to an optimization algorithm that effectively tries to determine if the markers seen in 1 camera is the same as the markers in the other cameras.
 The first problem that occurred was \gls{specular reflection} in the scene caused by shiny surfaces redirecting light in the target area.
-This creates \textit{phantom} markers that can be seen in only a small set of frames.
+This creates invalid markers that can be seen in only a small set of frames.
 Another problem with the capture setup is the optimization algorithm.
 During recording of the dataset, it became apparent that it would not be possible to record multiple fingers at the same time.
 3D markers very close to each other seemed to be connecting, and only become a single marker in the tracking software.
@@ -230,7 +231,7 @@ Furthermore, the Motive Capture software uses an auto-labeling system that is ab
 This system proved to not be reliable, giving $\sim 200$ labeled marker sequences, when only $7$ markers existed in the scene.
 %During a sequence of 15 seconds of recording, a set of 7 markers in the scene became over $100$ labeled marker tracks.
 The amount of markers increased as 30 seconds of footage became create $\sim 1000$ marker labels.
-The problems with the tracking data will be assessed in Section \ref{sec:motivecleaning}
+The problems with the tracking data is assessed in Section \ref{sec:motivecleaning}
 
 \subsection{Design of a Simulated Prosthetic Hand}
 \label{sec:prost_sim}
@@ -238,10 +239,10 @@ The problems with the tracking data will be assessed in Section \ref{sec:motivec
 In order to design a state-of-the-art simulated prosthetic hand based on the goals in section \ref{sec:goals}, a number of anatomical design choices needs to be considered.
 %This thesis tries to create the most
 Designing the simulated prosthetic to as anatomically-correct as possible will hopefully have a number of positive effect on the resulting movement characteristics of the hand, and make it easier to imitate the movements of its real life counterpart.
-By having access to an advanced simulation, it would in turn be able to test and visualize more advanced movement controllers that can facilitate more DoF than current commercial prosthetic hands. 
+By having access to an advanced simulation, it is possible to test and visualize advanced movement controllers that can facilitate more DoF than current commercial prosthetic hands. 
 By creating an anatomically correct prosthetic hand simulation, it is hoped that prosthesis users can have more advanced rehabilitation, and learn to have more natural control of their prosthetic devices.
-This would create a more natural usage experience, and decrease the percentage of users that reject the usage of their prosthetic all together.
-A set of requirements The simulated anatomically correct hand should be determined in order to create a state-of-the-art prosthesis simulation.
+Advanced controllers will create a more natural usage experience, and decrease the percentage of users that reject the usage of their prosthetic all together.
+A set of requirements the simulated anatomically correct hand should be determined in order to create a state-of-the-art prosthesis simulation.
 The simulated prosthetic should:
 
 \begin{enumerate}
@@ -252,14 +253,14 @@ The simulated prosthetic should:
 
 The resulting prosthetic hand simulation can be seen in Appendix \ref{appendix:handsim}.
 
-\newpage
+%\newpage
 \subsubsection{Simulated Hand Articulation design}
 
 In order to translate the biology and anatomy of a real hand explained in section \ref{sec:anatomy} into an robotics simulation, the relative lengths of the wrist bones and phalanges were used as reference.
 The resulting hand model can be seen in Figure \ref{fig:simdesignandimpl}.
 %we start by denoting the relative lengths of the wrist bones and phalnages by refrence, as can be seen in figure \ref{fig:handref}.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
