@@ -43,7 +43,7 @@ Non-invasive \gls{sEMG} sensors provide much less discomfort and propose no risk
 %Action potentials cause depolarization and re-polarization of the muscle membrane.
 %Invasive EMG signal recording requires the use of a penetrating needle electrode to be placed in the muscle tissue, this method reduces the signal-to-noise ratio (SNR) but can be a cause of discomfort and infection.
 The muscle fiber membrane has a resting potential of $-90$ to $-90 mV$ when resting.
-The amplitude of sEMG signals have a voltage range from $0$ to $10 mV$, and a frequency range from $10$ to $500 Hz$.
+The amplitude of \gls{sEMG} signals have a voltage range from $0$ to $10 mV$, and a frequency range from $10$ to $500 Hz$.
 %\cite{Tech2015}.
 
 \subsection{Noise in EMG signals}
@@ -157,27 +157,27 @@ Additionally, the paper tests a recurrent network called a \gls{ESN} without win
 %Another area of
 Research of control interfaces for prosthetic devices expand into a multitude of areas.
 Zhen Ma et al. \cite{fnins2016} proposes the use of a \gls{BCI} as an alternative to muscle based interfaces.
-BCI is a type of technology that uses brain activity and the brain's neural information to control machine interfaces such as computers, assistive technology \& prosthetic devices.
-BCI's have great benefit in areas where access to muscle tissue information such as sEMG is impossible due to loss of the muscles in the target recording area, or due to a patient being paralyzed and it becomes impossible for the patient to activate the targeted muscle groups.
-One dominant method of achieving a BCI interface is \gls{EEG}.
-The purpose of \cite{fnins2016} is to detect individual finger control using EEG sensors. 
-EEG functions similarly to EMG but with the focus on recording brain activity instead of muscle activity.
+\gls{BCI} is a type of technology that uses brain activity and the brain's neural information to control machine interfaces such as computers, assistive technology \& prosthetic devices.
+\gls{BCI}'s have great benefit in areas where access to muscle tissue information such as \gls{sEMG} is impossible due to loss of the muscles in the target recording area, or due to a patient being paralyzed and it becomes impossible for the patient to activate the targeted muscle groups.
+One dominant method of achieving a \gls{BCI} interface is \gls{EEG}.
+The purpose of \cite{fnins2016} is to detect individual finger control using \gls{EEG} sensors. 
+\gls{EEG} functions similarly to \gls{EMG} but with the focus on recording brain activity instead of muscle activity.
 %The methods of pre-processing, feature extraction and classification of the lower-arm activity in the paper \cite{fnins2016} are similar to the methods proposed by EMG-based papers.
 %TODO: We need some kind of example of eeg processing so we can confirm its similar to emg
 
-EEG is a non-invasive, portable and low-cost sensor type, that provides a high temporal resolution in comparison to other methods that detects brain activity, according to Maged S. AL-Quraishi et al. \cite{quraishi2018}.
+\gls{EEG} is a non-invasive, portable and low-cost sensor type, that provides a high temporal resolution in comparison to other methods that detects brain activity, according to Maged S. AL-Quraishi et al. \cite{quraishi2018}.
 %Thus indicating that ... methods are similar and we can maybe utilize more data as input if we had enough recording methods? i dont know
 %\cite{quraishi2018}
 The great need for assisted rehabilitation and prosthetic devices will increase in the future.
-Brain Computer Interfaces using EEG sensors needs to be further researched to increase overall performance of the system.
+Brain Computer Interfaces using \gls{EEG} sensors needs to be further researched to increase overall performance of the system.
 %\cite{quraishi2018}
-The most used method of controlling a prosthesis or a rehabilitation device using EEG is to pre-process and filter the recorded data before segmenting it using a sliding window.
+The most used method of controlling a prosthesis or a rehabilitation device using \gls{EEG} is to pre-process and filter the recorded data before segmenting it using a sliding window.
 Using the windows, feature extraction in both time \& frequency domains are used as input to a feature reduction algorithm.
-These features are then subject to a classification network in order to transform the EEG data into motor control for the BCI.
+These features are then subject to a classification network in order to transform the \gls{EEG} data into motor control for the \gls{BCI}.
 It can be noted that the EEG sensor contains artifacts from other parts of the brain, such as eye movement, cardiac activity or contraction of the scalp muscles. 
 %Overall effectiveness of EEG classification is highly dependent on how much time the subjects use
-Overall performance of using EEG for prosthetic device control is low compared to more conventional EMG based methods.
-Furthermore, the setup for EEG recording is more complicated than EMG methods.
+Overall performance of using \gls{EEG} for prosthetic device control is low compared to more conventional \gls{EMG} based methods.
+Furthermore, the setup for EEG recording is more complicated than \gls{EMG} methods.
 
 
 
@@ -196,16 +196,16 @@ Furthermore, the setup for EEG recording is more complicated than EMG methods.
 
 The state-of-the-art literature spans different methods of creating \gls{HMI}'s.
 The main areas of creating interfaces are Muscle-/neuron-based recording and brain-based recording.
-Due to the large amount of cross-talk noise from brain-based sensors, it is apparent that to increase overall dynamic control, and robustness of a prosthetic device, the device is required to use EMG based sensor for its controller.
+Due to the large amount of cross-talk noise from brain-based sensors, it is apparent that to increase overall dynamic control, and robustness of a prosthetic device, the device is required to use \gls{EMG} based sensor for its controller.
 %TODO: This statement is not concluding or explained
 By reviewing the state-of-the-art literature in \gls{sEMG}-based prosthetic hands, it is apparent that if a \gls{ML} or \gls{AI} based network is to be used, a sliding window technique with a size of $150ms$ to $250ms$ is ideal.
-It can be noticed that all methods use a pre-processing filter step on the raw EMG data, but that the choice of filter varies greatly.
+It can be noticed that all methods use a pre-processing filter step on the raw \gls{EMG} data, but that the choice of filter varies greatly.
 Among the most used filters are Buttersworth low-pass \& band-pass filters with different frequency responses.
-3 different methods of classification/regression of sEMG data are used: Machine Learning, Window-Based Neural Networks, Recurrent Neural Networks.
+3 different methods of classification/regression of \gls{sEMG} data are used: \gls{ML}, window-based networks, \gls{RNN}'s.
 %TODO: Brief of these?
 The most common \gls{ML} methods used in literature is \gls{LDA}, \gls{SVM} \& PCA-CNN.
 %TODO: get more ML methods?
-As an alternative to ML, most literature proposes the use of window based \gls{AI} networks \& \gls{RNN} networks.
+As an alternative to \gls{ML}, most literature proposes the use of window based \gls{AI} networks \& \gls{RNN} networks.
 %Alternatively, methods not using a sliding window are recurrent networks, such as the \gls{ESN}.
 %\gls{ESN}
 %or the \gls{NARX} network.

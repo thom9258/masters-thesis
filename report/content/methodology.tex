@@ -18,11 +18,11 @@ The software needs to be controllable from an external source, in this case ROS2
 Both simulation software solutions allow for the creation of advanced dynamic-body simulations.
 CoppeliaSim \cite{coppeliasim} was chosen due to its intuitive development workflow.
 
-In order to record the joint movements of the hand, while simultaneously record the sEMG activity of the body, products that support hardware synchronization needs to be used.
-Products designed to capture sEMG data are widely spread.
+In order to record the joint movements of the hand, while simultaneously record the \gls{sEMG} activity of the body, products that support hardware synchronization needs to be used.
+Products designed to capture \gls{sEMG} data are widely spread.
 As mentioned by Zhaolong Gao et al. \cite{Zhaolong2021}, the myo armband \cite{myo} or the Delsys Trigno package \cite{emgworks} could be used.
 The Delsys Trigno \cite{emgworks} facilitates a hardware synchronization recording mode, while the myo armband \cite{myo} does not.
-Because of availability, and synchronization capabilities it is ideal to use the Delsys Trigno as the sEMG recording device.
+Because of availability, and synchronization capabilities it is ideal to use the Delsys Trigno as the \gls{sEMG} recording device.
 
 Lastly, a product designed to capture the joint movements of the hand needs to be chosen.
 A simple solution to hand tracking would be to use a software like MediaPipe \cite{mediapipe}, a python based landmark tracker that can track the joint angles of the hand using Machine Learning from a video feed.
@@ -32,25 +32,25 @@ Lastly, a capture glove could be fitted with 3D markers, detectable from a high-
 It was decided that the the Motive product would be used due to availability and the additional benefit of having a hardware synchronization feature, that can interface with the Delsys Trigno \cite{emgworks} setup.
 
 
-\subsection{Anatomy of the Lower-Arm}
+\subsection{Anatomy of the Hand}
 \label{sec:anatomy}
 
 Dr Arun Pal Singh \cite{anatomy} defines the hand is an anatomically-complex appendage designed to facilitate a large amount of control and adaptability in different usage scenarios.
 The hand consists of 27 bones, 14 of these are called the \gls{phalanges}, and make up the 4 fingers and the thumb.
-These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ degree of freedom (DoF) of rotational motion along the joints of the bones.
+These bones, alongside a complex network of $\sim30$ muscles are able to perform $24$ \gls{DoF} of rotational motion along the joints of the bones.
 The individual finger consists of 3 bones called \gls{phalanges}, arranged linearly from the palm of the hand, and can be seen in Figure \ref{fig:anatomy}.
 These bones are respectively called the \gls{proximal phalanx}, \gls{middle phalanx} \& \gls{distal phalanx}.
 The different joints located in the hand have unique rotation properties.
-The joints between the proximal and distal phalanges have 1 DoF of independent movement and are able to do \gls{flexion/extension} movement.
-The base of the proximal phalanx has 2 DoF and are able to do \gls{flexion/extension} \& \gls{abduction/adduction} movement.
+The joints between the proximal and distal phalanges have 1 \gls{DoF} of independent movement and are able to do \gls{flexion/extension} movement.
+The base of the proximal phalanx has 2 \gls{DoF} and are able to do \gls{flexion/extension} \& \gls{abduction/adduction} movement.
 Additionally, the joint between the middle and distal phalanx is passively moved relative to the proximal and distal phalanx, or in relation to joint constrains from gripped objects.
-The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion/extension} \& \gls{abduction/adduction} movement.
+The wrist consists of 8 small bones and together creates 2 \gls{DoF} with \gls{flexion/extension} \& \gls{abduction/adduction} movement.
 
 \begin{figure}[H]
 \begin{center}
 %\includegraphics[width=0.6\textwidth, angle=-90]{handjoints.png}
 \includegraphics[width=0.5\textwidth]{handjoints.png}
-\caption{A rendering of the anatomical joint structure of the hand. 2 DoF joints are colored in green, 1 DoF joints are colored in red, and passive 1 DoF joints are colored in blue.}
+\caption{A rendering of the anatomical joint structure of the hand. 2 \gls{DoF} joints are colored in green, 1 \gls{DoF} joints are colored in red, and passive 1 \gls{DoF} joints are colored in blue.}
 \label{fig:anatomy}
 \end{center}
 \end{figure}
@@ -61,9 +61,9 @@ The wrist consists of 8 small bones and together creates 2 DoF with \gls{flexion
 To create a dataset that correlates muscle activity to the movements of the hand, it is important to choose a set of active muscles to record.
 $\sim 30$ muscles are used in total to control the hand, but it would not be possible to record all of them simultaneously.
 6 sEMG sensors were available in the Delsys Trigno \cite{trigno} system, and these needed to be placed optimally in order to increase recording of the most important muscles.
-Target areas on the lower-arm for sEMG sensors are proposed by Nestor Jarque-Bou et al. \cite{jarque2019}.
+Target areas on the lower-arm for \gls{sEMG} sensors are proposed by Nestor Jarque-Bou et al. \cite{jarque2019}.
 Additionally, target areas of the upper-arm \& upper-body were chosen based on the suggestions from Iason Batzianoulis et al. \cite{Batzianoulis2018}.
-The chosen muscles to record with sEMG sensors can be seen in Table \ref{tab:muscletargets}.
+The chosen muscles to record with \gls{sEMG} sensors can be seen in Table \ref{tab:muscletargets}.
 
 \begin{table}[H]
 \begin{center}
@@ -79,7 +79,7 @@ Muscle & Main Functionality \\
 (F) \textit{Pectoralis Major + Frontal Deltoid} & Movement of the Arm \\
 \hline
 \end{tabular}
-\caption{The muscles targeted with the 6 available sEMG sensors based on \cite{Batzianoulis2018} \& \cite{jarque2019}.
+\caption{The muscles targeted with the 6 available \gls{sEMG} sensors based on \cite{Batzianoulis2018} \& \cite{jarque2019}.
  The targeted muscles contributes to a lot of the movements of hand \& lower-arm, and are ideal for the dataset.
 }
 \label{tab:muscletargets}
@@ -92,7 +92,7 @@ The muscles in Table \ref{tab:muscletargets} are numbered, and the locations of 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.8\textwidth]{musclelocations.png}
-\caption{Muscle diagram, containing the target sEMG locations. The labeling corresponds to the muscle names in Table \ref{tab:muscletargets}. The left image shows the muscles on the rear of the arm, while the right shows the muscles on the front of the arm.}
+\caption{Muscle diagram, containing the target \gls{sEMG} locations. The labeling corresponds to the muscle names in Table \ref{tab:muscletargets}. The left image shows the muscles on the rear of the arm, while the right shows the muscles on the front of the arm.}
 \label{fig:musclesensordiagram}
 \end{center}
 \end{figure}
@@ -207,7 +207,7 @@ This makes the dataset ideal for both classification and regression based models
 The dataset consists of $572$ recordings from $22$ subjects, in both reaching, gripping \& releasing actions.
 Another dataset is referenced by Ashirbad et al. \cite{ashirbad2022}, as an alternative of using finger joint angles as the ground truth data needed to train a network on sEMG data, the dataset uses a set of $16$ gesture classes for a classification algorithm.
 %The paper explains that t
-The sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ Buttersworth band-pass filter, and a $60Hz$ notch filter was used in order to remove electronics equipment noise.
+The sEMG data in the dataset has been subject to a pre-processing step using a $10$ to $500Hz$ Buttersworth band-pass filter, and a $60Hz$ Notch filter was used in order to remove electronics equipment noise.
 The dataset was created from recordings of $43$ participants.
 
 \subsubsection{Problems with Motive Tacking Software \& Capture Glove}
@@ -239,7 +239,7 @@ The problems with the tracking data is assessed in Section \ref{sec:motivecleani
 In order to design a state-of-the-art simulated prosthetic hand based on the goals in Section \ref{sec:goals}, a number of anatomical design choices needs to be considered.
 %This thesis tries to create the most
 Designing the simulated prosthetic to as anatomically-correct as possible will hopefully have a number of positive effect on the resulting movement characteristics of the hand, and make it easier to imitate the movements of its real life counterpart.
-By having access to an advanced simulation, it is possible to test and visualize advanced movement controllers that can facilitate more DoF than current commercial prosthetic hands. 
+By having access to an advanced simulation, it is possible to test and visualize advanced movement controllers that can facilitate more \gls{DoF} than current commercial prosthetic hands. 
 By creating an anatomically correct prosthetic hand simulation, it is hoped that prosthesis users can have more advanced rehabilitation, and learn to have more natural control of their prosthetic devices.
 Advanced controllers will create a more natural usage experience, and decrease the percentage of users that reject the usage of their prosthetic all together.
 A set of requirements the simulated anatomically correct hand should be determined in order to create a state-of-the-art prosthesis simulation.
@@ -279,14 +279,14 @@ The resulting hand model can be seen in Figure \ref{fig:simdesignandimpl}.
 \end{figure}
 
 %The porpotions of the refrence is used to denote the bone lengths for the model.
-The model is implemented in CoppeliaSim \cite{coppeliasim}, and is based on cylinder shapes of anatomically accurate length and positions,
-The phalanges has been colored, with the distal phalanx being yellow, the middle phalanx being purple and the proximal phalanx being blue.
+The model is implemented in CoppeliaSim \cite{coppeliasim}, and is based on cylinder shapes of anatomically accurate length and positions.
+The \gls{phalanges} has been colored, with the \gls{distal phalanx} being yellow, the \gls{middle phalanx} being purple and the \gls{proximal phalanx} being blue.
 %This colorscheme is chosen in order to make posing clearer.
 %The model is created in a hierachy, the bones are created with cylinders and the joints are created using 1 DoF Revolute joints.
 % Ref coppeliasim
-As specified in Section \ref{sec:anatomy}, some joints of the human hand facilitates 2 DoF of rotation.
+As specified in Section \ref{sec:anatomy}, some joints of the human hand facilitates 2 \gls{DoF} of rotation.
 This is needed in order for the wrist and finger base joints to be able to do \gls{abduction/adduction}.
-To simulate this, two 1 DoF revolute joints were placed in series, thus allowing 2 DoF of motion in a single joint.
+To simulate this, two 1 \gls{DoF} revolute joints were placed in series, thus allowing 2 \gls{DoF} of motion in a single joint.
 The resulting simulation can be seen in Appendix \ref{appendix:handsim}.
 
 %\subsection{Software Hand Design}

@@ -5,33 +5,33 @@
 \begin{document}
 \section{Conclusion}
 
-This thesis is developed with the purpose of researching \& designing a state-of-the-art sEMG-based HMI for a simulated prosthetic hand.
+This thesis is developed with the purpose of researching \& designing a state-of-the-art \gls{sEMG}-based \gls{HMI} for a simulated prosthetic hand.
 % Chosen hardware stuff explained 
 During the development of this thesis, a controllable prosthetic hand was developed in the simulation tool CoppeliaSim \cite{coppeliasim}, that is able to be controlled by the commonly used robotics communication software ROS2 \cite{ros2}.
 The prosthetic hand is designed to have anatomically correct proportions, with anatomically correct joints that allows the simulation to act and be controlled with similar movements as a real hand. 
 The simulation is created with the purpose of providing an easy-to-use, freely available, advanced prosthesis simulation for others to use, modify and develop with. 
-Another purpose of this thesis is to research and test state-of-the-art \gls{HMI} techniques in the field of \gls{AI} and \gls{ML}, in order to compare and test different methods of converting sEMG based muscle activity into a usable controller scheme for a prosthetic device.
-This thesis tests two different areas of HMI interfaces, ML based lower-arm intent classification and AI based finger movement regression.
+Another purpose of this thesis is to research and test state-of-the-art \gls{HMI} techniques in the field of \gls{AI} and \gls{ML}, in order to compare and test different methods of converting \gls{sEMG} based muscle activity into a usable controller scheme for a prosthetic device.
+This thesis tests two different areas of \gls{HMI} interfaces, \gls{ML} based lower-arm intent classification and \gls{AI} based finger movement regression.
 Different models in each area are tested and compared, based on recommendations of state-of-the-art
 literature, in order to determine what models are ideal for the control of a prosthetic hand.
 
 % in debth of classification
-Several different ML models were trained and compared in section \ref{sec:machine-learning}.
-All models were trained on feature-space converted sEMG data.
+Several different \gls{ML} models were trained and compared in section \ref{sec:machine-learning}.
+All models were trained on feature-space converted \gls{sEMG} data.
 Based on the tests and comparison of the classification accuracy Table \ref{tab:classification_comparison}, it can be seen that the \gls{LDA} performs best with an accuracy of $61\%$ and inter-quantile range of $0.679$.
 It can also be seen, and that \gls{QDA} performs best in the inter-quantile median with a value of $0.803$, but has the largest inter-quantile range.
-From this, the LDA machine learning algorithm is proposed to be best at intent classification of the lower-arm.
+From this, the \gls{LDA} algorithm is proposed to be best at intent classification of the lower-arm.
 % in debth of regression
-As an alternative to intent classification, different AI models designed to do regression of finger movements were trained and compared in section \ref{sec:regression}.
+As an alternative to intent classification, different \gls{AI} models designed to do regression of finger movements were trained and compared in Section \ref{sec:regression}.
 Based on the regression comparison in Figure \ref{fig:regression_comp}, it can be seen that Recurrent methods perform best compared to window based methods.
 This can be seen when comparing the average error in 50 tests, the \gls{CNN} network has an average error of $0.17$ radians per test, where the \gls{RNN} network has an average error of $0.01$ radians.
 % in debth of dataset creation proposal
 
 The designed models are trained and tested using a freely available dataset \cite{kinmusdataset}.
-This was done due to problems with the chosen Motive motion Capture \cite{motive} setup, these problems were reduced by the implementation of a rendering and cleaning software explained in Section \ref{sec:motivecleaning}.
+This was done due to problems with the chosen Motive motion capture \cite{motive} setup, these problems were reduced by the implementation of a rendering and cleaning software explained in Section \ref{sec:motivecleaning}.
 Using this implemented software, it is possible to fixing wrong labels and removing labels all together, compared to the unsatisfactory functionality in Motive.
 %This software makes fixing wrong labels and removing labels all together possible, compared to the building functionality in Motive.
-With this implemented software, it is possible to record and prepare a dataset for training AI models that can be used in HMI interfaces for prosthetic devices.
+With this implemented software, it is possible to record and prepare a dataset for training \gls{AI} models that can be used in \gls{HMI} interfaces for prosthetic devices.
 Due to time constraints, a small subset of the recorded dataset was fixed.
 This dataset only contains recordings from a single person, as it was not possible to create a large enough dataset in the given time. 
 % with cleaning of data 
@@ -53,7 +53,7 @@ It is apparent that using muscle activity as the only interface between an amput
 In order to fix this the controller could be expanded by experimenting with automatic grip methods, such as using touch sensor feedback to optimize gripping and control of a prosthetic device.
 
 Further testing, of the dynamic control of a trained models in a simulated environment could also have been explored.
-This could be done in real-time, where a trained model could be used to convert live \gls{sEMG} recordings into movements for the simulated prosthetic, allowing the test person to manipulate the simulated environment in real time.
+This could be done in real-time, where a trained models could be used to convert live \gls{sEMG} recordings into movements for the simulated prosthetic, allowing the test person to manipulate the simulated environment in real time.
 The work done in this thesis mainly explores two different areas of prosthetic controllers, classification based and regression based.
 Had a large dataset created specifically for the purpose of this thesis been created, possible methods of implementing robust \gls{HMI} controllers using the tested methods could have been explored.
 Tests could also explore the applicability of combining different types of methods, and by doing so, explore the possibility of combining the movement regression models with intent classification.  

@@ -7,7 +7,7 @@
 
 \subsection{Recording of a Dataset}
 
-The created capture glove for the Motive motion capture system \cite{motive} and the sEMG sensors from the Delsys Trigno \cite{trigno} setup was placed on the target.
+The created capture glove for the Motive motion capture system \cite{motive} and the \gls{sEMG} sensors from the Delsys Trigno \cite{trigno} setup was placed on the target.
 The sEMG sensors were placed at their locations, following the setup in Table \ref{tab:muscletargets}.
 The setup can be seen in Figure \ref{fig:musclesensorsonarm}.
 Objects of different sizes and weights were placed in front of the target for gripping. 
@@ -16,7 +16,7 @@ This was done so that the chosen gripping sequence and environment was highly dy
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{sensors_on_arms_cropped.png}
-\caption{Capture glove and sEMG sensors placed on the recording target. The sEMG sensors are located based on the muscles from Table \ref{tab:muscletargets}.}
+\caption{Capture glove and \gls{sEMG} sensors placed on the recording target. The sEMG sensors are located based on the muscles from Table \ref{tab:muscletargets}.}
 \label{fig:musclesensorsonarm}
 \end{center}
 \end{figure}
@@ -56,7 +56,7 @@ Markers were not tracked correctly and new labels were created every time tracki
         \centering
         \includegraphics[width=\textwidth]{motivemarkers4.png}
     \end{subfigure}
-    \caption{Motive tracking labels changes over time, in this case, the markers changed to new labels at $\sim 2$, $7$, $11$ \& $14$ seconds into the recording, with smaller changes throughout.}
+    \caption{Motive tracking labels changes over time. In this case, the markers changed to new labels at $\sim 2$, $7$, $11$ \& $14$ seconds into the recording, with smaller changes throughout.}
     \label{fig:motivelabels}
 \end{figure}
 
@@ -79,21 +79,21 @@ The software created to fix unreliable labeling of markers in the tracking data 
 
 \subsubsection{Implementation}
 
-Based on the literature review in Section \ref{sec:literature}, it becomes apparent that there exists a standard pipeline for translating sEMG recordings into predicted motor control for a prosthetic.
-Raw sEMG data contains a lot of unwanted noise as explained in Section \ref{sec:noise}.
+Based on the literature review in Section \ref{sec:literature}, it becomes apparent that there exists a standard pipeline for translating \gls{sEMG} recordings into predicted motor control for a prosthetic.
+Raw \gls{sEMG} data contains a lot of unwanted noise as explained in Section \ref{sec:noise}.
 Some of the noise can be can be removed through signal processing using analog filters.
 Different filter types exists, and different filters can be used to remove specific noise frequency in the data. 
-State-of-the-Art papers use a lot of different methods to reduce noise in sEMG data.
-Zhaolong Gao et al. \cite{Zhaolong2021} uses a $50Hz$ Notch filter, while Iason Batzianoulis et al. \cite{Batzianoulis2018} \& Ashirbad et al. \cite{ashirbad2022} respectively uses a $20Hz$ cutoff Buttersworth filter \& a $10$-$500Hz$  Buttersworth band-pass filter combined with a $60Hz$ Notch filter in order to remove power-line noise.
-Due to the many different filtering types used in state-of-the-art literature, it was determined that the use of a filter depends on the specific sEMG data and the purpose of what the paper tries to do.
-In order to determine what types of filters have a positive effect on the sEMG data recorded using the Motive Capture system, different types of state-of-the-art pre-processing filters were tested and compared.
+State-of-the-Art papers use a lot of different methods to reduce noise in \gls{sEMG} data.
+Zhaolong Gao et al. \cite{Zhaolong2021} uses a $50Hz$ Notch filter, while Iason Batzianoulis et al. \cite{Batzianoulis2018} \& Ashirbad et al. \cite{ashirbad2022} respectively uses a $20Hz$ cutoff Buttersworth filter \& a $10$-$500Hz$  Buttersworth band-pass filter combined with a $60Hz$ Notch filter in order to remove electronics equipment noise.
+Due to the many different filtering types used in state-of-the-art literature, it was determined that the use of a filter depends on the specific \gls{sEMG} data and the purpose of what the paper tries to do.
+In order to determine what types of filters have a positive effect on the \gls{sEMG} data recorded using the Motive Capture system, different types of state-of-the-art pre-processing filters were tested and compared.
 %And that the best filter for this thesis is to be determined through testing.
 
 %TODO: Convert n sEMG angles into a image heat map kinda, and compare before and after different filters? the z dimension could be change in values?
 
 \subsubsection{Test \& Results}
 
-A subset of the recorded sEMG data was used, and different filter types were tested in order to reduce noise in the raw recordings.
+A subset of the recorded \gls{sEMG} data was used, and different filter types were tested in order to reduce noise in the raw recordings.
 Different types of Buttersworth filters were tested, as can be seen in Figure \ref{fig:lowpass} \& \ref{fig:bandpass}.
 
 \begin{figure}[H]
@@ -116,23 +116,23 @@ Different types of Buttersworth filters were tested, as can be seen in Figure \r
 Different configurations of pre-processing filters have a large impact on the resulting filtered sequence. 
 It can be seen in Figure \ref{fig:lowpass} that most of the change in amplitude exists in the low frequencies, and these are removed due to using a low-pass filter.
 Furthermore, it can be seen that the intent of the signal is kept when a filter order of 5 is used, compared to a filter order of 10.
-When comparing the two low-pass filters, it can be determined that using a cutoff frequency of $20Hz$ and a order of $5$ is a ideal for sEMG signals due to the amount of large frequencies in the recordings.
-Alternatively, Buttersworth band-pass filters are tested in Figure \ref{fig:bandpass},
+When comparing the two low-pass filters, it can be determined that using a cutoff frequency of $20Hz$ and a order of $5$ is a ideal for \gls{sEMG} signals due to the amount of large frequencies in the recordings.
+As an alternative, Buttersworth band-pass filters are tested in Figure \ref{fig:bandpass},
 
 \subsection{Dataset used for Training}
 
 Due to the problems with the Motive motion capture software \cite{motive} explained in Section \ref{sec:motiveproblems}, it was determined that the main dataset for training the chosen methods would be based on dataset \cite{kinmusdataset} proposed by Nestor Jarque-Bou et al. \cite{jarque2019}.
-The dataset contains sections of sEMG data and kinematic movements of the hand.
+The dataset contains sections of \gls{sEMG} data and kinematic movements of the hand.
 These sections are labeled as either \textit{reaching}, \textit{manipulation} or \textit{releasing}.  
 Due to the dataset containing data for regression and classification, it is possible to explore multiple methods of \gls{HMI}'s. 
 The pre-processing step is not implemented for the training dataset \cite{kinmusdataset}, as the dataset has been pre-processed using a 4th-order band-pass filter with a band of  $25$-$500Hz$, then the data was subject to a 4th-order low-pass filter at $8 Hz$.
-The main objective of these tests are to review and compare possible methods of regression \& Classification of sEMG data in order to determine the movements of the hand.
+The main objective of these tests are to review and compare possible methods of regression \& Classification of \gls{sEMG} data in order to determine the movements of the hand.
 
 \section{Machine-Learning Intent Classification}
 \label{sec:machine-learning}
 
 Due to the dataset containing labels associated with movements of the hand, it was possible to use the dataset to train a intent prediction classifier.
-based on the statements of Yuki Kuroda et al. \cite{Yuki2023} \& Iason Batzianoulis et al.  \cite{Batzianoulis2018}, it is ideal to feature extract windows of the sEMG data.
+based on the statements of Yuki Kuroda et al. \cite{Yuki2023} \& Iason Batzianoulis et al.  \cite{Batzianoulis2018}, it is ideal to feature extract windows of the \gls{sEMG} data.
 The features \gls{ZC} \& \gls{RMS} were chosen as the features to extract for an intent classifier based on their heavy use in literature as outlined by M. Tech \cite{Tech2015}.
 Other features that could be chosen as an alternative would be variance \& mean-absolute-value.
 Furthermore, Yanchao Wang et al. \cite{YanchaoWang2022} proposes that the \gls{ML} technique \gls{LDA} has the highest classification rate out of similar methods.
@@ -141,10 +141,11 @@ Both types of classification will be explored and compared.
 
 \subsection{Implementation}
 
-In order to classify intent from sEMG muscle data, the data needed to be converted into the chosen features before it can be used as input to a machine learning algorithm.
+In order to classify intent from \gls{sEMG} muscle data, the data needed to be converted into the chosen features before it can be used as input to a machine learning algorithm.
 For this, it was chosen based on state-of-the-art literature, that the feature extraction methods would be \gls{ZC} \& \gls{RMS}.
-The input channel for a single sEMG window was converted into a vector of zeros and ones for the zero-crossing features, where a one is set if the data crosses over the zero line.
-Furthermore, the RMS for a window was calculated, and inserted to the end of the input vector. This effectively converts the 7 sEMG channels of a window size of $W$ into a feature vector of size $W+1$.
+The input channel for a single \gls{sEMG} window was converted into a vector of zeros and ones for the zero-crossing features, where a one is set if the data crosses over the zero line.
+Furthermore, the \gls{RMS} for a window was calculated, and inserted to the end of the input vector.
+This effectively converts the 7 \gls{sEMG} channels of a window size of $W$ into a feature vector of size $W+1$.
 The feature-based inputs were extracted, and their movement labels were used as the target classification.
 The resulting classification structure can be seen in Figure \ref{fig:mlclassifier}.
 
@@ -156,21 +157,21 @@ The resulting classification structure can be seen in Figure \ref{fig:mlclassifi
 \end{center}
 \end{figure}
 
-The dataset of features and ground truths were then used as input for discriminant analysis, and SVM classifiers.
+The dataset of features and ground truths were then used as input for discriminant analysis, and \gls{SVM} classifiers.
 The purpose of \textbf{discriminant analysis} is to classify inputs into groups.
 Discriminant analysis is a classical multivariate method of supervised learning, that takes a input set with their ground-truth classes and tries to maximize separation between these different classes.
 The models assumes data follows a Gaussian distribution. 
-For this ML method, two types of discriminant analysis were tested on the dataset, namely LDA \& \gls{QDA}.
+For this \gls{ML} method, two types of discriminant analysis were tested on the dataset, namely \gls{LDA} \& \gls{QDA}.
 %Linear Discriminant Analysis (LDA) \& Quadratic Discriminant Analysis (QDA).
-The main difference between LDA and QDA is that LDA makes the assumption that the covariance matrices of the classes are the same.
+The main difference between \gls{LDA} and \gls{QDA} is that \gls{LDA} makes the assumption that the covariance matrices of the classes are the same.
 Equal covariance matrices will result in linear separations between classes.
-QDA as an alternative does not assume this equal covariance, this results in a classifier that assumes quadratic separations between classes.
+\gls{QDA} as an alternative does not assume this equal covariance, this results in a classifier that assumes quadratic separations between classes.
 %The first method to test is the Linear Discriminant Analysis (LDA), and the second method was 
-Just as discriminant analysis, SVM based methods are used to separate inputs into groups based on classes.
-SVM is a robust supervised learning method that groups dataset classes.
-SVM tries to maximize the width between classes by converting the input to a higher dimensional feature vector, and using this vector, the SVM algorithm is able to efficiently calculate a non-linear classification.
-The feature space conversion is determined by the choice of SVM kernel in the algorithm.
-For this ML method, 3 types of SVM classifiers were tested, a SVM using a \gls{RBF} kernel, a SVM using a sigmoid Kernel and a NuSVM method with the \gls{RBF} kernel and a parameter for the number of support vectors used.
+Just as discriminant analysis, \gls{SVM} based methods are used to separate inputs into groups based on classes.
+\gls{SVM} is a robust supervised learning method that groups dataset classes.
+\gls{SVM} tries to maximize the width between classes by converting the input to a higher dimensional feature vector, and using this vector, the \gls{SVM} algorithm is able to efficiently calculate a non-linear classification.
+The feature space conversion is determined by the choice of \gls{SVM} kernel in the algorithm.
+For this \gls{ML} method, 3 types of \gls{SVM} classifiers were tested, a \gls{SVM} using a \gls{RBF} kernel, a \gls{SVM} using a sigmoid kernel and a Nu\gls{SVM} method with the \gls{RBF} kernel and a parameter for the number of support vectors used.
 
 \subsection{Tests \& Results}
 
@@ -263,21 +264,21 @@ In order to get a clearer comparison of methods, the relevant values have been c
 % 4    0.950715
 
 The relevant parameters makes it possible to identify the most suitable method for intent classification.
-It can be seen that LDA has the overall best accuracy of all the methods of $61\%$, and the overall worst performing method is SVM (RBF).
+It can be seen that LDA has the overall best accuracy of all the methods of $61\%$, and the overall worst performing method is \gls{SVM} (\gls{RBF}).
 By denoting the median and the range of the inter-quantile section of the boxplots, we can further elaborate on the accuracy of the 50 tests.
 % LDA
-LDA has the best average accuracy, and it also has the smallest inter-quantile range, indicating that LDA perform well across tests with a robustness to outliers. 
+\gls{LDA} has the best average accuracy, and it also has the smallest inter-quantile range, indicating that \gls{LDA} perform well across tests with a robustness to outliers. 
 % QDA
-It can be seen that QDA performs best according to the inter-quantile median, but QDA is also the method that has the largest inter-quantile range indicating that QDA is not very robust to outliers.
+It can be seen that \gls{QDA} performs best according to the inter-quantile median, but \gls{QDA} is also the method that has the largest inter-quantile range indicating that \gls{QDA} is not very robust to outliers.
 % NuSVM
-An alternative to the discriminant analysis methods, it can be seen that the NuSVM method with a number of support vectors denoted by $0.12$.
-NuSVM has the second best average accuracy, the second best inter-quantile median \& the third lowest inter-quantile range.
+An alternative to the discriminant analysis methods, it can be seen that the Nu\gls{SVM} method with a number of support vectors denoted by $0.12$.
+Nu\gls{SVM} has the second best average accuracy, the second best inter-quantile median \& the third lowest inter-quantile range.
 % Conclusion:
-From Table \ref{tab:classification_comparison}, it becomes apparent that none of the methods have ideal performance, but that the LDA method is the best method for intent classification.
+From Table \ref{tab:classification_comparison}, it becomes apparent that none of the methods have ideal performance, but that the \gls{LDA} method is the best method for intent classification.
 This result is similar to the conclusion of Keun-Tae Kim et al. \cite{KeunTaeKim2021}.
 % Eval on feature extraction
-The resulting performance metrics of the ML methods are dependent on the chosen feature extraction techniques used.
-\gls{ZC} and \gls{RMS} features can be used for the classifiers and provide insight into what parameters are important when working with sEMG data.
+The resulting performance metrics of the \gls{ML} methods are dependent on the chosen feature extraction techniques used.
+\gls{ZC} and \gls{RMS} features can be used for the classifiers and provide insight into what parameters are important when working with \gls{sEMG} data.
 The models created for classification can be seen in Appendix \ref{appendix:models}.
 
 \newpage
@@ -296,17 +297,17 @@ The sEMG data used as input for regression networks is complex.
 The sequences of muscle activity needed to be understood by the proposed method and produced into a an output.
 A network type that is ideal to understand complex meaning in 2 and 3D input is a \gls{CNN} network.
 %A CNN is an alternative to a MLP network that is similar in functionality is a Convoluted Neural Network (CNN).
-A CNN consists of a set of Convolution Layers that deforms inputs to abstract convolution features.
+A \gls{CNN} consists of a set of Convolution Layers that deforms inputs to abstract convolution features.
 The structure is considered sparsely connected due to the convolution layers are only receiving a subset of the previous convolution features.
 The feature conversion is ideal when a network needs to become robust and needs to recognize larger concepts in the input.
 This functionality is especially used when the input data takes the shape of a matrix.
 Once the input is convoluted to a chosen feature abstraction, it is given to a \gls{MLP} structure trained to convert the convolution features into a usable output.
 CNN networks have no build-in time-based functionality, they receive a set of inputs and produce an output.
 It is possible however to represent time if the input is given in segments consisting of multiple time-frames.
-Because of this, the sEMG muscle activity from the dataset is segmented into windows of a desired size, the output angles that the network should do regression towards are then chosen to be the first angle after the window.
-A CNN network can be used in the field of sEMG processing due to the convolution layer's ability to learn abstract patterns of the sEMG data.
-The network would be able to identify patterns in sEMG data and correlate them to an appropriate output.
-The CNN network structure seen in Figure \ref{fig:cnn_structure}.
+Because of this, the \gls{sEMG} muscle activity from the dataset is segmented into windows of a desired size, the output angles that the network should do regression towards are then chosen to be the first angle after the window.
+A CNN network can be used in the field of \gls{sEMG} processing due to the convolution layer's ability to learn abstract patterns of the \gls{sEMG} data.
+The network would be able to identify patterns in \gls{sEMG} data and correlate them to an appropriate output.
+The \gls{CNN} network structure seen in Figure \ref{fig:cnn_structure}.
 
 \begin{figure}[H]
 \begin{center}
@@ -316,14 +317,14 @@ The CNN network structure seen in Figure \ref{fig:cnn_structure}.
 \end{center}
 \end{figure}
 
-The CNN network consists of 3 Convolution layers followed by 3 MLP layers.
+The \gls{CNN} network consists of 3 Convolution layers followed by 3 \gls{MLP} layers.
 The network is designed through manual hyper-parameter tuning based on validation error reduction of the model.
 The structure of the network is designed to be simple with a small amount of convolutions without pooling due to the small input size.
 The Convolution layers extract features up to a size of 32 using a convolution kernel with a size of [$3, 3$].
 The convolution features are flattened to a size of $4480$, and processed by 3 hidden layers convert the convolution output into a regression prediction.
 %A CNN is trained on the network, using a window size of 40 samples were used.
 %TODO: Give example of a state-of-the-art paper CNN as an alternative to mine!!!
-The CNN network was trained to do regression of joint angles of the hand, because of this, the loss function was determined to be MSE loss.
+The \gls{CNN} network was trained to do regression of joint angles of the hand, because of this, the loss function was determined to be \gls{MSE} loss.
 The network was trained using an Adam optimizer with a learning rate of $1\text{e}^{-4}$.
 A subset of the dataset was split into a test and a validation set, and windows were extracted correlating input and output.
 The output was normalized, and the input/output sets were shuffled before training would take place.
@@ -332,7 +333,7 @@ The output was normalized, and the input/output sets were shuffled before traini
 \subsubsection{Tests \& Results}
 
 
-The CNN network was trained with a batch size of 8 over 20 epochs, with the resulting MSE loss settling at $\sim 34$.
+The \gls{CNN} network was trained with a batch size of 8 over 20 epochs, with the resulting \gls{MSE} loss settling at $\sim 34$.
 50 sets of regressions that have not been trained on was taken from the dataset for testing.
 The errors of the dataset can be seen in Figure \ref{fig:cnntest}.
 
@@ -346,19 +347,19 @@ The errors of the dataset can be seen in Figure \ref{fig:cnntest}.
 
 \subsubsection{Evaluation}
 
-The CNN network was able to be trained on the dataset with a validation set MSE loss of $34$.
+The \gls{CNN} network was able to be trained on the dataset with a validation set \gls{MSE} loss of $34$.
 The errors of the 50 test regressions in Figure \ref{fig:cnntest} show that a fairly large average regression error of $0.17$ radians exists in the test regressions, and that the average error is skewed upwards due to some outlier tests having large average errors up to $0.3$ radians.
 
 \newpage
 \subsection{Recurrent Neural Network Regression}
 
-Due to sEMG data being time-based, Recurrent network types are ideal for regression predictions.
-RNN networks are similar to MLP's with the main difference being that a RNN has hidden feedback  memory state that is derived from earlier inputs.
-This functionality makes RNN networks ideal for concurrent, time-based systems where a sequential input distribution needs to be converted to a output regression.  
-Another use case of RNN-based regression systems are systems where response time is critical.
-The RNN network does not use a window of data, it converts the input of the current time frame, and the feedback of the previous time frame into a prediction.
-Because of the hidden memory, a RNN network has a quicker response time than a window-based network.
-The RNN network structure designed to predict regression of finger movements from sEMG data can be seen in Figure \ref{fig:rnn_structure}.
+Due to \gls{sEMG} data being time-based, Recurrent network types are ideal for regression predictions.
+\gls{RNN} networks are similar to \gls{MLP}'s with the main difference being that a \gls{RNN} has hidden feedback  memory state that is derived from earlier inputs.
+This functionality makes \gls{RNN} networks ideal for concurrent, time-based systems where a sequential input distribution needs to be converted to a output regression.  
+Another use case of \gls{RNN}-based regression systems are systems where response time is critical.
+The \gls{RNN} network does not use a window of data, it converts the input of the current time frame, and the feedback of the previous time frame into a prediction.
+Because of the hidden memory, a \gls{RNN} network has a quicker response time than a window-based network.
+The \gls{RNN} network structure designed to predict regression of finger movements from \gls{sEMG} data can be seen in Figure \ref{fig:rnn_structure}.
 The network is designed through manual hyper-parameter tuning based on validation error reduction of the model.
 
 %TODO: This one sounds nice, can it be integrated?
@@ -375,8 +376,8 @@ The network is designed through manual hyper-parameter tuning based on validatio
 
 \subsubsection{Tests \& Results}
 
-The RNN network was trained on the dataset \cite{kinmusdataset}, in a similar way as the CNN network, with the purpose of approximating finger angle regressions per time frame.
-The RNN network was trained with a batch size of 8, with the loss function chosen as MSE loss and the Adam optimizer with a learning rate of $1\text{e}^{-3}$.
+The \gls{RNN} network was trained on the dataset \cite{kinmusdataset}, in a similar way as the \gls{CNN} network, with the purpose of approximating finger angle regressions per time frame.
+The RNN network was trained with a batch size of 8, with the loss function chosen as \gls{MSE} loss and the Adam optimizer with a learning rate of $1\text{e}^{-3}$.
 In order to test the network, a random set of 50 regressions that have not been trained on were taken from the dataset.
 The average errors of each regression test can be seen in Figure \ref{fig:rnntest}.
 Additionally, the plotted regressions can be seen in Appendix \ref{appendix:rnnregression}.
@@ -404,15 +405,15 @@ The errors of the 50 test regressions in with the different models can be seen i
 \end{figure}
 
 There is a large difference in window-based and recurrent network types.
-The CNN shows a average test error of $0.17$ radians, while the RNN network has a average test error of $0.01$ radians. 
-The reason for the large error in the CNN network test is unclear.
-One of the reasons could be that the CNN network is unable to accurately predict because of the pre-processing done in the dataset.
+The \gls{CNN} shows a average test error of $0.17$ radians, while the \gls{RNN} network has a average test error of $0.01$ radians. 
+The reason for the large error in the \gls{CNN} network test is unclear.
+One of the reasons could be that the \gls{CNN} network is unable to accurately predict because of the pre-processing done in the dataset.
 Alternatively, the network is unable to learn because of the window size.
-This would make sense since the RNN network is able to accurately predict with a really low error, and is not limited by an arbitrary window of input.
-Additionally, the RNN tests show an outlier at test 44, this outlier is extreme compared to the other RNN errors.
+This would make sense since the \gls{RNN} network is able to accurately predict with a really low error, and is not limited by an arbitrary window of input.
+Additionally, the \gls{RNN} tests show an outlier at test 44, this outlier is extreme compared to the other \gls{RNN} errors.
 
 It becomes apparent that teaching a neural network to do regression of finger joints is a complicated task.
-Because of this, the tests show that it is ideal to use a type of Recurrent Network for regression.
+Because of this, the tests show that it is ideal to use a type of \gls{RNN} for regression.
 The models created for regression can be seen in Appendix \ref{appendix:models}.
 
 %\subsubsection{Long-Short-Term-Memory Recurrent Neural Networks}
