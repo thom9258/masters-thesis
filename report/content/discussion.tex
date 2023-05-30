@@ -11,11 +11,11 @@ The experimentation is mainly done with the focus of identifying and modeling th
 During the development of this thesis, several problems occurred with the chaise of simulation tools.
 The initial chosen simulation software was the Gazebo \cite{gazebo} due to its close integration with ROS2 \cite{ros2}, and its use in modern robotics simulation tasks.
 After a lot of long-term problems and complications caused by the chosen software, a decision to switch to CoppeliaSim \cite{coppeliasim} was made.
-The change to CoppeliaSim solved a lot of the problems caused by Gazebo, the setup of the simulation and development of the kinematics became much clearer.
-Furthermore, setting up the controller of the prosthetic could be done using the build-in ROS2 communication.
+The change to simulation software solved a lot of the problems caused by Gazebo \cite{gazebo}, the setup of the simulation and development of the kinematics became much clearer.
+Furthermore, setting up the controller of the prosthetic could be done using the build-in ROS2 \cite{ros2} communication.
 
 Another problem had a large impact on the development of this thesis.
-In order to capture the movements of the fingers for the dataset, the product Motive Motion Capture Setup \cite{motive} was chosen, due to recommendation, availability and its use in state-of-the-art industry motion capture.
+In order to capture the movements of the fingers for the dataset, the product Motive motion capture setup \cite{motive} was chosen due to recommendation, availability and its use in state-of-the-art industry motion capture.
 The Motive setup consists of a camera rig designed to locate 3D markers in the scene.
 As a recording target, a glove was fitted with 3D markers.
 This was done in order to record the kinematic movements of the hand, a glove is fitted with 3D markers at the joints of the fingers.
@@ -27,7 +27,7 @@ The only way to solve this is to reduce the amount of markers on the glove.
 
 In addition to no being able to have multiple fingers in the recording, the 3D marker labeling proved to be unreliable.
 The markers are shifting in labels if they disappear for a few frames at a time.
-This problem scaled with the length of the recording session, a 15 second recording of 7 markers would be recorded as $100+$ labels in the resulting tracker output.
+The severity of the problem scaled with the length of the recording session, a 15 second recording of 7 markers would be recorded as $100+$ labels in the resulting tracker output, and a 30 second recording had $1000+$ labels.
 In addition to the tracking being unreliable, the Motive software is unable to provide an effective label correction tool.
 Label rendering \& correction tools is developed as part of this thesis, and is used to clean up a subset of the recorded dataset.
 Due to the extensive work needed to record and clean the movements of the hand, it became impossible to create a dataset large enough to train models on, and to create a general purpose dataset with recordings from multiple people. 

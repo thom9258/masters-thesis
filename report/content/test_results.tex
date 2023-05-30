@@ -144,7 +144,7 @@ Both types of classification will be explored and compared.
 In order to classify intent from sEMG muscle data, the data needed to be converted into the chosen features before it can be used as input to a machine learning algorithm.
 For this, it was chosen based on state-of-the-art literature, that the feature extraction methods would be \gls{ZC} \& \gls{RMS}.
 The input channel for a single sEMG window was converted into a vector of zeros and ones for the zero-crossing features, where a one is set if the data crosses over the zero line.
-Furthermore, the RMS for a window was calculated, and inserted to the end of the input vector. This effectively converts the 6 sEMG channels of a window size of $W$ into a feature vector of size $W+1$.
+Furthermore, the RMS for a window was calculated, and inserted to the end of the input vector. This effectively converts the 7 sEMG channels of a window size of $W$ into a feature vector of size $W+1$.
 The feature-based inputs were extracted, and their movement labels were used as the target classification.
 The resulting classification structure can be seen in Figure \ref{fig:mlclassifier}.
 
@@ -158,7 +158,7 @@ The resulting classification structure can be seen in Figure \ref{fig:mlclassifi
 
 The dataset of features and ground truths were then used as input for discriminant analysis, and SVM classifiers.
 The purpose of \textbf{discriminant analysis} is to classify inputs into groups.
-Discriminant analysis is a classical multivariate method of Supervised Learning, that takes a input set with their ground-truth classes and tries to maximize separation between these different classes.
+Discriminant analysis is a classical multivariate method of supervised learning, that takes a input set with their ground-truth classes and tries to maximize separation between these different classes.
 The models assumes data follows a Gaussian distribution. 
 For this ML method, two types of discriminant analysis were tested on the dataset, namely LDA \& \gls{QDA}.
 %Linear Discriminant Analysis (LDA) \& Quadratic Discriminant Analysis (QDA).
@@ -170,24 +170,30 @@ Just as discriminant analysis, SVM based methods are used to separate inputs int
 SVM is a robust supervised learning method that groups dataset classes.
 SVM tries to maximize the width between classes by converting the input to a higher dimensional feature vector, and using this vector, the SVM algorithm is able to efficiently calculate a non-linear classification.
 The feature space conversion is determined by the choice of SVM kernel in the algorithm.
-For this ML method, 3 types of SVM classifiers were tested, a SVM using a Radial Basis Function (RBF) kernel, a SVM using a sigmoid Kernel and a NuSVM method with the RBF kernel and a parameter for the number of support vectors used.
+For this ML method, 3 types of SVM classifiers were tested, a SVM using a \gls{RBF} kernel, a SVM using a sigmoid Kernel and a NuSVM method with the \gls{RBF} kernel and a parameter for the number of support vectors used.
 
 \subsection{Tests \& Results}
 
 The methods were tested on 50 sets of data that was not part of the training set.
-The discriminant analysis methods can be seen in Figure \ref{fig:lda_test}, with the average accuracy of the methods respectively being $61\%$ \& $55\%$ over the 50 tests.
-
-\begin{figure}[H]
-\begin{center}
-\includegraphics[width=0.99\textwidth]{lda_test.pdf}
-\caption{Comparison of discriminant analysis methods (\gls{LDA}/\gls{QDA}) over 50 tests.}
-\label{fig:lda_test}
-\end{center}
-\end{figure}
-
+The discriminant analysis methods can be seen in Figure \ref{fig:svm_test}, with the average accuracy of the methods respectively being $61\%$ \& $55\%$ over the 50 tests.
 The \gls{SVM} methods can be seen in Figure \ref{fig:svm_test}, with the average accuracy of the methods respectively being $54\%$, $56\%$ \& $59\%$ over the 50 tests.
 
+%\begin{figure}[H]
+%\begin{center}
+%\includegraphics[width=0.99\textwidth]{lda_test.pdf}
+%\caption{Comparison of discriminant analysis methods (\gls{LDA}/\gls{QDA}) over 50 tests.}
+%\label{fig:lda_test}
+%\end{center}
+%\end{figure}
+
+
 \begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{1\textwidth}
+        \centering
+\includegraphics[width=0.99\textwidth]{lda_test.pdf}
+%\caption{Comparison of Support Vector Machine Kernels (RBF/Sigmoid) over 50 tests.}
+    \end{subfigure}
     \centering
     \begin{subfigure}[b]{1\textwidth}
         \centering
@@ -199,7 +205,9 @@ The \gls{SVM} methods can be seen in Figure \ref{fig:svm_test}, with the average
         \centering
 \includegraphics[width=0.99\textwidth]{nusvm_test.pdf}
     \end{subfigure}
-    \caption{Comparison of \gls{SVM} Kernels \& parameters over 50 tests.}
+    \caption{ Comparison of discriminant analysis methods (\gls{LDA}/\gls{QDA}) and comparison of \gls{SVM} Kernels \& parameters over 50 tests.}
+
+%\caption{Comparison of discriminant analysis methods (\gls{LDA}/\gls{QDA}) over 50 tests.}
 \label{fig:svm_test}
 \end{figure}
 %TODO: Try another parameter for NuSVM so that the graph is more complete.
@@ -208,13 +216,13 @@ The \gls{SVM} methods can be seen in Figure \ref{fig:svm_test}, with the average
 
 The methods tested can be seen to have similar average accuracy of $\sim 60\%$ over 50 tests.
 Because of this, it is difficult to choose a superior method without further analysis.
-The choice of machine learning method depends on its overall classification rate over 50 tests, but it can also be important to rate the ML methods based on their inter-quantile values.
+The choice of machine learning method depends on its overall classification rate over 50 tests, but it can also be important to rate the \gls{ML} methods based on their overall robustness.
 A full comparison of the machine learning methods can be seen in Figure \ref{fig:classification_comparison}.
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.99\textwidth]{classification_comparison.pdf}
-\caption{Comparison of chosen classification methods based on accuracy over 50 tests.}
+\caption{Comparison of chosen classification methods based on accuracy over 50 tests from Figure  \ref{fig:svm_test}.}
 \label{fig:classification_comparison}
 \end{center}
 \end{figure}
@@ -258,9 +266,9 @@ The relevant parameters makes it possible to identify the most suitable method f
 It can be seen that LDA has the overall best accuracy of all the methods of $61\%$, and the overall worst performing method is SVM (RBF).
 By denoting the median and the range of the inter-quantile section of the boxplots, we can further elaborate on the accuracy of the 50 tests.
 % LDA
-LDA has the best average accuracy, and it also has the smallest inter-quantile range, indicating that LDA perform well across tests with a robustness to outlier tests. 
+LDA has the best average accuracy, and it also has the smallest inter-quantile range, indicating that LDA perform well across tests with a robustness to outliers. 
 % QDA
-It can be seen that QDA performs best according to the inter-quantile median, but QDA is also the method that has the largest inter-quantile range indicating that QDA is not very robust to outlier tests.
+It can be seen that QDA performs best according to the inter-quantile median, but QDA is also the method that has the largest inter-quantile range indicating that QDA is not very robust to outliers.
 % NuSVM
 An alternative to the discriminant analysis methods, it can be seen that the NuSVM method with a number of support vectors denoted by $0.12$.
 NuSVM has the second best average accuracy, the second best inter-quantile median \& the third lowest inter-quantile range.
@@ -272,7 +280,7 @@ The resulting performance metrics of the ML methods are dependent on the chosen 
 \gls{ZC} and \gls{RMS} features can be used for the classifiers and provide insight into what parameters are important when working with sEMG data.
 The models created for classification can be seen in Appendix \ref{appendix:models}.
 
-%\newpage
+\newpage
 \section{Neural Network Movement Regression}
 \label{sec:regression}
 
@@ -286,13 +294,13 @@ Several methods is explored, both window and recurrent based networks are tested
 
 The sEMG data used as input for regression networks is complex.
 The sequences of muscle activity needed to be understood by the proposed method and produced into a an output.
-A network type that is ideal to understand complex meaning in 2 and 3D input is a CNN network.
+A network type that is ideal to understand complex meaning in 2 and 3D input is a \gls{CNN} network.
 %A CNN is an alternative to a MLP network that is similar in functionality is a Convoluted Neural Network (CNN).
 A CNN consists of a set of Convolution Layers that deforms inputs to abstract convolution features.
 The structure is considered sparsely connected due to the convolution layers are only receiving a subset of the previous convolution features.
 The feature conversion is ideal when a network needs to become robust and needs to recognize larger concepts in the input.
 This functionality is especially used when the input data takes the shape of a matrix.
-Once the input is convoluted to a chosen feature abstraction, it is given to a MLP structure trained to convert the convolution features into a usable output.
+Once the input is convoluted to a chosen feature abstraction, it is given to a \gls{MLP} structure trained to convert the convolution features into a usable output.
 CNN networks have no build-in time-based functionality, they receive a set of inputs and produce an output.
 It is possible however to represent time if the input is given in segments consisting of multiple time-frames.
 Because of this, the sEMG muscle activity from the dataset is segmented into windows of a desired size, the output angles that the network should do regression towards are then chosen to be the first angle after the window.
@@ -339,8 +347,9 @@ The errors of the dataset can be seen in Figure \ref{fig:cnntest}.
 \subsubsection{Evaluation}
 
 The CNN network was able to be trained on the dataset with a validation set MSE loss of $34$.
-The errors of the 50 test regressions in Figure \ref{fig:cnntest} show that a fairly large average regression error of $0.17$ Radians exists in the test regressions, and that the average error is skewed upwards due to some outlier tests having large average errors up to $0.3$ Radians.
+The errors of the 50 test regressions in Figure \ref{fig:cnntest} show that a fairly large average regression error of $0.17$ radians exists in the test regressions, and that the average error is skewed upwards due to some outlier tests having large average errors up to $0.3$ radians.
 
+\newpage
 \subsection{Recurrent Neural Network Regression}
 
 Due to sEMG data being time-based, Recurrent network types are ideal for regression predictions.
@@ -367,7 +376,7 @@ The network is designed through manual hyper-parameter tuning based on validatio
 \subsubsection{Tests \& Results}
 
 The RNN network was trained on the dataset \cite{kinmusdataset}, in a similar way as the CNN network, with the purpose of approximating finger angle regressions per time frame.
-The RNN network was trained with a batch size of 8, with the loss function chosen as MSE loss and the Adam optimizer with a learning rate of $1\text{e}^{-2}$.
+The RNN network was trained with a batch size of 8, with the loss function chosen as MSE loss and the Adam optimizer with a learning rate of $1\text{e}^{-3}$.
 In order to test the network, a random set of 50 regressions that have not been trained on were taken from the dataset.
 The average errors of each regression test can be seen in Figure \ref{fig:rnntest}.
 Additionally, the plotted regressions can be seen in Appendix \ref{appendix:rnnregression}.
@@ -380,7 +389,7 @@ Additionally, the plotted regressions can be seen in Appendix \ref{appendix:rnnr
 \end{center}
 \end{figure}
 
-\newpage
+%\newpage
 \subsection{Evaluation of Regression Methods}
 
 %As can be seen in figure \ref{fig:cnntrainvalid}, the CNN network is able to be trained on the dataset with a fairly low MSE loss.  
@@ -395,14 +404,15 @@ The errors of the 50 test regressions in with the different models can be seen i
 \end{figure}
 
 There is a large difference in window-based and recurrent network types.
-The CNN shows a average test error of $0.17$ Radians, while the RNN network has a average test error of $0.01$ Radians. 
+The CNN shows a average test error of $0.17$ radians, while the RNN network has a average test error of $0.01$ radians. 
 The reason for the large error in the CNN network test is unclear.
-One of the reasons the CNN network is unable to accurately learn regression could be because of the pre-processing done in the dataset.
-Alternatively, the network is unable to learn because of the window size. This would make sense since the RNN network with a really low error is able to learn to do regression, as it is not limited by a arbitrary window of input.
-Additionally, the RNN tests show an outlier at test 44, this outlier has a similar error as the average error observed using the CNN network.
+One of the reasons could be that the CNN network is unable to accurately predict because of the pre-processing done in the dataset.
+Alternatively, the network is unable to learn because of the window size.
+This would make sense since the RNN network is able to accurately predict with a really low error, and is not limited by an arbitrary window of input.
+Additionally, the RNN tests show an outlier at test 44, this outlier is extreme compared to the other RNN errors.
 
 It becomes apparent that teaching a neural network to do regression of finger joints is a complicated task.
-Because of this, the tests propose that it is ideal to use a type of Recurrent Network for regression.
+Because of this, the tests show that it is ideal to use a type of Recurrent Network for regression.
 The models created for regression can be seen in Appendix \ref{appendix:models}.
 
 %\subsubsection{Long-Short-Term-Memory Recurrent Neural Networks}
@@ -427,12 +437,12 @@ The models created for regression can be seen in Appendix \ref{appendix:models}.
 \section{Simulated Prosthetic Hand}
 \label{sec:simtest}
 
-\subsection{Useability of the Simulated Prosthetic Hand}
+\subsection{Usability of the Simulated Prosthetic Hand}
 %\subsection{Anatomical Assessment and Maneuverability}
 
 Access to existing prosthetic hand simulations proved to be impossible to access and use.
-they were either unavailable because their associated products have been discontinued or locked behind pay-to-access barriers where you would have to pay for access.
-Due to non-availability of prosthetic hand simulations, it was chosen that through this thesis, a open source prosthetic hand needed to be created for testing of the algorithms developed as part of this project.
+they were either unavailable because their associated products have been discontinued or locked behind pay-to-access barriers where you would have to purchase a real prosthetic device.
+Due to non-availability of prosthetic hand simulations, it was chosen that a open-source prosthetic hand needed to be created for testing of the algorithms developed as part of this project.
 The creation of a prosthetic hand simulation can be seen in Section \ref{sec:prost_sim}.
 The prosthetic hand was designed to be as anatomically similar as a real hand as possible.
 This was done in order to accurately simulate the movement of a real hand, and because of it, allow users to test and validate control methods on a simulation before needing to construct a real prosthetic.
@@ -443,7 +453,7 @@ This is important because the usability of a prosthetic hand has a large impact 
 
 In order to test the usability and dynamic movement of the simulated prosthetic hand, the hand was tasked with achieving the end-poses of the most used day-to-day grips.
 These grips are explained in Section \ref{sec:dataset} Table \ref{tab:grips}, namely the \textit{Pulp pinch}, \textit{Lateral pinch}, \textit{Five-Finger pinch} \& \textit{Diagonal Volar grip (Power grip)}.
-In order to pose the simulated hand, the interface created in ROS2 was used to send kinematic configurations to the hand simulation.
+In order to pose the simulated hand, the interface created in ROS2 \cite{ros2} was used to send kinematic configurations to the hand simulation.
 
 \subsection{Test \& Results}
 
@@ -490,7 +500,7 @@ The software used to pose the hand simulation can be seen in Appendix \ref{appen
 \subsection{Evaluation}
 
 Based on a visual assessment of Figure \ref{fig:hand_pose_test}, it can be concluded that the prosthetic hand is able to be posed similarly to the real-life reference.
-The ROS2 interface created for the simulation allows for easy manipulation of the joint rotations, and because of this, achieving different poses becomes easy to do.
+The ROS2 \cite{ros2} interface created for the simulation allows for easy manipulation of the joint rotations, and because of this, achieving different poses becomes easy to do.
 The hand simulation is able to achieve a wide range of motion because of its design and its ability to mimic the anatomy of the real hand.
 From this it can be concluded that the prosthetic hand is proportionally correct and thus also allows for accurate posing, applicable in different day-to-day scenarios.
 The resulting controller code written to achieve the poses of Figure \ref{fig:hand_pose_test} can be seen in Appendix \ref{appendix:roscontroller}.
